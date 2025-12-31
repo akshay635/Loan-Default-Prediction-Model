@@ -23,7 +23,7 @@ st.set_page_config(
 # --------------------------------------------------
 @st.cache_resource
 def load_model():
-    return joblib.load("C:/Users/aksha/Documents/credit_risk_pipeline_v1.joblib")
+    return joblib.load("credit_risk_pipeline_v1.joblib")
 
 model = load_model()
 
@@ -128,3 +128,4 @@ if st.button("🔍 Assess Risk"):
     st.caption(
         "This system provides risk estimation only. Final decisions must follow business policies."
     )
+
