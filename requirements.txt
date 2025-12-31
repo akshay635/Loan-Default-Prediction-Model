@@ -9,4 +9,5 @@ xgboost
 pytest
 pytest-cov
 joblib
-lightgbm
+LightGBM
+
