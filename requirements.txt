@@ -10,4 +10,7 @@ pytest
 pytest-cov
 joblib
 LightGBM
+catboost
+shap<0.50
+
 
