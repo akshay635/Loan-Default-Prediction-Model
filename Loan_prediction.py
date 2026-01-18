@@ -24,7 +24,7 @@ st.set_page_config(
 # --------------------------------------------------
 @st.cache_resource
 def load_model():
-    return joblib.load("C:/Users/aksha/Documents/catboost_model_v1.joblib")
+    return joblib.load("catboost_model_v1.joblib")
 
 model = load_model()
 
@@ -181,3 +181,4 @@ with col2:
     st.pyplot(fig, use_container_width=True)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
