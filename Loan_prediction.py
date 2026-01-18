@@ -121,12 +121,14 @@ monthly_income = round(income//12, 2)
 # Equated Monthly Installments
 emi = round(((loan_amount*interest_rate)+loan_amount)/loan_term, 2)
 # --------------------------------------------------
-# Prediction
+# Prediction time now
 # --------------------------------------------------
-if st.button("🔍 Assess Risk"):
+col1, col2 = st.columns(2)
 
-    # user inputs into dictonary (key-value pair) format
-    user_data = {
+# col1 :- Default risk assessment
+with col1:
+    if st.button("🔍 Assess Risk"):
+        user_data = {
         "Age": age,
         "LoanAmount": loan_amount,
         "CreditScore": credit_score,
@@ -144,37 +146,74 @@ if st.button("🔍 Assess Risk"):
         "HasCoSigner": cosigner,
         "Monthly_Income": monthly_income,
         "EMI": emi
+        }
+
+        df = pd.DataFrame([user_data])
+
+        # Enforce schema
+        for col in EXPECTED_COLS:
+            if col not in df.columns:
+                df[col] = np.nan
+
+        df = df[EXPECTED_COLS]
+
+        # Predict probability
+        prob = model.predict_proba(df)[0, 1]
+
+        st.subheader("📈 Risk Assessment Result")
+
+        if prob >= 0.6:
+            st.error(f"⚠️ High Risk of Default ({prob:.2%})")
+            st.markdown("**Suggested Action:** Reject or apply stricter loan terms")
+        elif prob > 0.3 and prob < 0.6:
+            st.warning(f"⚠️ Medium Risk of Default ({prob:.2%})")
+            st.markdown("**Suggested Action:** Manual review recommended")
+        else:
+            st.success(f"✅ Low Risk of Default ({prob:.2%})")
+            st.markdown("**Suggested Action:** Future Loan can be approved if applied")
+
+# col2 :- Features and their behavior explanation using SHAPley Explanations
+with col2:
+    user_data = {
+    "Age": age,
+    "LoanAmount": loan_amount,
+    "CreditScore": credit_score,
+    "MonthsEmployed": months_employed,
+    "NumCreditLines": num_credit_lines,
+    "InterestRate": interest_rate,
+    "LoanTerm": loan_term,
+    "DTIRatio": dti,
+    "Education": education,
+    "EmploymentType": employment,
+    "MaritalStatus": marital_status,
+    "HasMortgage": has_mortgage,
+    "HasDependents": has_dependents,
+    "LoanPurpose": loan_purpose,
+    "HasCoSigner": cosigner,
+    "Monthly_Income": monthly_income,
+    "EMI": emi
     }
 
-    # DataFrame
     df = pd.DataFrame([user_data])
 
-    # Enforce schema to check whether columns are missing
+    # Enforce schema
     for col in EXPECTED_COLS:
         if col not in df.columns:
             df[col] = np.nan
 
     df = df[EXPECTED_COLS]
 
-    # Predict probability
+    # SHAPLEY explanations to explain how features and its behaviour change the scope of outcomes
     prob = model.predict_proba(df)[0, 1]
+    st.header('SHAPLEY explanations')
+    st.text('Features impacting over the outcome')
+    exp = shap.TreeExplainer(model, feature_perturbation="tree_path_dependent")
+    shap_values = exp(df)
+    fig, ax = plt.subplots()
+    shap.plots.waterfall(shap_values[0], max_display=10)
+    st.pyplot(fig, use_container_width=True)
 
-    st.subheader("📈 Default Risk Assessment Result")
-
-    # probability threshold settings for Default Risk assessment
-    if prob >= 0.6:
-        st.error(f"⚠️ High Risk of Default ({prob:.2%})")
-        st.markdown("**Suggested Action:** Reject or apply stricter loan terms")
-    elif prob > 0.3 and prob < 0.6:
-        st.warning(f"⚠️ Medium Risk of Default ({prob:.2%})")
-        st.markdown("**Suggested Action:** Manual review recommended")
-    else:
-        st.success(f"✅ Low Risk of Default ({prob:.2%})")
-        st.markdown("**Suggested Action:** Future Loan can be approved if applied")
-
-    st.caption(
-        "This system provides risk estimation only. Final decisions must follow business policies."
-    )
+st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
 
 
 
