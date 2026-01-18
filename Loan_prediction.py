@@ -22,7 +22,7 @@ st.set_page_config(
 # --------------------------------------------------
 @st.cache_resource
 def load_model():
-    return joblib.load("C:/Users/aksha/Documents/catboost_model_v1.joblib")
+    return joblib.load("catboost_model_v1.joblib")
 
 model = load_model()
 
@@ -138,6 +138,7 @@ if st.button("🔍 Assess Risk"):
     st.caption(
         "This system provides risk estimation only. Final decisions must follow business policies."
     )
+
 
 
 
