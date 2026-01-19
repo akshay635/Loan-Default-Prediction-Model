@@ -57,8 +57,7 @@ marital_status = st.sidebar.selectbox(
     ["Single", "Married", "Divorced"]
 )
 
-months_employed = 0
-income = 0
+months_employed, income, monthly_income, emi = 0, 0, 0, 0
 
 st.sidebar.header("💰 Financial Information & Credit history")
 
@@ -164,6 +163,7 @@ with col2:
     st.pyplot(fig, use_container_width=True)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
