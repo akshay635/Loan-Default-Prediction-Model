@@ -64,7 +64,7 @@ st.sidebar.header("💰 Financial Information & Credit history")
 
 if employment == "Salaried" or employment == 'Self-employed':
     months_employed = st.sidebar.slider('Months employed', 0, 480, 60)
-    income = st.sidebar.number_input("Annual Income", min_value=0, step=1, format="%d")
+    income = st.sidebar.text_input("Annual Income")
 dti = st.sidebar.slider("Debt-to-Income Ratio", 0.0, 1.0, 0.4)
 credit_score = st.sidebar.slider("Credit Score", 300, 850, 720)
 num_credit_lines = st.sidebar.slider("Number of Credit Lines", 0, 15, 4)
@@ -81,7 +81,7 @@ loan_purpose = st.sidebar.selectbox(
     "Purpose of Loan",
     ["Home", "Education", "Personal", "Auto", "Business"]
 )
-loan_amount = st.sidebar.number_input("Loan Amount", min_value=0, step=1, format="%d")
+loan_amount = st.sidebar.text_input("Loan Amount")
 interest_rate = st.sidebar.slider("Interest Rate (%)", 1.0, 25.0, 10.5)
 loan_term = st.sidebar.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
 
@@ -98,7 +98,7 @@ with col1:
     if st.button("🔍 Assess Risk"):
         user_data = {
         "Age": age,
-        "LoanAmount": loan_amount,
+        "LoanAmount": int(loan_amount.replace(',', ''),
         "CreditScore": credit_score,
         "MonthsEmployed": months_employed,
         "NumCreditLines": num_credit_lines,
@@ -112,7 +112,7 @@ with col1:
         "HasDependents": has_dependents,
         "LoanPurpose": loan_purpose,
         "HasCoSigner": cosigner,
-        "Monthly_Income": monthly_income,
+        "Monthly_Income": int(monthly_income.replace(',', ''),
         "EMI": emi
         }
 
@@ -181,6 +181,7 @@ with col2:
     st.pyplot(fig, use_container_width=True)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
