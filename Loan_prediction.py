@@ -160,9 +160,10 @@ if st.button("🔍 Assess Risk"):
         shap_values = exp(df)
         fig, ax = plt.subplots()
         shap.plots.waterfall(shap_values[0], max_display=10)
-        st.pyplot(fig, use_container_width=True)
+        st.pyplot(fig, use_container_width=True, width='stretch')
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
