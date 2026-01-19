@@ -8,6 +8,7 @@ Created on Mon Jan 19 16:03:35 2026
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import joblib
 from src.config import RiskConfig
 from src.schema import SchemaValidator
 from src.model_service import LoanRiskModel
@@ -26,6 +27,7 @@ validator = SchemaValidator(config.EXPECTED_COLS)
 model = LoanRiskModel(config.MODEL_PATH)
 decision_engine = RiskDecisionEngine(config.LOW_RISK, config.HIGH_RISK)
 explainer = ShapExplainer(model.model)
+cat_model = joblib.load('models/catboost_model_v1.joblib')
 
 # --------------------------------------------------
 # Input Sections
@@ -141,13 +143,13 @@ if st.button("🔍 Assess Risk"):
 
 with col1:
     df = validator.validate(user_data)
-    prob = model.predict_proba(df)
+    prob = cat_model.predict_proba(df)[0, 1]
     feature_importances = pd.DataFrame({
         'Features': df.columns,
-        'Importances': model.feature_importances_
+        'Importances': cat_model.feature_importances_
     })
     fig = px.bar(
-            feature_importances.head(10).sort_values(by='Importances', ascending=False),
+            feature_importances.sort_values(by='Importances', ascending=False).head(10),
             x="Importances",
             y="Features",
             title="Feature Importance / F-score (Catboost)",
@@ -160,6 +162,7 @@ with col2:
     st.pyplot(fig, use_container_width=False)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
