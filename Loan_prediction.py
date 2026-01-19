@@ -87,7 +87,7 @@ loan_term = st.sidebar.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
 
 
 if income == 0 and loan_amount == 0:
-    break
+    continue
 else:
     income = int(income.replace(',', ''))
     loan_amount = int(loan_amount.replace(',', ''))
@@ -168,6 +168,7 @@ with col2:
     st.pyplot(fig, use_container_width=True)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
