@@ -152,11 +152,10 @@ if st.button("🔍 Assess Risk"):
         
         fig = px.bar(
                 feature_importances.sort_values(by='Importances', ascending=False).head(10),
-                x="Importances",
-                y="Features",
+                x="Features",
+                y="Importances",
                 title="Feature Importance / F-score (Catboost)",
-                text_auto=True,
-                orientation='v'
+                text_auto=True
         )
         st.plotly_chart(fig, use_container_width=True)
         
@@ -167,6 +166,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=True)
 
     st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
