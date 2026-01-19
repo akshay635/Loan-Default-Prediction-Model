@@ -114,8 +114,8 @@ user_data = {
 
 col1, col2 = st.columns(2)
 
-with col1:
-    if st.button("🔍 Assess Risk"):
+if st.button("🔍 Assess Risk"):
+    with col1:
         
         df = pd.DataFrame([user_data])
 
@@ -141,28 +141,29 @@ with col1:
             st.success(f"✅ Low Risk of Default ({prob:.2%})")
             st.markdown("**Suggested Action:** Future Loan can be approved if applied")
 
-with col2:
+    with col2:
 
-    df = pd.DataFrame([user_data])
-
-    # Enforce schema
-    for col in EXPECTED_COLS:
-        if col not in df.columns:
-            df[col] = np.nan
-
-    df = df[EXPECTED_COLS]
-
-    # Predict probability
-    prob = model.predict_proba(df)[0, 1]
-    st.header('SHAPLEY explanations')
-    st.text('Features impacting over the outcome')
-    exp = shap.TreeExplainer(model, feature_perturbation="tree_path_dependent")
-    shap_values = exp(df)
-    fig, ax = plt.subplots()
-    shap.plots.waterfall(shap_values[0], max_display=10)
-    st.pyplot(fig, use_container_width=True)
+        df = pd.DataFrame([user_data])
+    
+        # Enforce schema
+        for col in EXPECTED_COLS:
+            if col not in df.columns:
+                df[col] = np.nan
+    
+        df = df[EXPECTED_COLS]
+    
+        # Predict probability
+        prob = model.predict_proba(df)[0, 1]
+        st.header('SHAPLEY explanations')
+        st.text('Features impacting over the outcome')
+        exp = shap.TreeExplainer(model, feature_perturbation="tree_path_dependent")
+        shap_values = exp(df)
+        fig, ax = plt.subplots()
+        shap.plots.waterfall(shap_values[0], max_display=10)
+        st.pyplot(fig, use_container_width=True)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
