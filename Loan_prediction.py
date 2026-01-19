@@ -85,7 +85,8 @@ loan_amount = st.sidebar.text_input("Loan Amount")
 interest_rate = st.sidebar.slider("Interest Rate (%)", 1.0, 25.0, 10.5)
 loan_term = st.sidebar.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
 
-
+income = int(income.replace(',', '')
+loan_amount = int(loan_amount.replace(',', '')
 monthly_income = round(income//12, 2)
 emi = round(((loan_amount*interest_rate)+loan_amount)/loan_term, 2)
 # --------------------------------------------------
@@ -98,7 +99,7 @@ with col1:
     if st.button("🔍 Assess Risk"):
         user_data = {
         "Age": age,
-        "LoanAmount": int(loan_amount.replace(',', '')),
+        "LoanAmount": loan_amount,
         "CreditScore": credit_score,
         "MonthsEmployed": months_employed,
         "NumCreditLines": num_credit_lines,
@@ -112,7 +113,7 @@ with col1:
         "HasDependents": has_dependents,
         "LoanPurpose": loan_purpose,
         "HasCoSigner": cosigner,
-        "Monthly_Income": int(monthly_income.replace(',', '')),
+        "Monthly_Income": monthly_income,
         "EMI": emi
         }
 
@@ -143,7 +144,7 @@ with col1:
 with col2:
     user_data = {
     "Age": age,
-    "LoanAmount": int(loan_amount.replace(',', '')),
+    "LoanAmount": loan_amount,
     "CreditScore": credit_score,
     "MonthsEmployed": months_employed,
     "NumCreditLines": num_credit_lines,
@@ -157,7 +158,7 @@ with col2:
     "HasDependents": has_dependents,
     "LoanPurpose": loan_purpose,
     "HasCoSigner": cosigner,
-    "Monthly_Income": int(monthly_income.replace(',', '')),
+    "Monthly_Income": monthly_income,
     "EMI": emi
     }
 
@@ -181,6 +182,7 @@ with col2:
     st.pyplot(fig, use_container_width=True)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
