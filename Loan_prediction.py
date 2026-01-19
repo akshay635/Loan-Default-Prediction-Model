@@ -98,7 +98,7 @@ with col1:
     if st.button("🔍 Assess Risk"):
         user_data = {
         "Age": age,
-        "LoanAmount": int(loan_amount.replace(',', ''),
+        "LoanAmount": int(loan_amount.replace(',', '')),
         "CreditScore": credit_score,
         "MonthsEmployed": months_employed,
         "NumCreditLines": num_credit_lines,
@@ -112,7 +112,7 @@ with col1:
         "HasDependents": has_dependents,
         "LoanPurpose": loan_purpose,
         "HasCoSigner": cosigner,
-        "Monthly_Income": int(monthly_income.replace(',', ''),
+        "Monthly_Income": int(monthly_income.replace(',', '')),
         "EMI": emi
         }
 
@@ -143,7 +143,7 @@ with col1:
 with col2:
     user_data = {
     "Age": age,
-    "LoanAmount": loan_amount,
+    "LoanAmount": int(loan_amount.replace(',', '')),
     "CreditScore": credit_score,
     "MonthsEmployed": months_employed,
     "NumCreditLines": num_credit_lines,
@@ -157,7 +157,7 @@ with col2:
     "HasDependents": has_dependents,
     "LoanPurpose": loan_purpose,
     "HasCoSigner": cosigner,
-    "Monthly_Income": monthly_income,
+    "Monthly_Income": int(monthly_income.replace(',', '')),
     "EMI": emi
     }
 
@@ -181,6 +181,7 @@ with col2:
     st.pyplot(fig, use_container_width=True)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
