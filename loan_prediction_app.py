@@ -140,7 +140,7 @@ if st.button("🔍 Assess Risk"):
     st.markdown(f"**Suggested Action:** {action}")
 
 
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns([1, 1], gap="large")
 
     with col1:
         df = validator.validate(user_data)
@@ -149,6 +149,7 @@ if st.button("🔍 Assess Risk"):
             'Features': df.columns,
             'Importances': cat_model.feature_importances_
         })
+        
         fig = px.bar(
                 feature_importances.sort_values(by='Importances', ascending=False).head(10),
                 x="Importances",
@@ -160,10 +161,12 @@ if st.button("🔍 Assess Risk"):
         
     with col2:
         st.subheader("SHAPLEY explanations")
+        st.text('Displaying important features which contribute to the final outcome')
         fig = explainer.plot(df)
-        st.pyplot(fig, use_container_width=False)
+        st.pyplot(fig, use_container_width=True)
 
     st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
