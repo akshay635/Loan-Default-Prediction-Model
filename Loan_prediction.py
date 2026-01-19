@@ -85,10 +85,6 @@ loan_amount = st.sidebar.text_input("Loan Amount")
 interest_rate = st.sidebar.slider("Interest Rate (%)", 1.0, 25.0, 10.5)
 loan_term = st.sidebar.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
 
-income = int(income.replace(',', ''))
-loan_amount = int(loan_amount.replace(',', ''))
-monthly_income = round(income//12, 2)
-emi = round(((loan_amount*interest_rate)+loan_amount)/loan_term, 2)
 # --------------------------------------------------
 # Prediction
 # --------------------------------------------------
@@ -97,6 +93,10 @@ col1, col2 = st.columns(2)
 
 with col1:
     if st.button("🔍 Assess Risk"):
+        income = int(income.replace(',', ''))
+        loan_amount = int(loan_amount.replace(',', ''))
+        monthly_income = round(income//12, 2)
+        emi = round(((loan_amount*interest_rate)+loan_amount)/loan_term, 2)
         user_data = {
         "Age": age,
         "LoanAmount": loan_amount,
@@ -142,6 +142,10 @@ with col1:
             st.markdown("**Suggested Action:** Future Loan can be approved if applied")
 
 with col2:
+    income = int(income.replace(',', ''))
+    loan_amount = int(loan_amount.replace(',', ''))
+    monthly_income = round(income//12, 2)
+    emi = round(((loan_amount*interest_rate)+loan_amount)/loan_term, 2)
     user_data = {
     "Age": age,
     "LoanAmount": loan_amount,
@@ -182,6 +186,7 @@ with col2:
     st.pyplot(fig, use_container_width=True)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
