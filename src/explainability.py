@@ -16,9 +16,10 @@ class ShapExplainer:
 
     def plot(self, df):
         shap_values = self.explainer(df)
-        fig, ax = plt.subplots(figsize=(8, 10))
+        fig, ax = plt.subplots()
         shap.plots.waterfall(shap_values[0], max_display=10)
         return fig
+
 
 
 
