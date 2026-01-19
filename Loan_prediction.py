@@ -86,10 +86,9 @@ loan_purpose = st.sidebar.selectbox(
 )
 loan_amount = st.sidebar.text_input("Loan Amount", "1,00,000")
 loan_amount = int(loan_amount.replace(',', ''))
-emi = round(((loan_amount*interest_rate)+loan_amount)/loan_term, 2)
 interest_rate = st.sidebar.slider("Interest Rate (%)", 1.0, 25.0, 10.5)
 loan_term = st.sidebar.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
-
+emi = round(((loan_amount*interest_rate)+loan_amount)/loan_term, 2)
 
 user_data = {
         "Age": age,
@@ -165,6 +164,7 @@ with col2:
     st.pyplot(fig, use_container_width=True)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
