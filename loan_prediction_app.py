@@ -125,8 +125,6 @@ user_data = {
         "EMI": emi
 }
 
-col1, col2 = st.columns(2)
-
 if st.button("🔍 Assess Risk"):
     df = validator.validate(user_data)
     prob = model.predict_proba(df)
@@ -140,6 +138,9 @@ if st.button("🔍 Assess Risk"):
         st.success(f"✅ Estimated Risk of Default ({prob:.2%})")
 
     st.markdown(f"**Suggested Action:** {action}")
+
+
+col1, col2 = st.columns(2)
 
 with col1:
     df = validator.validate(user_data)
@@ -162,6 +163,7 @@ with col2:
     st.pyplot(fig, use_container_width=False)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
