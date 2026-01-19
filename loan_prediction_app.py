@@ -140,6 +140,8 @@ if st.button("🔍 Assess Risk"):
     st.markdown(f"**Suggested Action:** {action}")
 
 with col1:
+    df = validator.validate(user_data)
+    prob = model.predict_proba(df)
     feature_importances = pd.DataFrame({
         'Features': df.columns,
         'Importances': model.feature_importances_
@@ -158,5 +160,6 @@ with col2:
     st.pyplot(fig, use_container_width=False)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
