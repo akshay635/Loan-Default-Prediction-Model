@@ -4,7 +4,7 @@ Created on Wed Dec 31 12:37:04 2025
 
 @author: aksha
 """
-
+# Importing the libraries
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -201,6 +201,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=True, width='stretch')
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
