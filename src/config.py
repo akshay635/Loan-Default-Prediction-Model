@@ -9,7 +9,7 @@ class RiskConfig:
     LOW_RISK = 0.30
     HIGH_RISK = 0.60
 
-    MODEL_PATH = "C:/Users/aksha/Documents/models/catboost_model_v1.joblib"
+    MODEL_PATH = "models/catboost_model_v1.joblib"
 
     EXPECTED_COLS = [
         'Age', 'LoanAmount', 'CreditScore', 'MonthsEmployed',
@@ -18,3 +18,4 @@ class RiskConfig:
         'HasMortgage', 'HasDependents', 'LoanPurpose',
         'HasCoSigner', 'Monthly_Income', 'EMI'
     ]
+
