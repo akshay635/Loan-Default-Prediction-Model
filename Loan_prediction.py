@@ -132,7 +132,7 @@ if st.button("🔍 Assess Risk"):
         st.subheader("📈 Risk Assessment Result")
 
         if prob >= 0.6:
-            st.error(f"⚠️ Estimated Risk of Default ({prob:.2%})")
+            st.error(f"❌ Estimated Risk of Default ({prob:.2%})")
             st.markdown("**Suggested Action:** Reject or apply stricter loan terms")
         elif prob > 0.3 and prob < 0.6:
             st.warning(f"⚠️ Estimated Risk of Default ({prob:.2%})")
@@ -169,6 +169,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=True, width='stretch')
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
