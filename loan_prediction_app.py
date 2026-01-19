@@ -140,29 +140,31 @@ if st.button("🔍 Assess Risk"):
     st.markdown(f"**Suggested Action:** {action}")
 
 
-col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2)
 
-with col1:
-    df = validator.validate(user_data)
-    prob = cat_model.predict_proba(df)[0, 1]
-    feature_importances = pd.DataFrame({
-        'Features': df.columns,
-        'Importances': cat_model.feature_importances_
-    })
-    fig = px.bar(
-            feature_importances.sort_values(by='Importances', ascending=False).head(10),
-            x="Importances",
-            y="Features",
-            title="Feature Importance / F-score (Catboost)",
-            text_auto=True
-    )
-    st.plotly_chart(fig, use_container_width=True)
-with col2:
-    st.subheader("SHAPLEY explanations")
-    fig = explainer.plot(df)
-    st.pyplot(fig, use_container_width=False)
+    with col1:
+        df = validator.validate(user_data)
+        prob = cat_model.predict_proba(df)[0, 1]
+        feature_importances = pd.DataFrame({
+            'Features': df.columns,
+            'Importances': cat_model.feature_importances_
+        })
+        fig = px.bar(
+                feature_importances.sort_values(by='Importances', ascending=False).head(10),
+                x="Importances",
+                y="Features",
+                title="Feature Importance / F-score (Catboost)",
+                text_auto=True
+        )
+        st.plotly_chart(fig, use_container_width=True)
+        
+    with col2:
+        st.subheader("SHAPLEY explanations")
+        fig = explainer.plot(df)
+        st.pyplot(fig, use_container_width=False)
 
-st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+    st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
