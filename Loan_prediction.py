@@ -154,7 +154,7 @@ if st.button("🔍 Assess Risk"):
     
         # Predict probability
         prob = model.predict_proba(df)[0, 1]
-        st.header('SHAPLEY explanations')
+        st.subheader('SHAPLEY explanations')
         st.text('Features impacting over the outcome')
         exp = shap.TreeExplainer(model, feature_perturbation="tree_path_dependent")
         shap_values = exp(df)
@@ -163,6 +163,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=True)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
