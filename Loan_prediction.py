@@ -65,6 +65,9 @@ st.sidebar.header("💰 Financial Information & Credit history")
 if employment == "Salaried" or employment == 'Self-employed':
     months_employed = st.sidebar.slider('Months employed', 0, 480, 60)
     income = st.sidebar.text_input("Annual Income", "10,000")
+    income = int(income.replace(',', ''))
+    monthly_income = round(income//12, 2)
+    
 dti = st.sidebar.slider("Debt-to-Income Ratio", 0.0, 1.0, 0.4)
 credit_score = st.sidebar.slider("Credit Score", 300, 850, 720)
 num_credit_lines = st.sidebar.slider("Number of Credit Lines", 0, 15, 4)
@@ -82,17 +85,11 @@ loan_purpose = st.sidebar.selectbox(
     ["Home", "Education", "Personal", "Auto", "Business"]
 )
 loan_amount = st.sidebar.text_input("Loan Amount", "1,00,000")
+loan_amount = int(loan_amount.replace(',', ''))
+emi = round(((loan_amount*interest_rate)+loan_amount)/loan_term, 2)
 interest_rate = st.sidebar.slider("Interest Rate (%)", 1.0, 25.0, 10.5)
 loan_term = st.sidebar.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
 
-
-if income == 0 and loan_amount == 0:
-    continue
-else:
-    income = int(income.replace(',', ''))
-    loan_amount = int(loan_amount.replace(',', ''))
-    monthly_income = round(income//12, 2)
-    emi = round(((loan_amount*interest_rate)+loan_amount)/loan_term, 2)
 
 user_data = {
         "Age": age,
@@ -168,6 +165,7 @@ with col2:
     st.pyplot(fig, use_container_width=True)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
