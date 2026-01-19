@@ -6,6 +6,8 @@ Created on Mon Jan 19 16:03:35 2026
 """
 
 import streamlit as st
+import pandas as pd
+import plotly.express as px
 from src.config import RiskConfig
 from src.schema import SchemaValidator
 from src.model_service import LoanRiskModel
@@ -156,4 +158,5 @@ with col2:
     st.pyplot(fig, use_container_width=False)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
