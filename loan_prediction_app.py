@@ -14,6 +14,7 @@ from src.schema import SchemaValidator
 from src.model_service import LoanRiskModel
 from src.decision import RiskDecisionEngine
 from src.explainability import ShapExplainer
+from src.load_data import load_data
 
 st.set_page_config(page_title="Loan Default Risk Assessment", layout="wide")
 st.title("🏦 Loan Default Risk Assessment")
@@ -28,6 +29,8 @@ model = LoanRiskModel(config.MODEL_PATH)
 decision_engine = RiskDecisionEngine(config.LOW_RISK, config.HIGH_RISK)
 explainer = ShapExplainer(model.model)
 cat_model = joblib.load('models/catboost_model_v1.joblib')
+
+user_data = load_data()
 
 if st.button("🔍 Assess Risk"):
     df = validator.validate(user_data)
@@ -70,6 +73,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=True)
 
     st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
