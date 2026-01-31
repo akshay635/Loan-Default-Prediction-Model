@@ -46,7 +46,6 @@ if st.button("🔍 Assess Risk"):
 
     st.markdown(f"**Suggested Action:** {action}")
 
-
     col1, col2 = st.columns([1, 1], gap="large")
 
     with col1:
@@ -64,6 +63,7 @@ if st.button("🔍 Assess Risk"):
                 title="Feature Importance / F-score (Catboost)",
                 text_auto=True
         )
+        fig.update_layout(yaxis=dict(autorange="reversed"))
         st.plotly_chart(fig, use_container_width=True)
         
     with col2:
@@ -73,6 +73,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=True)
 
     st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
