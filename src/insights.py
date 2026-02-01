@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
+import shap
 
-def generate_feature_insight(df: pd.DataFrame, importances: pd.DataFrame, top_n: int = 5) -> str:
+def generate_feature_insight(df, importances, top_n = 5):
     top_features = importances.sort_values(by='Importances', ascending=False).head(top_n)
     lines = [f"### 🧠 Top {top_n} Feature Insights\n"]
 
@@ -42,7 +43,7 @@ def generate_feature_insight(df: pd.DataFrame, importances: pd.DataFrame, top_n:
     return "\n".join(lines)
 
 
-def generate_shap_insight(df: pd.DataFrame, explainer, top_n: int = 5) -> str:
+def generate_shap_insight(df, explainer, top_n = 5):
     try:
         shap_values = explainer.explainer.shap_values(df)
         feature_names = df.columns
