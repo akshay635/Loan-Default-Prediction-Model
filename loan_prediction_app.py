@@ -15,6 +15,7 @@ from src.model_service import LoanRiskModel
 from src.decision import RiskDecisionEngine
 from src.explainability import ShapExplainer
 from src.load_data import load_data
+from src.insights import generate_feature_insight, generate_shap_insight
 
 st.set_page_config(page_title="Loan Default Risk Assessment", layout="wide")
 st.title("🏦 Loan Default Risk Assessment")
@@ -65,14 +66,19 @@ if st.button("🔍 Assess Risk"):
         )
         fig.update_layout(yaxis=dict(autorange="reversed"))
         st.plotly_chart(fig, use_container_width=True)
+        with st.expander("🔎 Feature Insight Summary"):
+            st.markdown(generate_feature_insight(df, feature_importances, top_n=5))
         
     with col2:
         st.subheader("SHAPLEY explanations")
         st.text('Displaying important features which contribute to the final outcome')
         fig = explainer.plot(df)
         st.pyplot(fig, use_container_width=True)
+        #with st.expander("🔎 Feature Insight Summary"):
+            #st.markdown(generate_shap_insight(df, explainer., top_n=5))
 
     st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
