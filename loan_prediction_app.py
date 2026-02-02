@@ -83,7 +83,7 @@ with tab1:
 
         with col2:
             st.subheader("Personalized SHAP Explanation")
-            fig, shap_values = explainer.plot(df)
+            fig, shap_values, new_columns = explainer.plot(df)
             st.pyplot(fig, use_container_width=False)
             generate_shap_insight(df,shap_values,top_n = 5)
             st.caption(
@@ -125,6 +125,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
