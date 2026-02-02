@@ -49,7 +49,7 @@ if st.button("🔍 Assess Risk"):
     st.markdown(f"**Suggested Action:** {action}")
     
     with col1:
-        feature_imp = permutation_importance(model.model, df, np.array(prob), scoring='recall')
+        feature_imp = permutation_importance(model.model, df, np.array([prob]), scoring='recall')
         feature_imp_df = pd.DataFrame({
             'Features' : df.columns,
             'Importances' : feature_imp.importances_mean
@@ -71,6 +71,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=False)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
