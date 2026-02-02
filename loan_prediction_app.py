@@ -11,6 +11,7 @@ from src.model_service import LoanRiskModel
 from src.decision import RiskDecisionEngine
 from src.explainability import ShapExplainer
 from src.load_data import load_data
+from src.insights import insights
 
 # Page setup
 st.set_page_config(page_title="Repayment Readiness Dashboard", layout="wide")
@@ -92,20 +93,6 @@ with tab1:
             st.caption(
             """Features pushing the risk higher are shown in red, 
                while features reducing risk are shown in blue.""")
-            
-    st.info(f"""
-        **Global vs Local Explanations**
-
-    - **Global Feature Importance** shows which features matter most *on average* across all borrowers.  
-      → Top global drivers: {', '.join(feature_imp_df['Features'])}
-
-    - **Local SHAP Explanation** shows which features mattered most *for your specific profile*.  
-      → Your personal drivers: {', '.join(shap_df['feature'])}
-
-    This difference highlights why interpretability matters:  
-    a feature can be globally dominant but not necessarily decisive for your individual case.
-    """)
-
 
 # ---------------- Exploration Tab ----------------
 with tab2:
@@ -142,6 +129,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
