@@ -88,7 +88,8 @@ with tab1:
             )
             fig.update_layout(yaxis=dict(autorange="reversed"))
             st.plotly_chart(fig, use_container_width=False)
-            st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))
+            with st.expander('Feature Summary'):
+                st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))
 
         with col2:
             st.subheader("Personalized SHAP Explanation")
@@ -133,6 +134,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
