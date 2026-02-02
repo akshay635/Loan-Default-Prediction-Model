@@ -18,14 +18,3 @@ class RiskDecisionEngine:
         else:
             return "LOW", "Future loan can be approved if applied"
 
-        risk = prob * 100
-
-        st.metric(
-            label="Default Risk",
-            value=f"{risk:.1f}%",
-            delta="High Risk" if risk > 35 else "Low Risk"
-        )
-        
-        decision = "REJECT" if risk > 35 else "APPROVE"
-        
-        st.subheader(f"Decision: {decision}")
