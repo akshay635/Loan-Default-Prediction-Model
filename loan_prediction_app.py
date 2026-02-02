@@ -66,11 +66,19 @@ with tab1:
             st.error(f"❌ High repayment risk ({prob:.2%})")
             st.markdown(""" This application shows a higher-than-average probability of repayment
                             difficulty based on financial indicators such as income stability and
-                            debt obligations.""")
+                            debt obligations. The customer has higher chances to stop repayments 
+                            and default the loan.""")
         elif risk == "MEDIUM":
             st.warning(f"⚠️ Moderate repayment risk ({prob:.2%})")
+            st.markdown(""" This application shows a moderate (between 35% - 60%) probability of repayment
+                            difficulty based on financial indicators such as income stability and
+                            debt obligations. The customer will face difficulties in loan repayment.
+                            Should be observed and reviewed""")
         else:
-            st.success(f"✅ Strong repayment readiness ({prob:.2%})")
+            st.success(f"✅ Low risk of repayment ({prob:.2%})")
+            st.markdown(""" This application shows the customer's lower probability of repayment
+                            difficulty which means the customer is not facing any difficulties in loan repayments and
+                            will continue his repayments.""")
 
         st.markdown(f"**Suggested Action:** {action}")
 
@@ -134,6 +142,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
