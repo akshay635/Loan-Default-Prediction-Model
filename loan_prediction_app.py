@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
-
 import streamlit as st
 from src.configuration import RiskConfig
 from src.schema import SchemaValidator
@@ -64,6 +62,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=False)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
