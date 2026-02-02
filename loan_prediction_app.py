@@ -11,7 +11,7 @@ from src.model_service import LoanRiskModel
 from src.decision import RiskDecisionEngine
 from src.explainability import ShapExplainer
 from src.load_data import load_data
-from src.insights import insights
+from src.insights import generate_feature_insight, generate_shap_insight 
 
 # Page setup
 st.set_page_config(page_title="Repayment Readiness Dashboard", layout="wide")
@@ -130,6 +130,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
