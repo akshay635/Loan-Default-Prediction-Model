@@ -23,20 +23,21 @@ class ShapExplainer:
         shap_values = self.explainer(new_df)
         fig, ax = plt.subplots()
         shap.plots.waterfall(shap_values[0, :, 0], max_display=10)
-        try:
-            feature_names = new_df.columns
-            mean_abs_shap = pd.DataFrame({
-                'Feature': feature_names,
-                'Mean |SHAP|': np.abs(shap_values).mean(axis=0)
-            }).sort_values(by='Mean |SHAP|', ascending=False).head(top_n)
-    
-            lines = [f"### 🧠 SHAP Insight Summary (Top {top_n} Features)\n"]
-            for _, row in mean_abs_shap.iterrows():
-                lines.append(f"- **{row['Feature']}**: Avg contribution = {row['Mean |SHAP|']:.4f}")
-            exp_lines =  "\n".join(lines)
-        except Exception as e:
-            exp_lines = f"⚠️ Unable to generate SHAP insights: {e}"
-        return fig, exp_lines
+        # After computing shap_values
+        shap_array = shap_values.values  # numeric contributions
+
+        # Average contribution per feature
+        avg_contrib = pd.DataFrame({
+            "Feature": feature_names,
+            "AvgContribution": shap_array.mean(axis=0)
+        }).sort_values("AvgContribution", key=lambda x: x.abs(), ascending=False)
+        
+        st.subheader("🧠 SHAP Insight Summary (Top 5 Features)")
+        for _, row in avg_contrib.head(5).iterrows():
+            result = (f"{row['Feature']}: Avg contribution = {row['AvgContribution']:.3f}")
+
+        return fig, result
+
 
 
 
