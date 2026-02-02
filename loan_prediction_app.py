@@ -25,6 +25,8 @@ explainer = ShapExplainer(model=model.model)
 
 user_data = load_data()
 
+col1, col2 = st.columns(2)
+
 if st.button("🔍 Assess Risk"):
     df = validator.validate(user_data)
     df['EMI/Income_ratio'] = round((df['EMI'] / df['Monthly_Income']), 2)
@@ -68,6 +70,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=False)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
