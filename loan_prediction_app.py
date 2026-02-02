@@ -85,10 +85,9 @@ with tab1:
             st.subheader("Personalized SHAP Explanation")
             fig, lines = explainer.plot(df)
             st.pyplot(fig, use_container_width=False)
-            st.caption(
+            st.markdown(
             """Features pushing the risk higher are shown in red, 
                while features reducing risk are shown in blue.""")
-            st.markdown(lines)
 
 # ---------------- Exploration Tab ----------------
 with tab2:
@@ -125,6 +124,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
