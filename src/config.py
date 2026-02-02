@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 class RiskConfig:
-    LOW_RISK = 0.30
+    LOW_RISK = 0.35
     HIGH_RISK = 0.60
     
     MODEL_PATH = "models/loan_pred_model_v1.joblib"
@@ -14,6 +14,7 @@ class RiskConfig:
        'HasDependents', 'LoanPurpose', 'HasCoSigner', 'Monthly_Income', 'EMI',
        'Post_DTI', 'age_post_dti', 'tenure_age_ratio', 'debt_stress'
     ]
+
 
 
 
