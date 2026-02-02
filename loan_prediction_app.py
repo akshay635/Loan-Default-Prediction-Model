@@ -12,13 +12,19 @@ from src.decision import RiskDecisionEngine
 from src.explainability import ShapExplainer
 from src.load_data import load_data
 
-st.set_page_config(page_title="Loan Default Risk Assessment", layout="centered")
-st.title("🏦 Loan Default Risk Assessment")
+# Page setup
+st.set_page_config(page_title="Repayment Readiness Dashboard", layout="wide")
 
+st.title("💡 Repayment Readiness & Insights")
 st.markdown(
-    "This tool estimates the **risk of loan default** to support informed lending decisions."
+    """
+    Welcome to the **Repayment Readiness Dashboard**.  
+    This app provides personalized predictions and transparent explanations 
+    to help borrowers and lenders understand repayment stability.
+    """
 )
 
+# Initialize components
 validator = SchemaValidator(RiskConfig.EXPECTED_COLS)
 model = LoanRiskModel(RiskConfig.MODEL_PATH)
 decision_engine = RiskDecisionEngine(RiskConfig.LOW_RISK, RiskConfig.HIGH_RISK)
@@ -26,47 +32,94 @@ explainer = ShapExplainer(model=model.model)
 
 user_data = load_data()
 
-col1, col2 = st.columns(2)
+# Tabs for storytelling
+tab1, tab2 = st.tabs(["🔮 Prediction", "📊 Exploration"])
 
-if st.button("🔍 Assess Risk"):
-    df = validator.validate(user_data)
-    df['EMI/Income_ratio'] = round((df['EMI'] / df['Monthly_Income']), 2)
-    df['Post_DTI'] = df['DTIRatio'] + df['EMI/Income_ratio']
-    df['age_post_dti'] = df['Age'] * df['Post_DTI']
-    df['tenure_age_ratio'] = df['MonthsEmployed'] / (df['Age'] + 1e-6)
-    df['debt_stress'] = df['EMI/Income_ratio'] * df['DTIRatio']
-    
-    df = df[RiskConfig.EXPECTED_COLS]
-    prob = model.predict_proba(df)
-    st.subheader("📈 Risk Assessment Result")
-    risk, action = decision_engine.decide(prob)
-    if risk == "HIGH":
-        st.error(f"❌ Estimated Risk of Default ({prob:.2%})")
-    elif risk == "MEDIUM":
-        st.warning(f"⚠️ Estimated Risk of Default ({prob:.2%})")
-    else:
-        st.success(f"✅ Estimated Risk of Default ({prob:.2%})")
-    st.markdown(f"**Suggested Action:** {action}")
-    
-    with col1:
-        feature_imp_df = pd.read_csv(RiskConfig.FEATURE_IMP_PATH)
-        # ---------------- Visualization ----------------
-        fig = px.bar(
-            feature_imp_df.head(10),
-            x="Importances",
-            y="Features",
-            title="Feature Importance / F-score (Random Forest)",
-            text_auto=True
-        )
-        fig.update_layout(yaxis=dict(autorange="reversed"))
-        st.plotly_chart(fig, use_container_width=True)
+# ---------------- Prediction Tab ----------------
+with tab1:
+    st.header("Your Repayment Readiness")
+    col1, col2 = st.columns(2)
 
-    with col2:
-        st.subheader("SHAPLEY explanations")
-        fig = explainer.plot(df)
-        st.pyplot(fig, use_container_width=False)
+    if st.button("🔍 Assess Readiness"):
+        df = validator.validate(user_data)
 
-st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+        # Feature engineering
+        df['EMI/Income_ratio'] = round((df['EMI'] / df['Monthly_Income']), 2)
+        df['Post_DTI'] = df['DTIRatio'] + df['EMI/Income_ratio']
+        df['age_post_dti'] = df['Age'] * df['Post_DTI']
+        df['tenure_age_ratio'] = df['MonthsEmployed'] / (df['Age'] + 1e-6)
+        df['debt_stress'] = df['EMI/Income_ratio'] * df['DTIRatio']
+
+        df = df[RiskConfig.EXPECTED_COLS]
+        prob = model.predict_proba(df)
+
+        # Narrative risk output
+        st.subheader("📈 Readiness Result")
+        risk, action = decision_engine.decide(prob)
+        if risk == "HIGH":
+            st.error(f"❌ High repayment risk ({prob:.2%})")
+        elif risk == "MEDIUM":
+            st.warning(f"⚠️ Moderate repayment risk ({prob:.2%})")
+        else:
+            st.success(f"✅ Strong repayment readiness ({prob:.2%})")
+
+        st.markdown(f"**Suggested Action:** {action}")
+
+        with col1:
+            st.subheader("Global Feature Importance")
+            feature_imp_df = pd.read_csv(RiskConfig.FEATURE_IMP_PATH)
+            fig = px.bar(
+                feature_imp_df.head(10),
+                x="Importances",
+                y="Features",
+                title="Top Features Driving Model Decisions",
+                text_auto=True
+            )
+            fig.update_layout(yaxis=dict(autorange="reversed"))
+            st.plotly_chart(fig, use_container_width=True)
+
+        with col2:
+            st.subheader("Personalized SHAP Explanation")
+            fig = explainer.plot(df)
+            st.pyplot(fig, use_container_width=False)
+
+# ---------------- Exploration Tab ----------------
+with tab2:
+    st.header("Explore Model Insights")
+    st.markdown(
+        """
+        This section helps you understand the **bigger picture**:  
+        - Which features matter most overall  
+        - How borrowers compare across different profiles  
+        - Narrative insights into repayment stability
+        """
+    )
+
+    feature_imp_df = pd.read_csv(RiskConfig.FEATURE_IMP_PATH)
+    st.subheader("📊 Global Feature Importance")
+    fig = px.bar(
+        feature_imp_df,
+        x="Importances",
+        y="Features",
+        title="Overall Feature Importance",
+        text_auto=True
+    )
+    fig.update_layout(yaxis=dict(autorange="reversed"))
+    st.plotly_chart(fig, use_container_width=True)
+
+    st.subheader("🗣️ Narrative Insights")
+    st.markdown(
+        """
+        Borrowers with **lower EMI-to-income ratios** and **longer employment histories** 
+        tend to show stronger repayment readiness.  
+        On the other hand, **high debt-to-income ratios** and **short tenure** 
+        increase repayment risk.  
+        This model balances these factors to provide a transparent readiness score.
+        """
+    )
+
+st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
