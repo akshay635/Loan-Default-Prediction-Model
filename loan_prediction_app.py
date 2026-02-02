@@ -1,83 +1,60 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Jan 19 16:03:35 2026
-
-@author: aksha
-"""
+# -*- coding: utf-8 -*-
 
 import streamlit as st
-import pandas as pd
-import plotly.express as px
-import joblib
-from src.config import RiskConfig
+from src.configuration import RiskConfig
 from src.schema import SchemaValidator
 from src.model_service import LoanRiskModel
 from src.decision import RiskDecisionEngine
 from src.explainability import ShapExplainer
 from src.load_data import load_data
-from src.insights import generate_feature_insight, generate_shap_insight
 
-st.set_page_config(page_title="Loan Default Risk Assessment", layout="wide")
+st.set_page_config(page_title="Loan Default Risk Assessment", layout="centered")
 st.title("🏦 Loan Default Risk Assessment")
 
 st.markdown(
     "This tool estimates the **risk of loan default** to support informed lending decisions."
 )
 
-config = RiskConfig()
-validator = SchemaValidator(config.EXPECTED_COLS)
-model = LoanRiskModel(config.MODEL_PATH)
-decision_engine = RiskDecisionEngine(config.LOW_RISK, config.HIGH_RISK)
-explainer = ShapExplainer(model.model)
-cat_model = joblib.load('models/catboost_model_v1.joblib')
+validator = SchemaValidator(RiskConfig.EXPECTED_COLS)
+model = LoanRiskModel(RiskConfig.MODEL_PATH)
+decision_engine = RiskDecisionEngine(RiskConfig.LOW_RISK, RiskConfig.HIGH_RISK)
+explainer = ShapExplainer(model=model.model)
 
 user_data = load_data()
 
+col1, col2 = st.columns(2)
+
 if st.button("🔍 Assess Risk"):
     df = validator.validate(user_data)
+    df['EMI/Income_ratio'] = round((df['EMI'] / df['Monthly_Income']), 2)
+    df['Post_DTI'] = df['DTIRatio'] + df['EMI/Income_ratio']
+    df['age_post_dti'] = df['Age'] * df['Post_DTI']
+    df['tenure_age_ratio'] = df['MonthsEmployed'] / (df['Age'] + 1e-6)
+    df['debt_stress'] = df['EMI/Income_ratio'] * df['DTIRatio']
+    
+    df = df[RiskConfig.EXPECTED_COLS]
     prob = model.predict_proba(df)
-    st.subheader("📈 Risk Assessment Result")
-    risk, action = decision_engine.decide(prob)
-    if risk == "HIGH":
-        st.error(f"❌ Estimated Risk of Default ({prob:.2%})")
-    elif risk == "MEDIUM":
-        st.warning(f"⚠️ Estimated Risk of Default ({prob:.2%})")
-    else:
-        st.success(f"✅ Estimated Risk of Default ({prob:.2%})")
-
-    st.markdown(f"**Suggested Action:** {action}")
-
-    col1, col2 = st.columns([1, 1], gap="large")
 
     with col1:
-        df = validator.validate(user_data)
-        prob = cat_model.predict_proba(df)[0, 1]
-        feature_importances = pd.DataFrame({
-            'Features': df.columns,
-            'Importances': cat_model.feature_importances_
-        })
-        
-        fig = px.bar(
-                feature_importances.sort_values(by='Importances', ascending=False).head(10),
-                x="Importances",
-                y="Features",
-                title="Feature Importance / F-score (Catboost)",
-                text_auto=True
-        )
-        fig.update_layout(yaxis=dict(autorange="reversed"))
-        st.plotly_chart(fig, use_container_width=True)
-        with st.expander("🔎 Feature Insight Summary"):
-            st.markdown(generate_feature_insight(df, feature_importances, top_n=5))
-        
+        st.subheader("📈 Risk Assessment Result")
+        risk, action = decision_engine.decide(prob)
+
+        if risk == "HIGH":
+            st.error(f"❌ Estimated Risk of Default ({prob:.2%})")
+        elif risk == "MEDIUM":
+            st.warning(f"⚠️ Estimated Risk of Default ({prob:.2%})")
+        else:
+            st.success(f"✅ Estimated Risk of Default ({prob:.2%})")
+
+        st.markdown(f"**Suggested Action:** {action}")
+
     with col2:
         st.subheader("SHAPLEY explanations")
-        st.text('Displaying important features which contribute to the final outcome')
         fig = explainer.plot(df)
-        st.pyplot(fig, use_container_width=True)
-        #with st.expander("🔎 Feature Insight Summary"):
-            #st.markdown(generate_shap_insight(df, explainer., top_n=5))
+        st.pyplot(fig, use_container_width=False)
 
-    st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
 
 
 
