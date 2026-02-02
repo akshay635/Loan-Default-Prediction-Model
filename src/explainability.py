@@ -7,6 +7,7 @@ Created on Mon Jan 19 16:02:10 2026
 import shap
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 
 class ShapExplainer:
     def __init__(self, model):
@@ -36,6 +37,7 @@ class ShapExplainer:
         except Exception as e:
             exp_lines = f"⚠️ Unable to generate SHAP insights: {e}"
         return fig, exp_lines
+
 
 
 
