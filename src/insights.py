@@ -43,9 +43,9 @@ def generate_feature_insight(df, importances, top_n = 5):
     return "\n".join(lines)
 
 
-def generate_shap_insight(df, shap_values, top_n = 5):
+def generate_shap_insight(columns, shap_values, top_n = 5):
     try:
-        feature_names = df.columns
+        feature_names = columns
         mean_abs_shap = pd.DataFrame({
             'Feature': feature_names,
             'Mean |SHAP|': np.abs(shap_values).mean(axis=0)
