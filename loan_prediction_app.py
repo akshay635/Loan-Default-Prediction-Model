@@ -84,13 +84,8 @@ with tab1:
         with col2:
             st.subheader("Personalized SHAP Explanation")
             fig, shap_values = explainer.plot(df)
-            shap_df = pd.DataFrame({
-                "feature": df.columns,
-                "shap_value": shap_values.values[0]
-            }).sort_values("shap_value", key=abs, ascending=False).head(3)
-
             st.pyplot(fig, use_container_width=False)
-            generate_shap_insight(shap_df,shap_values,top_n = 5)
+            generate_shap_insight(df,shap_values,top_n = 5)
             st.caption(
             """Features pushing the risk higher are shown in red, 
                while features reducing risk are shown in blue.""")
@@ -130,6 +125,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
