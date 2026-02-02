@@ -10,7 +10,6 @@ from src.model_service import LoanRiskModel
 from src.decision import RiskDecisionEngine
 from src.explainability import ShapExplainer
 from src.load_data import load_data
-from sklearn.inspection import permutation_importance
 
 st.set_page_config(page_title="Loan Default Risk Assessment", layout="centered")
 st.title("🏦 Loan Default Risk Assessment")
@@ -67,6 +66,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=False)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
