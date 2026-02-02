@@ -79,13 +79,13 @@ with tab1:
             )
             fig.update_layout(yaxis=dict(autorange="reversed"))
             st.plotly_chart(fig, use_container_width=True)
-            generate_feature_insight(df, feature_imp_df, top_n = 5)
+            st.caption(generate_feature_insight(df, feature_imp_df, top_n = 5))
 
         with col2:
             st.subheader("Personalized SHAP Explanation")
             fig, shap_values, new_columns = explainer.plot(df)
             st.pyplot(fig, use_container_width=False)
-            generate_shap_insight(new_columns, shap_values, top_n = 5)
+            st.caption(generate_shap_insight(new_columns, shap_values, top_n = 5))
             st.caption(
             """Features pushing the risk higher are shown in red, 
                while features reducing risk are shown in blue.""")
@@ -125,6 +125,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
