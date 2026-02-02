@@ -22,7 +22,9 @@ class ShapExplainer:
         shap_values = self.explainer(new_df)
         fig, ax = plt.subplots()
         shap.plots.waterfall(shap_values[0, :, 0], max_display=10)
+        shap_values = shap_values[0, :, 0]
         return fig, shap_values, new_df.columns.tolist()
+
 
 
 
