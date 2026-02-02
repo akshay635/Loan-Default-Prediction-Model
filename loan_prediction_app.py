@@ -81,11 +81,31 @@ with tab1:
 
         with col2:
             st.subheader("Personalized SHAP Explanation")
-            fig = explainer.plot(df)
+            fig, shap_values = explainer.plot(df)
+            shap_df = pd.DataFrame({
+                "feature": df.columns,
+                "shap_value": shap_values.values[0]
+            }).sort_values("shap_value", key=abs, ascending=False).head(3)
+
             st.pyplot(fig, use_container_width=False)
+            
             st.caption(
             """Features pushing the risk higher are shown in red, 
                while features reducing risk are shown in blue.""")
+            
+    st.info(f"""
+        **Global vs Local Explanations**
+
+    - **Global Feature Importance** shows which features matter most *on average* across all borrowers.  
+      → Top global drivers: {', '.join(feature_imp_df['Features'])}
+
+    - **Local SHAP Explanation** shows which features mattered most *for your specific profile*.  
+      → Your personal drivers: {', '.join(shap_df['feature'])}
+
+    This difference highlights why interpretability matters:  
+    a feature can be globally dominant but not necessarily decisive for your individual case.
+    """)
+
 
 # ---------------- Exploration Tab ----------------
 with tab2:
@@ -122,6 +142,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
