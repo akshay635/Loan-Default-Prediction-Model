@@ -38,7 +38,6 @@ tab1, tab2 = st.tabs(["🔮 Prediction", "📊 Exploration"])
 # ---------------- Prediction Tab ----------------
 with tab1:
     st.header("Your Repayment Readiness")
-    col1, col2 = st.columns(2)
 
     if st.button("🔍 Assess Readiness"):
         df = validator.validate(user_data)
@@ -64,6 +63,8 @@ with tab1:
             st.success(f"✅ Strong repayment readiness ({prob:.2%})")
 
         st.markdown(f"**Suggested Action:** {action}")
+
+        col1, col2 = st.columns([1, 1])
 
         with col1:
             st.subheader("Global Feature Importance")
@@ -107,18 +108,18 @@ with tab2:
     fig.update_layout(yaxis=dict(autorange="reversed"))
     st.plotly_chart(fig, use_container_width=True)
 
-    st.subheader("🗣️ Narrative Insights")
+    top_features = feature_imp_df.sort_values("Importances", ascending=False).head(3)
     st.markdown(
-        """
-        Borrowers with **lower EMI-to-income ratios** and **longer employment histories** 
-        tend to show stronger repayment readiness.  
-        On the other hand, **high debt-to-income ratios** and **short tenure** 
-        increase repayment risk.  
-        This model balances these factors to provide a transparent readiness score.
+        f"""
+        🗣️ **Dynamic Insights:**  
+        Right now, the model is most influenced by **{top_features.iloc[0]['Features']}**, 
+        followed by **{top_features.iloc[1]['Features']}** and **{top_features.iloc[2]['Features']}**.  
+        This means these features are the strongest drivers of repayment readiness in your profile.
         """
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
