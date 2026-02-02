@@ -3,7 +3,7 @@ import streamlit as st
 import importlib
 import src.config as config
 importlib.reload(config)
-from config import RiskConfig
+from src.config import RiskConfig
 from src.schema import SchemaValidator
 from src.model_service import LoanRiskModel
 from src.decision import RiskDecisionEngine
@@ -65,6 +65,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=False)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
