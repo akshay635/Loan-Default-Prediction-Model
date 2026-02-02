@@ -41,19 +41,3 @@ def generate_feature_insight(df, importances, top_n = 5):
                 lines.append(f"- **{col}** (Importance: {imp:.2f}): No non-null values to summarize.")
 
     return "\n".join(lines)
-
-
-def generate_shap_insight(columns, shap_values, top_n = 5):
-    try:
-        feature_names = columns
-        mean_abs_shap = pd.DataFrame({
-            'Feature': feature_names,
-            'Mean |SHAP|': np.abs(shap_values).mean(axis=0)
-        }).sort_values(by='Mean |SHAP|', ascending=False).head(top_n)
-
-        lines = [f"### 🧠 SHAP Insight Summary (Top {top_n} Features)\n"]
-        for _, row in mean_abs_shap.iterrows():
-            lines.append(f"- **{row['Feature']}**: Avg contribution = {row['Mean |SHAP|']:.4f}")
-        return "\n".join(lines)
-    except Exception as e:
-        return f"⚠️ Unable to generate SHAP insights: {e}"
