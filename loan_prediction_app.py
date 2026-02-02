@@ -16,12 +16,12 @@ from src.insights import generate_feature_insight
 # Page setup
 st.set_page_config(page_title="Loan Risk Assessment System", layout="wide")
 
-st.title("💡 Loan Risk Assessment & Decision System", layout='centered')
+st.title("💡 Loan Risk Assessment & Decision System")
 st.markdown(
     """
     This system evaluates applicant risk and explains 
     loan approval decisions using data-driven evidence.
-    """, layout='centered'
+    """
 )
 
 with st.expander("How to interpret this risk score?"):
@@ -140,6 +140,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
