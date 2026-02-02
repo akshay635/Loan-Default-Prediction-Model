@@ -24,7 +24,7 @@ st.markdown(
     """
 )
 
-with st.expander("How to interpret this risk score"):
+with st.expander("How to interpret this risk score?"):
     st.write(
         "The risk score estimates the likelihood of repayment difficulty "
         "based on historical financial patterns. It should be used as "
@@ -140,6 +140,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
