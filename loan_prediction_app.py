@@ -14,14 +14,13 @@ from src.load_data import load_data
 from src.insights import generate_feature_insight
 
 # Page setup
-st.set_page_config(page_title="Repayment Readiness Dashboard", layout="wide")
+st.set_page_config(page_title="Loan Risk Assessment System", layout="wide")
 
-st.title("💡 Repayment Readiness & Insights")
+st.title("💡 Loan Risk Assessment & Decision System")
 st.markdown(
     """
-    Welcome to the **Repayment Readiness Dashboard**.  
-    This app provides personalized predictions and transparent explanations 
-    to help borrowers and lenders understand repayment stability.
+    "This system evaluates applicant risk and explains "
+    "loan approval decisions using data-driven evidence."
     """
 )
 
@@ -124,6 +123,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
