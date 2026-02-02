@@ -22,8 +22,21 @@ class ShapExplainer:
         shap_values = self.explainer(new_df)
         fig, ax = plt.subplots()
         shap.plots.waterfall(shap_values[0, :, 0], max_display=10)
-        shap_values = shap_values[0, :, 1]
-        return fig, shap_values, new_df.columns.tolist()
+        try:
+            feature_names = new_df.columns
+            mean_abs_shap = pd.DataFrame({
+                'Feature': feature_names,
+                'Mean |SHAP|': np.abs(shap_values).mean(axis=0)
+            }).sort_values(by='Mean |SHAP|', ascending=False).head(top_n)
+    
+            lines = [f"### 🧠 SHAP Insight Summary (Top {top_n} Features)\n"]
+            for _, row in mean_abs_shap.iterrows():
+                lines.append(f"- **{row['Feature']}**: Avg contribution = {row['Mean |SHAP|']:.4f}")
+            exp_lines =  "\n".join(lines)
+        except Exception as e:
+            exp_lines = f"⚠️ Unable to generate SHAP insights: {e}"
+        return fig, exp_lines
+
 
 
 
