@@ -20,7 +20,7 @@ st.title("💡 Loan Risk Assessment & Decision System")
 st.markdown(
     """
     This system evaluates applicant risk and explains 
-    loan approval decisions using data-driven evidence."
+    loan approval decisions using data-driven evidence.
     """
 )
 
@@ -123,6 +123,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
