@@ -35,7 +35,16 @@ if st.button("🔍 Assess Risk"):
     
     df = df[RiskConfig.EXPECTED_COLS]
     prob = model.predict_proba(df)
+    st.subheader("📈 Risk Assessment Result")
+    risk, action = decision_engine.decide(prob)
+    if risk == "HIGH":
+        st.error(f"❌ Estimated Risk of Default ({prob:.2%})")
+    elif risk == "MEDIUM":
+        st.warning(f"⚠️ Estimated Risk of Default ({prob:.2%})")
+    else:
+        st.success(f"✅ Estimated Risk of Default ({prob:.2%})")
 
+    st.markdown(f"**Suggested Action:** {action}")
     with col1:
         st.subheader("📈 Risk Assessment Result")
         risk, action = decision_engine.decide(prob)
@@ -55,6 +64,7 @@ if st.button("🔍 Assess Risk"):
         st.pyplot(fig, use_container_width=False)
 
 st.caption("This system provides risk estimation only. Final decisions must follow business policies.")
+
 
 
 
