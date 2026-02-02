@@ -24,6 +24,13 @@ st.markdown(
     """
 )
 
+with st.expander("How to interpret this risk score"):
+    st.write(
+        "The risk score estimates the likelihood of repayment difficulty "
+        "based on historical financial patterns. It should be used as "
+        "decision support rather than a definitive outcome."
+    )
+
 # Initialize components
 validator = SchemaValidator(RiskConfig.EXPECTED_COLS)
 model = LoanRiskModel(RiskConfig.MODEL_PATH)
@@ -37,9 +44,9 @@ tab1, tab2 = st.tabs(["🔮 Prediction", "📊 Exploration"])
 
 # ---------------- Prediction Tab ----------------
 with tab1:
-    st.header("Your Repayment Readiness")
+    st.header("Your repayment risk assessment")
 
-    if st.button("🔍 Assess Readiness"):
+    if st.button("🔍 Assess Risk"):
         df = validator.validate(user_data)
 
         # Feature engineering
@@ -53,10 +60,13 @@ with tab1:
         prob = model.predict_proba(df)
 
         # Narrative risk output
-        st.subheader("📈 Readiness Result")
+        st.subheader("📈 Repayment Risk assessment")
         risk, action = decision_engine.decide(prob)
         if risk == "HIGH":
             st.error(f"❌ High repayment risk ({prob:.2%})")
+            st.markdown(""" This application shows a higher-than-average probability of repayment
+                            difficulty based on financial indicators such as income stability and
+                            debt obligations.""")
         elif risk == "MEDIUM":
             st.warning(f"⚠️ Moderate repayment risk ({prob:.2%})")
         else:
@@ -123,6 +133,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
