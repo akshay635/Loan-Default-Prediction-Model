@@ -1,6 +1,6 @@
 # Exploration Tab
 
-def tab2():
+def exp_tab():
   with tab2:
       st.header("Explore Model Insights")
       st.markdown(
