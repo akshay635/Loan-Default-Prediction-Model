@@ -12,8 +12,8 @@ from src.decision import RiskDecisionEngine
 from src.explainability import ShapExplainer
 from src.load_data import load_data
 from src.insights import generate_feature_insight
-from src.prediction_tab1 import tab1
-from src.exploration_tab2 import tab2
+from src.prediction_tab1 import pred_tab
+from src.exploration_tab2 import exp_tab
 
 # Page setup
 st.set_page_config(page_title="Loan Risk Assessment System", layout="wide")
@@ -45,12 +45,13 @@ user_data = load_data()
 tab1, tab2 = st.tabs(["🔮 Prediction", "📊 Exploration"])
 
 # ---------------- Prediction Tab ----------------
-tab1()
+pred_tab()
 
 # ---------------- Exploration Tab ----------------
-tab2()
+exp_tab()
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
