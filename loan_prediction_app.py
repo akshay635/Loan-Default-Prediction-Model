@@ -50,7 +50,7 @@ with tab1:
         df, issues = validator.validate_inference(user_data)
 
         if issues:
-            st.error("Please correct input errors before prediction")
+            st.error(" ".join(issues))
             st.stop()
         # Feature engineering
         df['EMI/Income_ratio'] = round((df['EMI'] / df['Monthly_Income']), 2)
@@ -143,6 +143,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
