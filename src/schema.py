@@ -19,7 +19,8 @@ class SchemaValidator:
                 df[col] = np.nan
         assert df["Age"].between(18, 75).all()
         assert (df["LoanAmount"] > 0).all()
-        assert df.isnull().sum().max < 1
+        assert df.isnull().sum().max() < 1
         return df[self.expected_cols]
+
 
 
