@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Jan 19 15:58:26 2026
-
-@author: aksha
-"""
-
+# importing the modules
 import numpy as np
 import pandas as pd
 
@@ -12,15 +7,34 @@ class SchemaValidator:
     def __init__(self, expected_cols):
         self.expected_cols = expected_cols
 
-    def validate(self, data: dict) -> pd.DataFrame:
+    def validate_inference(self, data: dict):
         df = pd.DataFrame([data])
+        # Ensure schema
         for col in self.expected_cols:
             if col not in df.columns:
                 df[col] = np.nan
-        assert df["Age"].between(18, 75).all()
-        assert (df["LoanAmount"] > 0).all()
-        assert df.isna().sum().max() == 0
-        return df[self.expected_cols]
+                
+        issues = []
+
+        if df["Age"].isna().any():
+            issues.append("Age missing")
+        elif not df["Age"].between(18, 75).all():
+            issues.append("Age out of range")
+
+        if df["LoanAmount"].isna().any():
+            issues.append("LoanAmount missing")
+        elif not (df["LoanAmount"] > 0).all():
+            issues.append("LoanAmount invalid")
+
+        if df.isna().sum().max() == 0:
+            issues.append("Validated Data Successfully")
+        else:
+            issues.append("Null/NaN values present in the data. Please rectify it")       
+
+        # ❗ DO NOT assert on NaNs here
+        return df[self.expected_cols], issues
+       
+
 
 
 
