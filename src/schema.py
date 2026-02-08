@@ -27,13 +27,14 @@ class SchemaValidator:
             issues.append("LoanAmount invalid")
 
         if df.isna().sum().max() == 0:
-            issues.append("Validated Data Successfully")
+            pass
         else:
             issues.append("Null/NaN values present in the data. Please rectify it")       
 
         # ❗ DO NOT assert on NaNs here
         return df[self.expected_cols], issues
        
+
 
 
 
