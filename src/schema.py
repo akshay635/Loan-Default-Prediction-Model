@@ -30,15 +30,12 @@ class SchemaValidator:
             if df[col].isna().any():
                 issues.append(f"Null/NaN values present in {col}")
             else:
-                pass
-        if df.isna().sum().max() == 0:
-            pass
-        else:
-            issues.append("Null/NaN values present in the data. Please rectify it")       
+                pass 
 
         # ❗ DO NOT assert on NaNs here
         return df[self.expected_cols], issues
        
+
 
 
 
