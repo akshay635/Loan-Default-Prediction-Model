@@ -47,8 +47,11 @@ with tab1:
     st.header("Your repayment risk assessment")
 
     if st.button("🔍 Assess Risk"):
-        df = validator.validate(user_data)
+        df, issues = validator.validate_inference(user_data)
 
+        if issues:
+            st.error("Please correct input errors before prediction")
+            st.stop()
         # Feature engineering
         df['EMI/Income_ratio'] = round((df['EMI'] / df['Monthly_Income']), 2)
         df['Post_DTI'] = df['DTIRatio'] + df['EMI/Income_ratio']
@@ -140,6 +143,7 @@ with tab2:
     )
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
