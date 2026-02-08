@@ -1,4 +1,5 @@
-def tab1():
+# prediction tab 1
+def pred_tab():
   with tab1:
     st.header("Your repayment risk assessment")
 
