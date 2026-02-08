@@ -13,8 +13,9 @@ class RiskDecisionEngine:
     def decide(self, prob):
         if prob >= self.high:
             return "HIGH", "Reject or apply stricter loan terms"
-        elif prob >= self.low:
+        elif prob >= self.low and prob < self.high:
             return "MEDIUM", "Manual review recommended"
         else:
             return "LOW", "Future loan can be approved if applied"
+
 
