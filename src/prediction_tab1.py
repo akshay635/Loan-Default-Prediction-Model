@@ -1,4 +1,13 @@
 # prediction tab 1
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+import importlib
+import src.config as config
+importlib.reload(config)
+from src.config import RiskConfig
+from src.decision import decision_engine 
+
 def pred_tab():
   st.header("Your repayment risk assessment")
 
