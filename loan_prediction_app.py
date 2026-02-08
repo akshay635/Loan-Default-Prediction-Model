@@ -45,12 +45,13 @@ user_data = load_data()
 tab1, tab2 = st.tabs(["🔮 Prediction", "📊 Exploration"])
 
 # ---------------- Prediction Tab ----------------
-pred_tab()
+pred_tab(tab1)
 
 # ---------------- Exploration Tab ----------------
-exp_tab()
+exp_tab(tab2)
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
