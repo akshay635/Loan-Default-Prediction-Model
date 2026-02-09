@@ -1,3 +1,4 @@
+pip==26.0.1
 pandas<=2.3.3
 shap<=0.50
 lightgbm==4.6.0                  
@@ -14,6 +15,7 @@ xgboost==3.1.2
 catboost==1.2.7     
 joblib
 json
+
 
 
 
