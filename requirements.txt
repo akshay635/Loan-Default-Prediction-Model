@@ -10,10 +10,10 @@ seaborn==0.13.2
 statsmodels==0.14.6                 
 streamlit==1.52.2 
 plotly==6.5.0                                                 
-xgboost==3.1.2 
-catboost==1.2.7     
+xgboost==3.1.2      
 joblib
 json5
+
 
 
 
