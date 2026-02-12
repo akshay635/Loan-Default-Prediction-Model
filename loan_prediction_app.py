@@ -134,7 +134,7 @@ with tab3:
     if principal_amount < 1000:
         st.error('Please enter valid principle amount')
         
-    interest_rate = st.slider('Enter the Interest rate(%)', min=0.0, max=30.0)
+    interest_rate = st.slider('Enter the Interest rate(%)', 0.0, 30.0)
     if interest_rate < 0 and interest_rate > 30:
         st.error('Please enter valid interest_rate')
     
@@ -150,6 +150,7 @@ with tab3:
     st.success(st.subheader(f"EMI: {emi}"))
     
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
