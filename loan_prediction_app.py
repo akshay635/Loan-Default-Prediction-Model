@@ -132,8 +132,8 @@ with tab2:
     )
 
 with tab3:
-    st.header("EMI & Credit Score calculator")
-    st.subheader('Calculates EMI and Credit Score based on the given features')
+    st.header("EMI calculator")
+    st.subheader('Calculates EMI based on the given features')
     
     principal_amount = st.number_input('Enter the principal amount')
     if principal_amount < 1000:
@@ -161,6 +161,7 @@ with tab3:
     # pull is given as a fraction of the pie radius
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0, 0.3, 0])])
     st.plotly_chart(fig, use_container_width=False)
+
 
 
 
