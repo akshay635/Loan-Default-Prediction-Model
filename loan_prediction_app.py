@@ -99,6 +99,7 @@ with tab1:
           """Features pushing the risk higher are shown in red, 
              while features reducing risk are shown in blue.""")
 
+st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
 # ---------------- Exploration Tab ----------------
 with tab2:
     st.header("Explore Model Insights")
@@ -147,7 +148,7 @@ with tab3:
           ((1 + monthly_rate) ** loan_tenure - 1)
     
     emi = round(emi, 2)
-    st.subheader(f"EMI: {emi}")
+    st.subheader(f"EMI:₹{emi}")
     total_loan_amount = principal_amount + principal_amount*(round((interest_rate/100), 2))
     interest_amount = total_loan_amount - principal_amount
     labels = ['Total Loan', 'Principal amount', 'Interest amount']
@@ -155,8 +156,7 @@ with tab3:
     # pull is given as a fraction of the pie radius
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0, 0.2, 0])])
     st.plotly_chart(fig, use_container_width=False)
-    
-st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
