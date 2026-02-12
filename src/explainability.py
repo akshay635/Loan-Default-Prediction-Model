@@ -7,7 +7,6 @@ import numpy as np
 import re
 from collections import defaultdict
 
-@st.cache_resource
 class ShapExplainer:
     def __init__(self, model):
         self.preprocessor = model.named_steps['preprocessing']
@@ -23,6 +22,7 @@ class ShapExplainer:
         fig, ax = plt.subplots()
         shap.plots.waterfall(shap_values[0, :, 1])
         return fig
+
 
 
 
