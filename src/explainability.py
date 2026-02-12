@@ -2,6 +2,9 @@
 import shap
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
+import re
+from collections import defaultdict
 
 class ShapExplainer:
     def __init__(self, model):
@@ -16,10 +19,18 @@ class ShapExplainer:
         new_df = pd.DataFrame(df_transformed, columns=self.preprocessor.get_feature_names_out())
         shap_values = self.explainer(new_df)
         friendly_names = [name.split("_")[1] for name in self.preprocessor.get_feature_names_out()]
+        shap_row = shap_values[0, :, 1]  # one sample, one class
+
+        groups = defaultdict(list)
+        for i, name in enumerate(friendly_names):
+            groups[name].append(i)
+        
+        merged_shap = {base: np.sum(shap_row[idxs]) for base, idxs in groups.items()}
+        merged_shap = pd.DataFrame([merged_shap])
         fig, ax = plt.subplots()
-        shap.plots.bar(shap_values[0, :, 0])
-        shap.plots.bar(shap_values[0, :, 1])
+        shap.plots.bar(merged_shap)
         return fig
+
 
 
 
