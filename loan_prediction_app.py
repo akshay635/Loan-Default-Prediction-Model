@@ -144,12 +144,13 @@ with tab3:
     
     # EMI formula
     emi = (principal_amount * monthly_rate * (1 + monthly_rate) ** loan_tenure) / \
-          ((1 + monthly_rate) ** tenure_months - 1)
+          ((1 + monthly_rate) ** loan_tenure - 1)
     
     emi = round(emi, 2)
     st.success(st.subheader(f"EMI: {emi}"))
     
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
