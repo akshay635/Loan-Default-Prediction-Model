@@ -148,7 +148,7 @@ with tab3:
     
     emi = round(emi, 2)
     st.subheader(f"EMI: {emi}")
-    total_loan_amount = principal_amount + principal_amount*(round(interest_rate/100), 2)
+    total_loan_amount = principal_amount + principal_amount*(round((interest_rate/100), 2))
     interest_amount = total_loan_amount - principal_amount
     labels = ['Total Loan', 'Principal amount', 'Interest amount']
     values = [total_loan_amount, principal_amount, interest_amount]
@@ -157,6 +157,7 @@ with tab3:
     st.plotly_chart(fig, use_container_width=False)
     
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
