@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import importlib
 import src.config as config
 importlib.reload(config)
@@ -147,9 +148,17 @@ with tab3:
           ((1 + monthly_rate) ** loan_tenure - 1)
     
     emi = round(emi, 2)
-    st.success(st.subheader(f"EMI: {emi}"))
+    st.subheader(f"EMI: {emi}")
+    total_loan_amount = principal_amount + (principal_amount*(round(interest_rate/100), 2))
+    interest_amount = total_loan_amount - principal_amount
+    labels = ['Total Loan', 'Principal amount', 'Interest amount']
+    values = [total_loan_amount, principal_amount, interest_amount]
+    # pull is given as a fraction of the pie radius
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0, 0.2, 0])])
+    st.plotly_chart(fig, use_container_width=False)
     
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
