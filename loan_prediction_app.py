@@ -12,6 +12,7 @@ from src.decision import RiskDecisionEngine
 from src.explainability import ShapExplainer
 from src.load_data import load_data
 from src.insights import generate_feature_insight
+from src.feature_engineering import FE
 
 # Page setup
 st.set_page_config(page_title="Loan Risk Assessment System", layout="wide")
@@ -51,13 +52,8 @@ with tab1:
         if issues:
             st.error(" ".join([i for i in issues]))
             st.stop()
-            
-        # Feature engineering
-        df['EMI/Income_ratio'] = round((df['EMI'] / df['Monthly_Income']), 2)
-        df['Post_DTI'] = df['DTIRatio'] + df['EMI/Income_ratio']
-        df['age_post_dti'] = df['Age'] * df['Post_DTI']
-        df['tenure_age_ratio'] = df['MonthsEmployed'] / (df['Age'] + 1e-6)
-        df['debt_stress'] = df['EMI/Income_ratio'] * df['DTIRatio']
+
+        df = FE(df)
 
         df = df[RiskConfig.EXPECTED_COLS]
         prob = model.predict_proba(df)
@@ -126,7 +122,7 @@ with tab2:
         feature_imp_df,
         x="Importances",
         y="Features",
-        title="Overall Feature Importance",
+        title="Top Features Driving Model Decisions",
         text_auto=True
     )
     fig.update_layout(yaxis=dict(autorange="reversed"))
@@ -144,6 +140,7 @@ with tab2:
 
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
