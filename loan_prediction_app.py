@@ -15,6 +15,7 @@ from src.load_data import load_data
 from src.insights import generate_feature_insight
 from src.feature_engineering import FE
 from src.feature_importances import Feature_IMP
+from src.outputs import RiskAssessment, Exploration, EMICalculator
 
 # Page setup
 st.set_page_config(page_title="Loan Risk Assessment System", layout="wide")
@@ -45,122 +46,25 @@ user_data = load_data()
 # Tabs for storytelling
 tab1, tab2, tab3 = st.tabs(["🔮 Prediction", "📊 Exploration", "🧮 EMI calculator"])
 
-# ---------------- Prediction Tab ----------------
 with tab1:
     st.header("Your repayment risk assessment")
     if st.button("🔍 Assess Risk"):
-        df, issues = validator.validate_inference(user_data)
-        
-        if issues:
-            st.error(" ".join([i for i in issues]))
-            st.stop()
+        risk_assessor = RiskAssessment(model, validator, FE, decision_engine, RiskConfig, explainer)
+        risk_assessor.assess(user_data)
 
-        df = FE(df)
-
-        df = df[RiskConfig.EXPECTED_COLS]
-        prob = model.predict_proba(df)
-        
-        # Narrative risk output
-        st.subheader("📈 Repayment Risk assessment")
-        risk, action = decision_engine.decide(prob)
-        if risk == "HIGH":
-          st.error(f"❌ High repayment risk ({prob:.2%})")
-          st.markdown("""This application shows a higher-than-average probability of repayment
-                          difficulty based on financial indicators such as income stability and
-                          debt obligations. The customer has higher chances to stop repayments 
-                          and default the loan.""")
-        elif risk == "MEDIUM":
-          st.warning(f"⚠️ Moderate repayment risk ({prob:.2%})")
-          st.markdown("""This assessment indicates a moderate probability (35%-60%) of repayment difficulty
-                         based on the available financial information, suggesting that further review may be 
-                         appropriate.""")
-        else:
-          st.success(f"✅ Low risk of repayment ({prob:.2%})")
-          st.markdown("""This assessment indicates a lower probability of repayment difficulty,
-                         suggesting comparatively lower risk based on the available information.""")
-        
-        st.markdown(f"**Suggested Action:** {action}")
-        
-        col1, col2 = st.columns([1, 1])
-        
-        with col1:
-          st.subheader("Global Feature Importance")
-          feature_imp_df = pd.read_csv(RiskConfig.FEATURE_IMP_PATH)
-          fig = Feature_IMP(feature_imp_df)
-          st.plotly_chart(fig, use_container_width=False)
-          with st.expander('Feature Summary'):
-              st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))
-        
-        with col2:
-          st.subheader("Personalized SHAP Explanation")
-          fig = explainer.plot(df)
-          st.pyplot(fig, use_container_width=False)
-          st.markdown(
-          """Features pushing the risk higher are shown in red, 
-             while features reducing risk are shown in blue.""")
-
-st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
-# ---------------- Exploration Tab ----------------
 with tab2:
-    st.header("Explore Model Insights")
-    st.markdown(
-        """
-        This section helps you understand the **bigger picture**:  
-        - Which features matter most overall  
-        - How borrowers compare across different profiles  
-        - Narrative insights into repayment stability
-        """
-    )
-
-    feature_imp_df = pd.read_csv(RiskConfig.FEATURE_IMP_PATH)
-    st.subheader("📊 Global Feature Importance")
-
-    labels = feature_imp_df['Features'].head().tolist()
-    values = feature_imp_df['Importances'].head().tolist()
-
-    fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0, 0.3, 0])])
-    st.plotly_chart(fig, use_container_width=False)
-
-    top_features = feature_imp_df.sort_values("Importances", ascending=False).head(3)
-    st.markdown(
-        f"""
-        🗣️ **Dynamic Insights:**  
-        Right now, the model is most influenced by **{top_features.iloc[0]['Features']}**, 
-        followed by **{top_features.iloc[1]['Features']}** and **{top_features.iloc[2]['Features']}**.  
-        This means these features are the strongest drivers of repayment readiness in your profile.
-        """
-    )
+    explorer = Exploration(RiskConfig)
+    explorer.show()
 
 with tab3:
-    st.header("EMI calculator")
-    st.subheader('Calculates EMI based on the given features')
-    
-    principal_amount = st.number_input('Enter the principal amount')
-    if principal_amount < 1000:
-        st.error('Please enter valid principal amount')
-        
-    interest_rate = st.slider('Enter the Interest rate(%)', 1.0, 30.0)
-    if interest_rate <= 0 and interest_rate > 30:
-        st.error('Please enter valid interest_rate')
-    
-    loan_tenure = st.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
-    
-    monthly_rate = interest_rate / (12 * 100)
-    
-    # EMI formula
-    emi = (principal_amount * monthly_rate * (1 + monthly_rate) ** loan_tenure) / \
-          ((1 + monthly_rate) ** loan_tenure - 1)
-    
-    emi = round(emi, 2)
+    principal = st.number_input('Enter the principal amount')
+    rate = st.slider('Enter the Interest rate(%)', 1.0, 30.0)
+    tenure = st.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
+
+    emi_calc = EMICalculator(principal, rate, tenure)
+    emi = emi_calc.calculate()
     st.subheader(f"EMI: ₹{emi}")
-    total_loan_amount = principal_amount + principal_amount*(round((interest_rate/100), 2))
-    interest_amount = total_loan_amount - principal_amount
-    labels = ['Total Loan', 'Principal amount', 'Interest amount']
-    values = [total_loan_amount, principal_amount, interest_amount]
-    
-    # pull is given as a fraction of the pie radius
-    fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0, 0.3, 0])])
-    st.plotly_chart(fig, use_container_width=False)
+    emi_calc.plot(emi)
 
 
 
