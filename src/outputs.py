@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from src.feature_engineering import FE
 from src.feature_importances import Feature_IMP
+from src.insights import generate_feature_insight
 
 class RiskAssessment:
     def __init__(self, model, validator, FE, decision_engine, RiskConfig, explainer):
@@ -26,10 +27,21 @@ class RiskAssessment:
         # Narrative output
         if risk == "HIGH":
             st.error(f"❌ High repayment risk ({prob:.2%})")
+            st.markdown("""This application shows a higher-than-average probability of repayment
+                      difficulty based on financial indicators such as income stability and
+                      debt obligations. The customer has higher chances to stop repayments 
+                      and default the loan.""")
+            
         elif risk == "MEDIUM":
             st.warning(f"⚠️ Moderate repayment risk ({prob:.2%})")
+            st.markdown("""This assessment indicates a moderate probability (35%-60%) of repayment difficulty
+                     based on the available financial information, suggesting that further review may be 
+                     appropriate.""")
+        
         else:
             st.success(f"✅ Low risk of repayment ({prob:.2%})")
+            st.markdown("""This assessment indicates a lower probability of repayment difficulty,
+                     suggesting comparatively lower risk based on the available information.""")
 
         st.markdown(f"**Suggested Action:** {action}")
 
@@ -39,10 +51,15 @@ class RiskAssessment:
             feature_imp_df = pd.read_csv(self.RiskConfig.FEATURE_IMP_PATH)
             fig = Feature_IMP(feature_imp_df)
             st.plotly_chart(fig)
+            with st.expander('Feature Summary'):
+                st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))
+                
         with col2:
+            st.subheader("Personalized SHAP Explanation")
             fig = self.explainer.plot(df)
             st.pyplot(fig)
-
+            st.markdown("""Features pushing the risk higher are shown in red, 
+            while features reducing risk are shown in blue.""")
 
 class Exploration:
     def __init__(self, RiskConfig):
