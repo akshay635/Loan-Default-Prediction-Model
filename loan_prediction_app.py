@@ -77,12 +77,13 @@ with tab4:
     history_years = st.number_input('Credit History(in years)', 0)
     credit_inquiries = st.number_input('No of credit inquiries', 0)
     
-    calc = CreditScoreCalculator(payment_history, credit_utilization, history_years, credit_inquiries)
+    calc = CreditScoreCalculator(payment_history, cu_ratio, history_years, credit_inquiries)
     score = calc.calculate_score()
     st.success(f"Credit Score: {score}")
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
