@@ -30,8 +30,9 @@ class ShapExplainer:
         names = list(merged_shap.keys())
         merged_explanation = shap.Explanation(values=values, feature_names=names)
         fig, ax = plt.subplots()
-        shap.plots.waterfall(merged_explanation)
+        shap.plots.waterfall(merged_explanation[0,1])
         return fig
+
 
 
 
