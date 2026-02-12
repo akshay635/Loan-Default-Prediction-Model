@@ -1,5 +1,5 @@
 import pandas as pd
-import plotly as px
+import plotly.express as px
 
 # Feature Importances
 def Feature_IMP(df):
