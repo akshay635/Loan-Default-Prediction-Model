@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import streamlit as st
 import shap
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -22,6 +23,7 @@ class ShapExplainer:
         fig, ax = plt.subplots()
         shap.plots.waterfall(shap_values[0, :, 1])
         return fig
+
 
 
 
