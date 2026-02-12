@@ -43,7 +43,7 @@ explainer = ShapExplainer(model=model.model)
 user_data = load_data()
 
 # Tabs for storytelling
-tab1, tab2, tab3 = st.tabs(["🔮 Prediction", "📊 Exploration", "🧮 EMI and Credit Score calculator"])
+tab1, tab2, tab3 = st.tabs(["🔮 Prediction", "📊 Exploration", "🧮 EMI calculator"])
 
 # ---------------- Prediction Tab ----------------
 with tab1:
@@ -156,6 +156,7 @@ with tab3:
     # pull is given as a fraction of the pie radius
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0, 0.2, 0])])
     st.plotly_chart(fig, use_container_width=False)
+
 
 
 
