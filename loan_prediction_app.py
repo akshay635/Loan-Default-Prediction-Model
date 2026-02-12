@@ -41,12 +41,11 @@ model = LoanRiskModel(RiskConfig.MODEL_PATH)
 decision_engine = RiskDecisionEngine(RiskConfig.LOW_RISK, RiskConfig.HIGH_RISK)
 explainer = ShapExplainer(model=model.model)
 
-user_data = load_data()
-
 # Tabs for storytelling
 tab1, tab2, tab3, tab4 = st.tabs(["🔮 Prediction", "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
 
 with tab1:
+    user_data = load_data()
     st.header("Your repayment risk assessment")
     if st.button("🔍 Assess Risk"):
         risk_assessor = RiskAssessment(model, validator, FE, decision_engine, RiskConfig, explainer)
@@ -83,6 +82,7 @@ with tab4:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
