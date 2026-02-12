@@ -2,6 +2,7 @@ import streamlit as st
 # --------------------------------------------------
 # Input Sections
 # --------------------------------------------------
+@st.cache_data
 def load_data():
     st.sidebar.header("👤 Applicant Profile")
     
