@@ -137,7 +137,7 @@ with tab3:
     
     principal_amount = st.number_input('Enter the principal amount')
     if principal_amount < 1000:
-        st.error('Please enter valid principle amount')
+        st.error('Please enter valid principal amount')
         
     interest_rate = st.slider('Enter the Interest rate(%)', 1.0, 30.0)
     if interest_rate <= 0 and interest_rate > 30:
@@ -161,6 +161,7 @@ with tab3:
     # pull is given as a fraction of the pie radius
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0, 0.3, 0])])
     st.plotly_chart(fig, use_container_width=False)
+
 
 
 
