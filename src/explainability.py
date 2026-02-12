@@ -28,8 +28,9 @@ class ShapExplainer:
         merged_shap = {base: np.sum(shap_row[idxs]) for base, idxs in groups.items()}
         merged_shap = pd.DataFrame([merged_shap])
         fig, ax = plt.subplots()
-        shap.plots.bar(merged_shap)
+        shap.plots.bar(merged_shap[0])
         return fig
+
 
 
 
