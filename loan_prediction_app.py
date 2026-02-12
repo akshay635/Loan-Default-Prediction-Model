@@ -115,8 +115,8 @@ with tab2:
     feature_imp_df = pd.read_csv(RiskConfig.FEATURE_IMP_PATH)
     st.subheader("📊 Global Feature Importance")
 
-    labels = feature_imp_df['Features'].tolist()
-    values = feature_imp_df['Importances'].tolist()
+    labels = feature_imp_df['Features'].head().tolist()
+    values = feature_imp_df['Importances'].head().tolist()
 
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0, 0.3, 0])])
     st.plotly_chart(fig, use_container_width=False)
@@ -161,6 +161,7 @@ with tab3:
     # pull is given as a fraction of the pie radius
     fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0, 0.3, 0])])
     st.plotly_chart(fig, use_container_width=False)
+
 
 
 
