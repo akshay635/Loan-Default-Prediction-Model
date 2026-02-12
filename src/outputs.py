@@ -106,10 +106,10 @@ class CreditScoreCalculator:
         """Calculate credit score using weighted formula."""
         PH_norm, CU_norm, LH_norm, NC_norm = self.normalize_features()
         score = 300 + 550 * (
-            0.35 * PH_norm +
+            0.40 * PH_norm +
             0.30 * CU_norm +
             0.20 * LH_norm +
-            0.15 * NC_norm
+            0.10 * NC_norm
         )
         return round(score)
 
@@ -124,10 +124,10 @@ class CreditScoreCalculator:
                 'axis': {'range': [300, 850]},
                 'bar': {'color': "black"},
                 'steps': [
-                    {'range': [300, 580], 'color': "red"},
-                    {'range': [580, 670], 'color': "orange"},
-                    {'range': [670, 740], 'color': "yellow"},
-                    {'range': [740, 850], 'color': "green"}
+                    {'range': [300, 550], 'color': "red"},
+                    {'range': [550, 650], 'color': "orange"},
+                    {'range': [650, 750], 'color': "yellow"},
+                    {'range': [750, 850], 'color': "green"}
                 ],
             }
         ))
