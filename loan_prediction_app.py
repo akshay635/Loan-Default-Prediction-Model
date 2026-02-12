@@ -15,7 +15,7 @@ from src.load_data import load_data
 from src.insights import generate_feature_insight
 from src.feature_engineering import FE
 from src.feature_importances import Feature_IMP
-from src.outputs import RiskAssessment, Exploration, EMICalculator
+from src.outputs import RiskAssessment, Exploration, EMICalculator, CreditScoreCalculator
 
 # Page setup
 st.set_page_config(page_title="Loan Risk Assessment System", layout="wide")
@@ -44,7 +44,7 @@ explainer = ShapExplainer(model=model.model)
 user_data = load_data()
 
 # Tabs for storytelling
-tab1, tab2, tab3 = st.tabs(["🔮 Prediction", "📊 Exploration", "🧮 EMI calculator"])
+tab1, tab2, tab3, tab4 = st.tabs(["🔮 Prediction", "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
 
 with tab1:
     st.header("Your repayment risk assessment")
@@ -70,6 +70,21 @@ with tab3:
     emi = emi_calc.calculate()
     st.subheader(f"EMI: ₹{emi}")
     emi_calc.plot(emi)
+
+with tab4:
+    payment_history = st.slider('Payment History(%)', 0, 100)
+    cu_ratio = st.slider('Credit Utilization ratio', 0.0, 1.0)
+    history_years = st.number_input('Credit History(in years)', 0)
+    credit_inquiries = st.number_input('No of credit inquiries', 0)
+    
+    calc = CreditScoreCalculator(payment_history, credit_utilization, history_years, credit_inquiries)
+    score = calc.calculate_score()
+    st.success(f"Credit Score: {score}")
+
+    # To display gauge in Streamlit:
+    st.plotly_chart(calc.plot_gauge())
+
+
 
 
 
