@@ -17,8 +17,10 @@ class ShapExplainer:
         shap_values = self.explainer(new_df)
         friendly_names = [name.split("_")[1] for name in self.preprocessor.get_feature_names_out()]
         fig, ax = plt.subplots()
-        shap.plots.waterfall(shap_values[0, 0])
+        shap.plots.bar(shap_values[0, :, 0])
+        shap.plots.bar(shap_values[0, :, 1])
         return fig
+
 
 
 
