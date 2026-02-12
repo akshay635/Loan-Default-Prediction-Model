@@ -130,8 +130,7 @@ with tab3:
     st.header("EMI & Credit Score calculator")
     st.subheader('Calculates EMI and Credit Score based on the given features')
     
-    principal_amount = st.text_input("Loan Amount", "1,00,000")
-    principal_amount = int(principal_amount.replace(',', ''))
+    principal_amount = st.number_input('Enter the principal amount', 1000000)
     if principal_amount < 1000:
         st.error('Please enter valid principle amount')
         
@@ -149,7 +148,7 @@ with tab3:
     
     emi = round(emi, 2)
     st.subheader(f"EMI: {emi}")
-    total_loan_amount = principal_amount + (principal_amount*(round(interest_rate/100), 2))
+    total_loan_amount = principal_amount + principal_amount*(round(interest_rate/100), 2)
     interest_amount = total_loan_amount - principal_amount
     labels = ['Total Loan', 'Principal amount', 'Interest amount']
     values = [total_loan_amount, principal_amount, interest_amount]
@@ -158,6 +157,7 @@ with tab3:
     st.plotly_chart(fig, use_container_width=False)
     
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
