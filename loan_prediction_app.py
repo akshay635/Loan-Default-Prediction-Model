@@ -67,7 +67,7 @@ with tab3:
     tenure = st.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
     emi_calc = EMICalculator(principal, rate, tenure)
     emi = emi_calc.calculate()
-    st.subheader(f"EMI: ₹{emi}")
+    st.subheader(f"EMI: ₹{emi}/-")
     emi_calc.plot(emi)
 
 with tab4:
@@ -82,6 +82,7 @@ with tab4:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
