@@ -13,6 +13,7 @@ from src.explainability import ShapExplainer
 from src.load_data import load_data
 from src.insights import generate_feature_insight
 from src.feature_engineering import FE
+from src.feature_importances import Feature_IMP
 
 # Page setup
 st.set_page_config(page_title="Loan Risk Assessment System", layout="wide")
@@ -84,14 +85,7 @@ with tab1:
         with col1:
           st.subheader("Global Feature Importance")
           feature_imp_df = pd.read_csv(RiskConfig.FEATURE_IMP_PATH)
-          fig = px.bar(
-              feature_imp_df.head(10),
-              x="Importances",
-              y="Features",
-              title="Top Features Driving Model Decisions",
-              text_auto=True
-          )
-          fig.update_layout(yaxis=dict(autorange="reversed"))
+          fig = Feature_IMP(feature_imp_df)
           st.plotly_chart(fig, use_container_width=False)
           with st.expander('Feature Summary'):
               st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))
@@ -118,14 +112,7 @@ with tab2:
 
     feature_imp_df = pd.read_csv(RiskConfig.FEATURE_IMP_PATH)
     st.subheader("📊 Global Feature Importance")
-    fig = px.bar(
-        feature_imp_df,
-        x="Importances",
-        y="Features",
-        title="Top Features Driving Model Decisions",
-        text_auto=True
-    )
-    fig.update_layout(yaxis=dict(autorange="reversed"))
+    fig = Feature_IMP(feature_imp_df)
     st.plotly_chart(fig, use_container_width=True)
 
     top_features = feature_imp_df.sort_values("Importances", ascending=False).head(3)
@@ -140,6 +127,7 @@ with tab2:
 
 
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
