@@ -73,7 +73,11 @@ def load_data():
     loan_term = st.sidebar.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
     
     # Equated Monthly Installments(EMI)
-    emi = round(((loan_amount*interest_rate)+loan_amount)/loan_term, 2)
+    monthly_rate = interest_rate / (12 * 100)
+    
+    # EMI formula
+    emi = (loan_amount * monthly_rate * (1 + monthly_rate) ** loan_term) / \
+          ((1 + monthly_rate) ** loan_term - 1)
     
     # Input data which will be passed to the model
     user_data = {
