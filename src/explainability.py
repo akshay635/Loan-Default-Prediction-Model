@@ -13,12 +13,13 @@ class ShapExplainer:
 
     def plot(self, df):
         df_transformed = self.preprocessor.transform(df)
-        new_df = pd.DataFrame(df_transformed, columns=df.columns)
+        new_df = pd.DataFrame(df_transformed, columns=self.preprocessor.get_feature_names_out())
         shap_values = self.explainer(new_df)
-        friendly_names = [name.split("_")[1] for name in preprocessor.get_feature_names_out()]
+        friendly_names = [name.split("_")[1] for name in self.preprocessor.get_feature_names_out()]
         fig, ax = plt.subplots()
         shap.plots.waterfall(shap_values[:, :, 0], max_display=10)
         return fig
+
 
 
 
