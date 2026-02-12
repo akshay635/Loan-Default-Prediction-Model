@@ -42,7 +42,7 @@ explainer = ShapExplainer(model=model.model)
 user_data = load_data()
 
 # Tabs for storytelling
-tab1, tab2 = st.tabs(["🔮 Prediction", "📊 Exploration"])
+tab1, tab2, tab3 = st.tabs(["🔮 Prediction", "📊 Exploration", "🧮 EMI and Credit Score calculator"])
 
 # ---------------- Prediction Tab ----------------
 with tab1:
@@ -125,8 +125,28 @@ with tab2:
         """
     )
 
-
+with tab3:
+    st.header("EMI & Credit Score calculator")
+    st.subheader('Calculates EMI and Credit Score based on the given features')
+    principal_amount = int(st.number_input('Enter the principal amount', min=1000, max=10000000))
+    if loan_amount < 1000:
+        st.error('Please enter valid principle amount')
+    interest_rate = st.slider('Enter the Interest rate(%)', min=0.0, max=30.0)
+    if interest_rate < 0 and interest_rate > 30:
+        st.error('Please enter valid interest_rate')
+    loan_tenure = st.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
+    
+    monthly_rate = interest_rate / (12 * 100)
+    
+    # EMI formula
+    emi = (principal_amount * monthly_rate * (1 + monthly_rate) ** loan_tenure) / \
+          ((1 + monthly_rate) ** tenure_months - 1)
+    
+    emi = round(emi, 2)
+    st.success(st.subheader(f"EMI: {emi}"))
+    
 st.caption("This dashboard provides readiness estimation only. Final lending decisions must follow business policies.")
+
 
 
 
