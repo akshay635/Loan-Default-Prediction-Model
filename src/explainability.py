@@ -26,10 +26,13 @@ class ShapExplainer:
             groups[name].append(i)
         
         merged_shap = {base: np.sum(shap_row[idxs]) for base, idxs in groups.items()}
-        merged_shap = pd.DataFrame([merged_shap])
+        values = np.array(list(merged_shap.values()))
+        names = list(merged_shap.keys())
+        merged_explanation = shap.Explanation(values=values, feature_names=names)
         fig, ax = plt.subplots()
-        shap.plots.bar(merged_shap[0])
+        shap.plots.waterfall(merged_explanation)
         return fig
+
 
 
 
