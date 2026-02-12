@@ -58,13 +58,19 @@ with tab2:
 
 with tab3:
     principal = st.number_input('Enter the principal amount')
+    if principal < 1000:
+        st.error('Please enter valid amount')
     rate = st.slider('Enter the Interest rate(%)', 1.0, 30.0)
+    
+    if rate < 1.0 and rate > 30.0:
+        st.error('Please provide valid interest rate')
+        
     tenure = st.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
-
     emi_calc = EMICalculator(principal, rate, tenure)
     emi = emi_calc.calculate()
     st.subheader(f"EMI: ₹{emi}")
     emi_calc.plot(emi)
+
 
 
 
