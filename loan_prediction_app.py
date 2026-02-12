@@ -154,8 +154,9 @@ with tab3:
     labels = ['Total Loan', 'Principal amount', 'Interest amount']
     values = [total_loan_amount, principal_amount, interest_amount]
     # pull is given as a fraction of the pie radius
-    fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0, 0.4, 0])])
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0, 0, 0.3, 0])])
     st.plotly_chart(fig, use_container_width=False)
+
 
 
 
