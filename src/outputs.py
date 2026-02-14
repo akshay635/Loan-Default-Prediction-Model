@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-from src.feature_engineering import Feature_Engineering
+from src.feature_engineering import FeatureEngineering
 from src.insights import generate_feature_insight
 
 class RiskAssessment:
