@@ -13,7 +13,7 @@ class SchemaValidator:
         # Ensure schema
         for col in self.expected_cols:
             if col not in df.columns: 
-                df[col] = np.nan 
+                issues.append(f'Missing {col} in the data') 
         
         issues = []
 
@@ -38,6 +38,7 @@ class SchemaValidator:
         # ❗ DO NOT assert on NaNs here
         return df[self.expected_cols], issues
        
+
 
 
 
