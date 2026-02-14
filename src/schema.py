@@ -10,12 +10,11 @@ class SchemaValidator:
 
     def validate_inference(self, data: dict):
         df = pd.DataFrame([data])
+        issues = []
         # Ensure schema
         for col in self.expected_cols:
             if col not in df.columns: 
                 issues.append(f'Missing {col} in the data') 
-        
-        issues = []
 
         if df["Age"].isna().any():
             issues.append("Age missing")
@@ -38,6 +37,7 @@ class SchemaValidator:
         # ❗ DO NOT assert on NaNs here
         return df[self.expected_cols], issues
        
+
 
 
 
