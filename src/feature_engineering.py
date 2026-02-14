@@ -10,8 +10,8 @@ class Feature_Engineering:
     df['age_post_dti'] = df['Age'] * df['Post_DTI']
     df['tenure_age_ratio'] = df['MonthsEmployed'] / (df['Age'] + 1e-6)
     df['debt_stress'] = df['EMI/Income_ratio'] * df['DTIRatio']
-
     return df
+  
   # Feature Importances
   def Feature_IMP(self, df):
     fig = px.bar(
@@ -22,5 +22,4 @@ class Feature_Engineering:
                 text_auto=True)
     
     fig.update_layout(yaxis=dict(autorange="reversed"))
-  
     return fig
