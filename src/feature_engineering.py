@@ -2,7 +2,7 @@
 import pandas as pd
 import plotly.express as px
 
-class feature_engineering:
+class FeatureEngineering:
   # Feature engineering
   def derived_features(self, df):
     df['EMI/Income_ratio'] = round((df['EMI'] / df['Monthly_Income']), 2)
