@@ -14,7 +14,7 @@ from src.decision import RiskDecisionEngine
 from src.explainability import ShapExplainer
 from src.load_data import load_data
 from src.insights import generate_feature_insight
-from src.feature_engineering import Feature_Engineering
+from src.feature_engineering import FeatureEngineering
 from src.outputs import RiskAssessment, Exploration, EMICalculator, CreditScoreCalculator
 
 # Page setup
@@ -82,6 +82,7 @@ with tab4:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
