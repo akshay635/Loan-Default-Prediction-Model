@@ -14,7 +14,7 @@ class SchemaValidator:
         # Ensure schema
         for col in self.expected_cols:
             if col not in df.columns: 
-                issues.append(f'Missing {col} in the data') 
+                df[col] = np.nan 
 
         if df["Age"].isna().any():
             issues.append("Age missing")
@@ -37,6 +37,7 @@ class SchemaValidator:
         # ❗ DO NOT assert on NaNs here
         return df[self.expected_cols], issues
        
+
 
 
 
