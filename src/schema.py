@@ -29,13 +29,16 @@ class SchemaValidator:
 
         for col in data.keys():
             if df[col].isna().any():
-                issues.append(f"Null/NaN values present in {col}")
+                issues.append(f"NaN values present in {col}")
+            elif df[col].isnull().any():
+                issues.append(f"Null values present in {col}")
             else:
                 pass 
 
         # ❗ DO NOT assert on NaNs here
         return df[self.expected_cols], issues
        
+
 
 
 
