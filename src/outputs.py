@@ -48,7 +48,7 @@ class RiskAssessment:
         col1, col2 = st.columns([1, 1])
         with col1:
             feature_imp_df = pd.read_csv(self.RiskConfig.FEATURE_IMP_PATH)
-            fig = Feature_Engineering.Feature_IMP(feature_imp_df)
+            fig = FE.Feature_IMP(feature_imp_df)
             st.plotly_chart(fig)
             with st.expander('Feature Summary'):
                 st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))
