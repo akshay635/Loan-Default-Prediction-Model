@@ -19,7 +19,7 @@ class RiskAssessment:
             st.error(" ".join(issues))
             st.stop()
 
-        df = self.FE(df)[self.RiskConfig.EXPECTED_COLS]
+        df = self.FE.derived_features(df)[self.RiskConfig.EXPECTED_COLS]
         prob = self.model.predict_proba(df)
         risk, action = self.decision_engine.decide(prob)
 
