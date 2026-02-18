@@ -66,11 +66,20 @@ with tab2:
 
     if uploaded_file is not None:
         df_batch = pd.read_csv(uploaded_file)
+        df_batch = FeatureEngineering.derived_features(df_batch)
+        
+        required_cols = RiskConfig.EXPECTED_COLS + RiskConfig.TARGET_COL
+
+        missing_cols = [col for col in required_cols if col not in df_batch.columns]
     
-        st.success(f"File uploaded successfully. Records detected: {len(df_batch)}")
+        if missing_cols:
+            st.error(f"Missing required columns: {missing_cols}")
+            st.stop()
     
-        st.subheader("Preview of Uploaded Data")
-        st.dataframe(df_batch.head())
+    st.success(f"File uploaded successfully. Records detected: {len(df_batch)}")
+
+    st.subheader("Preview of Uploaded Data")
+    st.dataframe(df_batch.head())
 
     required_cols = RiskConfig.EXPECTED_COLS + RiskConfig.TARGET_COL
 
@@ -176,6 +185,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
