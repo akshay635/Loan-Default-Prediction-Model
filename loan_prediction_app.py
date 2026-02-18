@@ -43,7 +43,7 @@ explainer = ShapExplainer(model=model.model)
 FE = FeatureEngineering()
 
 # Tabs for storytelling
-tab1, tab2, tab3, tab4 = st.tabs(["🔮 Prediction", "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔮 Single Borrower Prediction", "Batch Processing" "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
 
 with tab1:
     user_data = load_data()
@@ -53,10 +53,19 @@ with tab1:
         risk_assessor.assess(user_data)
 
 with tab2:
+    st.title("📊 Portfolio Risk Evaluation – Batch Processing")
+
+    st.markdown("""
+    Upload a borrower dataset to perform portfolio-level risk scoring.
+    The model applies cost-sensitive learning and threshold-based decision logic.
+    """)
+    csv_file = st.u
+
+with tab3:
     explorer = Exploration(RiskConfig)
     explorer.show()
 
-with tab3:
+with tab4:
     principal = st.number_input('Enter the principal amount')
     if principal < 1000:
         st.error('Please enter valid amount')
@@ -71,7 +80,7 @@ with tab3:
     st.subheader(f"EMI: ₹{emi}/-")
     emi_calc.plot(emi)
 
-with tab4:
+with tab5:
     payment_history = st.slider('Payment History(%)', 0, 100)
     cu_ratio = st.slider('Credit Utilization ratio', 0.0, 1.0)
     history_years = st.number_input('Credit History(in years)', 0)
@@ -83,6 +92,7 @@ with tab4:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
