@@ -11,13 +11,10 @@ class LoanRiskModel:
     def __init__(self, model_path):
         self.model = load_model(model_path)
         
-    @st.cache_data
     def predict_proba(self, df):
-        proba = self.model.predict_proba(df)
-        if proba.ndim == 2:
-            return proba[:, 1]   # Return all class-1 probabilities
-        else:
-            return proba
+        proba = self.model.predict_proba(df)[0, 1]
+        return proba
+
 
 
 
