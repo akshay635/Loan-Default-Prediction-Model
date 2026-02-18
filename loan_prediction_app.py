@@ -63,7 +63,8 @@ with tab2:
     uploaded_file = st.file_uploader(
     "Upload CSV file containing borrower data (must include target column)",
     type=["csv"])
-    
+
+    model = LoanRiskModel(RiskConfig.MODEL_PATH)
     FE = FeatureEngineering()
     
     if uploaded_file is not None:
@@ -187,6 +188,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
