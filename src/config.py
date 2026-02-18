@@ -15,7 +15,8 @@ class RiskConfig:
        'Post_DTI', 'age_post_dti', 'tenure_age_ratio', 'debt_stress'
     ]
 
-    TARGET_COLS = []
+    TARGET_COLS = ['Default']
+
 
 
 
