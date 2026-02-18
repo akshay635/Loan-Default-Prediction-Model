@@ -100,14 +100,12 @@ with tab2:
         @st.cache_resource
         def run_batch_prediction(model, X):
             return model.predict_proba(X)[:, 1]
-
-        if st.button("🚀 Run Batch Evaluation"):
-            with st.spinner("Processing portfolio..."):
-                y_proba = run_batch_prediction(model, X_batch)
-                y_pred = (y_proba >= threshold).astype(int)
         
-                new_df["Probability"] = y_proba
-                new_df["Prediction"] = y_pred
+        y_proba = run_batch_prediction(model, X_batch)
+        y_pred = (y_proba >= threshold).astype(int)
+
+        new_df["Probability"] = y_proba
+        new_df["Prediction"] = y_pred
     
         tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
         
@@ -189,6 +187,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
