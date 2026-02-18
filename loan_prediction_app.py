@@ -97,7 +97,7 @@ with tab2:
         y_true = new_df[RiskConfig.TARGET_COL]
         X_batch = new_df[RiskConfig.EXPECTED_COLS]
         
-        @st.cache_resource
+        @st.cache_data
         def run_batch_prediction(model, X):
             return model.predict_proba(X)[:, 1]
         
@@ -187,6 +187,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
