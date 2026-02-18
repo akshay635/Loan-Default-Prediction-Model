@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+from sklearn.metrics import confusion_matrix
 import importlib
 import src.config as config
 importlib.reload(config)
@@ -71,7 +72,7 @@ with tab2:
         st.subheader("Preview of Uploaded Data")
         st.dataframe(df_batch.head())
 
-    required_cols = RiskConfig.EXPECTED_COLS + ["Loan_Default"]
+    required_cols = RiskConfig.EXPECTED_COLS + RiskConfig.TARGET_COL
 
     missing_cols = [col for col in required_cols if col not in df_batch.columns]
     
@@ -79,6 +80,70 @@ with tab2:
         st.error(f"Missing required columns: {missing_cols}")
         st.stop()
 
+    st.sidebar.header("⚙️ Decision Configuration")
+
+    threshold = st.sidebar.slider("Decision Threshold",
+                                  min_value=0.0, max_value=1.0,
+                                  value=0.5, step=0.01)
+
+    y_true = df_batch[RiskConfig.TARGET_COL]
+    X_batch = df_batch[RiskConfig.EXPECTED_COLS]
+    
+    y_proba = model.predict_proba(X_batch)[:, 1]
+    y_pred = (y_proba >= threshold).astype(int)
+    
+    df_batch["Probability"] = y_proba
+    df_batch["Prediction"] = y_pred
+
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+    
+    recall = tp / (tp + fn)
+    miss_rate = fn / (tp + fn)
+    precision = tp / (tp + fp)
+    accuracy = (tp + tn) / (tp + tn + fp + fn)
+    
+    flagged_rate = y_pred.mean()
+
+    st.header("📌 Portfolio Summary")
+
+    col1, col2, col3, col4 = st.columns(4)
+    
+    col1.metric("Total Records", len(df_batch))
+    col2.metric("Flagged High Risk", f"{flagged_rate*100:.2f}%")
+    col3.metric("Recall (Catch Rate)", f"{recall*100:.2f}%")
+    col4.metric("Miss Rate", f"{miss_rate*100:.2f}%")
+
+    st.subheader("🔎 Confusion Matrix")
+
+    st.write(f"""
+    - True Positives: {tp}
+    - False Positives: {fp}
+    - True Negatives: {tn}
+    - False Negatives: {fn}
+    """)
+
+    df_batch["Risk Bucket"] = pd.cut(
+    y_proba,
+    bins=[0, 0.3, 0.6, 1],
+    labels=["Low Risk", "Medium Risk", "High Risk"])
+
+    st.subheader("📊 Risk Segmentation Distribution")
+    
+    st.bar_chart(df_batch["Risk Bucket"].value_counts())
+
+    st.subheader("⬇️ Export Scored Portfolio")
+
+    st.download_button(
+        label="Download Scored Dataset",
+        data=df_batch.to_csv(index=False),
+        file_name="scored_portfolio.csv",
+        mime="text/csv"
+    )
+
+    st.info(f"""
+    At threshold {threshold}, the model detects {recall*100:.1f}% of defaulters 
+    while missing {miss_rate*100:.1f}%. Approximately {flagged_rate*100:.1f}% 
+    of the portfolio is flagged for review.""")
 
 with tab3:
     explorer = Exploration(RiskConfig)
@@ -111,6 +176,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
