@@ -66,11 +66,11 @@ with tab2:
 
     if uploaded_file is not None:
         df_batch = pd.read_csv(uploaded_file)
-        df_batch = FeatureEngineering.derived_features(df_batch)
+        new_df = FE.derived_features(df_batch)
         
         required_cols = RiskConfig.EXPECTED_COLS + RiskConfig.TARGET_COL
 
-        missing_cols = [col for col in required_cols if col not in df_batch.columns]
+        missing_cols = [col for col in required_cols if col not in new_df.columns]
     
         if missing_cols:
             st.error(f"Missing required columns: {missing_cols}")
@@ -79,15 +79,7 @@ with tab2:
         st.success(f"File uploaded successfully. Records detected: {len(df_batch)}")
     
         st.subheader("Preview of Uploaded Data")
-        st.dataframe(df_batch.head())
-    
-        required_cols = RiskConfig.EXPECTED_COLS + RiskConfig.TARGET_COL
-    
-        missing_cols = [col for col in required_cols if col not in df_batch.columns]
-        
-        if missing_cols:
-            st.error(f"Missing required columns: {missing_cols}")
-            st.stop()
+        st.dataframe(new_df.head())
     
         st.sidebar.header("⚙️ Decision Configuration")
     
@@ -95,14 +87,14 @@ with tab2:
                                       min_value=0.0, max_value=1.0,
                                       value=0.5, step=0.01)
     
-        y_true = df_batch[RiskConfig.TARGET_COL]
-        X_batch = df_batch[RiskConfig.EXPECTED_COLS]
+        y_true = new_df[RiskConfig.TARGET_COL]
+        X_batch = new_df[RiskConfig.EXPECTED_COLS]
         
         y_proba = model.predict_proba(X_batch)[:, 1]
         y_pred = (y_proba >= threshold).astype(int)
         
-        df_batch["Probability"] = y_proba
-        df_batch["Prediction"] = y_pred
+        new_df["Probability"] = y_proba
+        new_df["Prediction"] = y_pred
     
         tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
         
@@ -117,7 +109,7 @@ with tab2:
     
         col1, col2, col3, col4 = st.columns(4)
         
-        col1.metric("Total Records", len(df_batch))
+        col1.metric("Total Records", len(new_df))
         col2.metric("Flagged High Risk", f"{flagged_rate*100:.2f}%")
         col3.metric("Recall (Catch Rate)", f"{recall*100:.2f}%")
         col4.metric("Miss Rate", f"{miss_rate*100:.2f}%")
@@ -131,20 +123,20 @@ with tab2:
         - False Negatives: {fn}
         """)
     
-        df_batch["Risk Bucket"] = pd.cut(
+        new_df["Risk Bucket"] = pd.cut(
         y_proba,
         bins=[0, 0.3, 0.6, 1],
         labels=["Low Risk", "Medium Risk", "High Risk"])
     
         st.subheader("📊 Risk Segmentation Distribution")
         
-        st.bar_chart(df_batch["Risk Bucket"].value_counts())
+        st.bar_chart(new_df["Risk Bucket"].value_counts())
     
         st.subheader("⬇️ Export Scored Portfolio")
     
         st.download_button(
             label="Download Scored Dataset",
-            data=df_batch.to_csv(index=False),
+            data=new_df.to_csv(index=False),
             file_name="scored_portfolio.csv",
             mime="text/csv"
         )
@@ -185,6 +177,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
