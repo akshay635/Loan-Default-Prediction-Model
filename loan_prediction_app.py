@@ -58,7 +58,7 @@ with tab2:
     Upload a borrower dataset to perform portfolio-level risk scoring.
     The model applies cost-sensitive learning and threshold-based decision logic.
     """)
-    csv_file = st.u
+    #csv_file = st.u
 
 with tab3:
     explorer = Exploration(RiskConfig)
@@ -91,6 +91,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
