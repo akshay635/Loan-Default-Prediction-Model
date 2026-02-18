@@ -28,13 +28,6 @@ st.markdown(
     """
 )
 
-with st.expander("How to interpret this risk score?"):
-    st.write(
-        "The risk score estimates the likelihood of repayment difficulty "
-        "based on historical financial patterns. It should be used as "
-        "decision support rather than a definitive outcome."
-    )
-
 # Initialize components
 validator = SchemaValidator(RiskConfig.EXPECTED_COLS)
 model = LoanRiskModel(RiskConfig.MODEL_PATH)
@@ -43,9 +36,15 @@ explainer = ShapExplainer(model=model.model)
 FE = FeatureEngineering()
 
 # Tabs for storytelling
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔮 Single Borrower Prediction", "Batch Processing" "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔮 Single Borrower Prediction", "Batch Processing", "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
 
 with tab1:
+    with st.expander("How to interpret this risk score?"):
+        st.write(
+            "The risk score estimates the likelihood of repayment difficulty "
+            "based on historical financial patterns. It should be used as "
+            "decision support rather than a definitive outcome."
+        )
     user_data = load_data()
     st.header("Your repayment risk assessment")
     if st.button("🔍 Assess Risk"):
@@ -92,6 +91,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
