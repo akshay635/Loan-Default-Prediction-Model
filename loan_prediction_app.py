@@ -64,7 +64,6 @@ with tab2:
     "Upload CSV file containing borrower data (must include target column)",
     type=["csv"])
 
-    @st.cache_data
     if uploaded_file is not None:
         df_batch = pd.read_csv(uploaded_file)
         df_batch['MonthlyIncome'] = round((df_batch['Income']//12), 2)
@@ -182,6 +181,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
