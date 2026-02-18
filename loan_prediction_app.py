@@ -73,8 +73,6 @@ with tab2:
         df_batch['EMI'] = round(df_batch['EMI'], 2)
         new_df = FE.derived_features(df_batch)
         
-        del df_batch
-        
         required_cols = RiskConfig.EXPECTED_COLS + RiskConfig.TARGET_COL
 
         missing_cols = [col for col in required_cols if col not in new_df.columns]
@@ -84,6 +82,8 @@ with tab2:
             st.stop()
     
         st.success(f"File uploaded successfully. Records detected: {len(df_batch)}")
+        
+        del df_batch
     
         st.subheader("Preview of Uploaded Data")
         st.dataframe(new_df.head())
@@ -189,6 +189,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
