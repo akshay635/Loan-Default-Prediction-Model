@@ -58,7 +58,27 @@ with tab2:
     Upload a borrower dataset to perform portfolio-level risk scoring.
     The model applies cost-sensitive learning and threshold-based decision logic.
     """)
-    #csv_file = st.u
+
+    uploaded_file = st.file_uploader(
+    "Upload CSV file containing borrower data (must include target column)",
+    type=["csv"])
+
+    if uploaded_file is not None:
+        df_batch = pd.read_csv(uploaded_file)
+    
+        st.success(f"File uploaded successfully. Records detected: {len(df_batch)}")
+    
+        st.subheader("Preview of Uploaded Data")
+        st.dataframe(df_batch.head())
+
+    required_cols = RiskConfig.EXPECTED_COLS + ["Loan_Default"]
+
+    missing_cols = [col for col in required_cols if col not in df_batch.columns]
+    
+    if missing_cols:
+        st.error(f"Missing required columns: {missing_cols}")
+        st.stop()
+
 
 with tab3:
     explorer = Exploration(RiskConfig)
@@ -91,6 +111,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
