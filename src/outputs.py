@@ -20,7 +20,7 @@ class RiskAssessment:
             st.stop()
 
         df = self.FE.derived_features(df)[self.RiskConfig.EXPECTED_COLS]
-        prob = self.model.predict_proba(df)[0]
+        prob = self.model.predict_proba(df)
         risk, action = self.decision_engine.decide(prob)
 
         # Narrative output
