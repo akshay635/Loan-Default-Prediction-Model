@@ -10,8 +10,10 @@ class LoanRiskModel:
     @st.cache_resource
     def _load_model(_self, path):
         return joblib.load(path)
-
+        
+    @st.cache_data
     def predict_proba(self, df):
         return self.model.predict_proba(df)[0, 1]
+
 
 
