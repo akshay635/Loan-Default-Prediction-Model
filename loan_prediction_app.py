@@ -29,12 +29,6 @@ st.markdown(
     """
 )
 
-# Initialize components
-validator = SchemaValidator(RiskConfig.EXPECTED_COLS)
-model = LoanRiskModel(RiskConfig.MODEL_PATH)
-decision_engine = RiskDecisionEngine(RiskConfig.LOW_RISK, RiskConfig.HIGH_RISK)
-explainer = ShapExplainer(model=model.model)
-FE = FeatureEngineering()
 
 # Tabs for storytelling
 tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔮 Single Borrower Prediction", "Batch Processing", "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
@@ -46,6 +40,12 @@ with tab1:
             "based on historical financial patterns. It should be used as "
             "decision support rather than a definitive outcome."
         )
+    # Initialize components
+    validator = SchemaValidator(RiskConfig.EXPECTED_COLS)
+    model = LoanRiskModel(RiskConfig.MODEL_PATH)
+    decision_engine = RiskDecisionEngine(RiskConfig.LOW_RISK, RiskConfig.HIGH_RISK)
+    explainer = ShapExplainer(model=model.model)
+    FE = FeatureEngineering()
     user_data = load_data()
     st.header("Your repayment risk assessment")
     if st.button("🔍 Assess Risk"):
@@ -63,13 +63,17 @@ with tab2:
     uploaded_file = st.file_uploader(
     "Upload CSV file containing borrower data (must include target column)",
     type=["csv"])
-
+    
+    FE = FeatureEngineering()
+    
     if uploaded_file is not None:
         df_batch = pd.read_csv(uploaded_file)
         df_batch['MonthlyIncome'] = round((df_batch['Income']//12), 2)
         df_batch['EMI'] = ((df_batch['LoanAmount']*df_batch['InterestRate']) + df_batch['LoanAmount'])/(df_batch['LoanTerm'])
         df_batch['EMI'] = round(df_batch['EMI'], 2)
         new_df = FE.derived_features(df_batch)
+        
+        del df_batch
         
         required_cols = RiskConfig.EXPECTED_COLS + RiskConfig.TARGET_COL
 
@@ -92,10 +96,15 @@ with tab2:
     
         y_true = new_df[RiskConfig.TARGET_COL]
         X_batch = new_df[RiskConfig.EXPECTED_COLS]
+        
         @st.cache_resource
-        y_proba = model.predict_proba(X_batch)
-    
-        y_pred = (y_proba >= threshold).astype(int)
+        def run_batch_prediction(model, X):
+            return model.predict_proba(X)
+
+        if st.button("🚀 Run Batch Evaluation"):
+            with st.spinner("Processing portfolio..."):
+                y_proba = run_batch_prediction(model, X_batch)
+                y_pred = (y_proba >= threshold).astype(int)
         
         new_df["Probability"] = y_proba
         new_df["Prediction"] = y_pred
@@ -127,10 +136,8 @@ with tab2:
         - False Negatives: {fn}
         """)
     
-        new_df["Risk Bucket"] = pd.cut(
-        y_proba,
-        bins=[0, 0.3, 0.6, 1],
-        labels=["Low Risk", "Medium Risk", "High Risk"])
+        new_df["Risk Bucket"] = pd.cut(y_proba, bins=[0, 0.3, 0.6, 1],
+                                       labels=["Low Risk", "Medium Risk", "High Risk"])
     
         st.subheader("📊 Risk Segmentation Distribution")
         
@@ -151,6 +158,7 @@ with tab2:
         of the portfolio is flagged for review.""")
 
 with tab3:
+    explainer = ShapExplainer(model=model.model)
     explorer = Exploration(RiskConfig)
     explorer.show()
 
@@ -181,6 +189,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
