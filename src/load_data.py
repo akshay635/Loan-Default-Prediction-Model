@@ -88,7 +88,7 @@ def load_data():
             "Education": education, "EmploymentType": employment,
             "MaritalStatus": marital_status, "HasMortgage": has_mortgage,
             "HasDependents": has_dependents, "LoanPurpose": loan_purpose,
-            "HasCoSigner": cosigner, "Monthly_Income": monthly_income,
+            "HasCoSigner": cosigner, "MonthlyIncome": monthly_income,
             "EMI": emi
     }
     return user_data
