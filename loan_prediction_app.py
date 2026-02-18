@@ -99,7 +99,7 @@ with tab2:
         
         @st.cache_resource
         def run_batch_prediction(model, X):
-            return model.predict_proba(X)
+            return model.predict_proba(X)[:, 1]
 
         if st.button("🚀 Run Batch Evaluation"):
             with st.spinner("Processing portfolio..."):
@@ -189,6 +189,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
