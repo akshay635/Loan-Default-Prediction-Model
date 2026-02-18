@@ -9,6 +9,7 @@ class SchemaValidator:
         self.expected_cols = expected_cols
 
     def validate_inference(self, data: dict):
+        @st.cache_data
         df = pd.DataFrame([data])
         issues = []
         # Ensure schema
@@ -37,6 +38,7 @@ class SchemaValidator:
         # ❗ DO NOT assert on NaNs here
         return df[self.expected_cols], issues
        
+
 
 
 
