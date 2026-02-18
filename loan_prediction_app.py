@@ -99,9 +99,15 @@ with tab2:
         
         @st.cache_data
         def run_batch_prediction(_model, X):
-            return _model.predict_proba(X)[:, 1]
+            return _model.predict_proba(X)
         
-        y_proba = run_batch_prediction(model, X_batch)
+        proba = run_batch_prediction(model, X_batch)
+
+        if proba.ndim == 2:
+            y_proba = proba[:, 1]
+        else:
+            y_proba = proba
+            
         y_pred = (y_proba >= threshold).astype(int)
 
         new_df["Probability"] = y_proba
@@ -187,6 +193,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
