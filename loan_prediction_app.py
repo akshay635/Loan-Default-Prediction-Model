@@ -64,8 +64,8 @@ with tab2:
     "Upload CSV file containing borrower data (must include target column)",
     type=["csv"])
 
+    @st.cache_data
     if uploaded_file is not None:
-        @st.cache_data
         df_batch = pd.read_csv(uploaded_file)
         df_batch['MonthlyIncome'] = round((df_batch['Income']//12), 2)
         df_batch['EMI'] = ((df_batch['LoanAmount']*df_batch['InterestRate']) + df_batch['LoanAmount'])/(df_batch['LoanTerm'])
@@ -94,7 +94,7 @@ with tab2:
         y_true = new_df[RiskConfig.TARGET_COL]
         X_batch = new_df[RiskConfig.EXPECTED_COLS]
         @st.cache_resource
-        y_proba = model.predict_proba(X_batch)[:, 1]
+        y_proba = model.predict_proba(X_batch)
     
         y_pred = (y_proba >= threshold).astype(int)
         
@@ -182,6 +182,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
