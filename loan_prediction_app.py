@@ -66,6 +66,9 @@ with tab2:
 
     if uploaded_file is not None:
         df_batch = pd.read_csv(uploaded_file)
+        df_batch['MonthlyIncome'] = round((df_batch['Income']//12), 2)
+        df_batch['EMI'] = ((df_batch['LoanAmount']*df_batch['InterestRate']) + df_batch['LoanAmount'])/(df_batch['LoanTerm'])
+        df_batch['EMI'] = round(df['EMI'], 2)
         new_df = FE.derived_features(df_batch)
         
         required_cols = RiskConfig.EXPECTED_COLS + RiskConfig.TARGET_COL
@@ -177,6 +180,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
