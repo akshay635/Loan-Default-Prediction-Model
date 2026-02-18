@@ -94,9 +94,7 @@ with tab2:
         y_true = new_df[RiskConfig.TARGET_COL]
         X_batch = new_df[RiskConfig.EXPECTED_COLS]
         @st.cache_resource
-        y_proba = model.predict_proba(X_batch)
-        if y_proba.ndim == 2:
-            y_proba = y_proba[:, 1]
+        y_proba = model.predict_proba(X_batch)[:, 1]
     
         y_pred = (y_proba >= threshold).astype(int)
         
@@ -184,6 +182,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
