@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # importing required modules, builtins and classes
 import streamlit as st
 import pandas as pd
@@ -99,8 +98,8 @@ with tab2:
         X_batch = new_df[RiskConfig.EXPECTED_COLS]
         
         @st.cache_data
-        def run_batch_prediction(model, X):
-            return model.predict_proba(X)[:, 1]
+        def run_batch_prediction(_model, X):
+            return _model.predict_proba(X)[:, 1]
         
         y_proba = run_batch_prediction(model, X_batch)
         y_pred = (y_proba >= threshold).astype(int)
@@ -188,6 +187,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
