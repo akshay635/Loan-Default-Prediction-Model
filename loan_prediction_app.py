@@ -68,9 +68,9 @@ with tab2:
     type=["csv"])
 
     if uploaded_file is not None:
-        df_batch = pd.read_csv(uploaded_file)
+        df = pd.read_csv(uploaded_file)
     
-        st.success(f"File uploaded successfully. Records detected: {len(df_batch)}")
+        st.success(f"File uploaded successfully. Records detected: {len(df)}")
     
         st.subheader("Preview of Uploaded Data")
         st.dataframe(df.head(2))
@@ -193,6 +193,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
