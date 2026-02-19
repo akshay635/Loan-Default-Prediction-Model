@@ -12,7 +12,6 @@ from src.config import RiskConfig
 from src.schema import SchemaValidator
 from src.model_service import LoanRiskModel
 from src.decision import RiskDecisionEngine
-#from src.explainability import ShapExplainer
 from src.load_data import load_data
 from src.insights import generate_feature_insight
 from src.feature_engineering import FeatureEngineering
@@ -127,7 +126,7 @@ with tab2:
 
         col1, col2, col3, col4 = st.columns(4)
         
-        col1.metric("Total Records", len(df_batch))
+        col1.metric("Total Records", len(df))
         col2.metric("Flagged High Risk", f"{flagged_rate*100:.2f}%")
         col3.metric("Recall (Catch Rate)", f"{recall*100:.2f}%")
         col4.metric("Miss Rate", f"{miss_rate*100:.2f}%")
@@ -193,6 +192,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
