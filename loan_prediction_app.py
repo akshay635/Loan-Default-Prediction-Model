@@ -28,6 +28,14 @@ st.markdown(
     """
 )
 
+def initialize_components():
+# Initialize components
+    validator = SchemaValidator(RiskConfig.EXPECTED_COLS)
+    model = LoanRiskModel(RiskConfig.MODEL_PATH)
+    decision_engine = RiskDecisionEngine(RiskConfig.LOW_RISK, RiskConfig.HIGH_RISK)
+    FE = FeatureEngineering()
+    user_data = load_data()
+    return validator, model, decision_engine, FE, user_data
 
 # Tabs for storytelling
 tab1, tab2, tab3, tab4= st.tabs(["🔮 Single Borrower Prediction", "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
@@ -40,19 +48,13 @@ with tab1:
             "decision support rather than a definitive outcome."
         )
     # Initialize components
-    validator = SchemaValidator(RiskConfig.EXPECTED_COLS)
-    model = LoanRiskModel(RiskConfig.MODEL_PATH)
-    decision_engine = RiskDecisionEngine(RiskConfig.LOW_RISK, RiskConfig.HIGH_RISK)
-    explainer = ShapExplainer(model=model.model)
-    FE = FeatureEngineering()
-    user_data = load_data()
+    validator, model, decision_engine, FE, user_data = initialize_components()
     st.header("Your repayment risk assessment")
     if st.button("🔍 Assess Risk"):
         risk_assessor = RiskAssessment(model, validator, FE, decision_engine, RiskConfig, explainer)
         risk_assessor.assess(user_data)
 
 with tab2:
-    explainer = ShapExplainer(model=model.model)
     explorer = Exploration(RiskConfig)
     explorer.show()
 
@@ -83,6 +85,7 @@ with tab4:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
