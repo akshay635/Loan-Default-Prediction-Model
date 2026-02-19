@@ -9,6 +9,7 @@ import importlib
 import src.config as config
 importlib.reload(config)
 from src.config import RiskConfig
+from src.batch_data_training import batch_data_modeling
 from src.schema import SchemaValidator
 from src.model_service import LoanRiskModel
 from src.decision import RiskDecisionEngine
@@ -70,7 +71,8 @@ with tab2:
         st.success(f"File uploaded successfully. Records detected: {len(df)}")
         st.subheader("Preview of Uploaded Data")
         st.dataframe(df.head(2))
-        
+
+        df, y_proba, y_pred, y_true = batch_data_modeling(df)
         tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
         
         recall = tp / (tp + fn)
@@ -146,6 +148,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
