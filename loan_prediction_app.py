@@ -29,7 +29,7 @@ st.markdown(
 )
 
 def initialize_components():
-# Initialize components
+    # Initialize components
     validator = SchemaValidator(RiskConfig.EXPECTED_COLS)
     model = LoanRiskModel(RiskConfig.MODEL_PATH)
     decision_engine = RiskDecisionEngine(RiskConfig.LOW_RISK, RiskConfig.HIGH_RISK)
@@ -85,6 +85,7 @@ with tab4:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
