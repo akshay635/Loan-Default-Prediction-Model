@@ -51,7 +51,7 @@ with tab1:
     validator, model, decision_engine, FE, user_data = initialize_components()
     st.header("Your repayment risk assessment")
     if st.button("🔍 Assess Risk"):
-        risk_assessor = RiskAssessment(model, validator, FE, decision_engine, RiskConfig, explainer)
+        risk_assessor = RiskAssessment(model, validator, FE, decision_engine, RiskConfig)
         risk_assessor.assess(user_data)
 
 with tab2:
@@ -85,6 +85,7 @@ with tab4:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
