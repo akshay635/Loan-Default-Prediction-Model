@@ -38,7 +38,7 @@ def initialize_components():
     return validator, model, decision_engine, FE, user_data
 
 # Tabs for storytelling
-tab1, tab2, tab3, tab4= st.tabs(["🔮 Single Borrower Prediction", "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔮 Single Borrower Prediction", "Batch Processing",  "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
 
 with tab1:
     with st.expander("How to interpret this risk score?"):
@@ -55,10 +55,24 @@ with tab1:
         risk_assessor.assess(user_data)
 
 with tab2:
+    st.header('Batch Processing of data')
+    st.markdown('''User will provide the bank data and we will estimate the number of cases where model predicted 
+                   as non-default but they are the actual defaulters''')
+
+    uploaded_file = st.file_uploader("Upload CSV")
+
+    if uploaded_file is not None:
+        df = pd.read_csv(uploaded_file)
+        st.dataframe(df.head(2))
+        df['MonthlyIncome'] = df['Income']//12
+        df['EMI'] = ((df['LoanAmount']*df['InterestRate']) + df['LoanAmount'])/df['LoanTerm']
+        df['EMI'] = round(df['EMI'], 2)
+        
+with tab3:
     explorer = Exploration(RiskConfig)
     explorer.show()
 
-with tab3:
+with tab4:
     principal = st.number_input('Enter the principal amount')
     if principal < 1000:
         st.error('Please enter valid amount')
@@ -73,7 +87,7 @@ with tab3:
     st.subheader(f"EMI: ₹{emi}/-")
     emi_calc.plot(emi)
 
-with tab4:
+with tab5:
     payment_history = st.slider('Payment History(%)', 0, 100)
     cu_ratio = st.slider('Credit Utilization ratio', 0.0, 1.0)
     history_years = st.number_input('Credit History(in years)', 0)
@@ -85,6 +99,7 @@ with tab4:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
