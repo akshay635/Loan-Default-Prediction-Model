@@ -5,13 +5,12 @@ from src.feature_engineering import FeatureEngineering
 from src.insights import generate_feature_insight
 
 class RiskAssessment:
-    def __init__(self, model, validator, FE, decision_engine, RiskConfig, explainer):
+    def __init__(self, model, validator, FE, decision_engine, RiskConfig):
         self.model = model
         self.validator = validator
         self.FE = FE
         self.decision_engine = decision_engine
         self.RiskConfig = RiskConfig
-        self.explainer = explainer
 
     def assess(self, user_data):
         df, issues = self.validator.validate_inference(user_data)
@@ -44,21 +43,13 @@ class RiskAssessment:
 
         st.markdown(f"**Suggested Action:** {action}")
 
-        # Feature importance + SHAP
-        col1, col2 = st.columns([1, 1])
-        with col1:
-            feature_imp_df = pd.read_csv(self.RiskConfig.FEATURE_IMP_PATH)
-            fig = self.FE.Feature_IMP(feature_imp_df)
-            st.plotly_chart(fig)
-            with st.expander('Feature Summary'):
-                st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))
+        # Feature importance 
+        feature_imp_df = pd.read_csv(self.RiskConfig.FEATURE_IMP_PATH)
+        fig = self.FE.Feature_IMP(feature_imp_df)
+        st.plotly_chart(fig)
+        with st.expander('Feature Summary'):
+            st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))
                 
-        with col2:
-            st.subheader("Personalized SHAP Explanation")
-            fig = self.explainer.plot(df)
-            st.pyplot(fig)
-            st.markdown("""Features pushing the risk higher are shown in red, 
-            while features reducing risk are shown in blue.""")
 
 class Exploration:
     def __init__(self, RiskConfig):
