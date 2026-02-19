@@ -67,6 +67,11 @@ with tab2:
         df['MonthlyIncome'] = df['Income']//12
         df['EMI'] = ((df['LoanAmount']*df['InterestRate']) + df['LoanAmount'])/df['LoanTerm']
         df['EMI'] = round(df['EMI'], 2)
+        df['EMI/Income_ratio'] = round((df['EMI'] / df['MonthlyIncome']), 2)
+        df['Post_DTI'] = df['DTIRatio'] + df['EMI/Income_ratio']
+        df['age_post_dti'] = df['Age'] * df['Post_DTI']
+        df['tenure_age_ratio'] = df['MonthsEmployed'] / (df['Age'] + 1e-6)
+        df['debt_stress'] = df['EMI/Income_ratio'] * df['DTIRatio']
         
 with tab3:
     explorer = Exploration(RiskConfig)
@@ -99,6 +104,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
