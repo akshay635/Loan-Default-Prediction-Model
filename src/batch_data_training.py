@@ -1,10 +1,13 @@
 import pandas as pd
 import streamlit as st
 import joblib
+import importlib
+import src.config as config
+importlib.reload(config)
 from src.config import RiskConfig
 
 def batch_data_modeling(df):
-  df'MonthlyIncome'] = df['Income']//12
+  df['MonthlyIncome'] = df['Income']//12
   df['EMI'] = ((df['LoanAmount']*df['InterestRate']) + df['LoanAmount'])/df['LoanTerm']
   df['EMI'] = round(df['EMI'], 2)
   df['EMI/Income_ratio'] = round((df['EMI'] / df['MonthlyIncome']), 2)
@@ -34,7 +37,6 @@ def batch_data_modeling(df):
   X_batch = df[RiskConfig.EXPECTED_COLS]
   
   model = joblib.load(RiskConfig.MODEL_PATH)
-
   y_proba = model.predict_proba(X_batch)[:, 1]
   y_pred = (y_proba >= threshold).astype(int)
   
