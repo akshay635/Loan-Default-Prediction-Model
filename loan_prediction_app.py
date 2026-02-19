@@ -26,7 +26,7 @@ st.markdown(
     """
     This system evaluates applicant risk and explains 
     loan approval decisions using data-driven evidence.
-    """
+    """, text_alignment="center"
 )
 
 def initialize_components():
@@ -148,6 +148,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
