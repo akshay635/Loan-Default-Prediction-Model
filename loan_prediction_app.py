@@ -90,7 +90,7 @@ with tab2:
             st.error(f"Missing required columns: {missing_cols}")
             st.stop()
         
-        st.sidebar.header("⚙️ Decision Configuration")
+        st.header("⚙️ Decision Configuration")
 
         threshold = st.slider(
             "Decision Threshold",
@@ -192,6 +192,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
