@@ -92,7 +92,7 @@ with tab2:
         
         st.sidebar.header("⚙️ Decision Configuration")
 
-        threshold = st.sidebar.slider(
+        threshold = st.slider(
             "Decision Threshold",
             min_value=0.0,
             max_value=1.0,
@@ -192,6 +192,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
