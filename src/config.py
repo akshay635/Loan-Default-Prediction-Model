@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 class RiskConfig:
-    LOW_RISK = 0.35
+    LOW_RISK = 0.30
     HIGH_RISK = 0.60
     
     MODEL_PATH = "models/loan_pred_model_v2.joblib"
@@ -16,6 +16,7 @@ class RiskConfig:
     ]
 
     TARGET_COL = ['Default']
+
 
 
 
