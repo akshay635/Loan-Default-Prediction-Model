@@ -21,7 +21,7 @@ from src.outputs import RiskAssessment, Exploration, EMICalculator, CreditScoreC
 # Page setup
 st.set_page_config(page_title="Loan Risk Assessment System", layout="wide")
 
-st.title("💡 Loan Risk Assessment & Decision System")
+st.title("💡 Loan Risk Assessment & Decision System", text_alignment="center")
 st.markdown(
     """
     This system evaluates applicant risk and explains 
@@ -148,6 +148,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
