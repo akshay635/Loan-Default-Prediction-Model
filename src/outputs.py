@@ -32,7 +32,7 @@ class RiskAssessment:
             
         elif risk == "MEDIUM":
             st.warning(f"⚠️ Moderate repayment risk ({prob:.2%})")
-            st.markdown("""This assessment indicates a moderate probability (35%-60%) of repayment difficulty
+            st.markdown("""This assessment indicates a moderate probability (30%-60%) of repayment difficulty
                      based on the available financial information, suggesting that further review may be 
                      appropriate.""")
         
