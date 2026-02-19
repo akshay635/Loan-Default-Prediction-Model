@@ -39,7 +39,7 @@ def initialize_components():
     return validator, model, decision_engine, FE, user_data
 
 # Tabs for storytelling
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔮 Single Borrower Prediction", "Batch Processing",  "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["🔮 Single Borrower Prediction", "📁 Batch Processing",  "📊 Exploration", "🧮 EMI calculator", "💹 Credit Score Calculator"])
 
 with tab1:
     with st.expander("How to interpret this risk score?"):
@@ -148,6 +148,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
