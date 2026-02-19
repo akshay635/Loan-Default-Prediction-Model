@@ -56,7 +56,6 @@ with tab1:
 
 with tab2:
     st.title("📊 Portfolio Risk Evaluation – Batch Processing")
-
     st.markdown("""
     Upload a borrower dataset to perform portfolio-level risk scoring.
     The model applies cost-sensitive learning and threshold-based decision logic.
@@ -68,51 +67,10 @@ with tab2:
 
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
-    
         st.success(f"File uploaded successfully. Records detected: {len(df)}")
-    
         st.subheader("Preview of Uploaded Data")
         st.dataframe(df.head(2))
         
-        df['MonthlyIncome'] = df['Income']//12
-        df['EMI'] = ((df['LoanAmount']*df['InterestRate']) + df['LoanAmount'])/df['LoanTerm']
-        df['EMI'] = round(df['EMI'], 2)
-        df['EMI/Income_ratio'] = round((df['EMI'] / df['MonthlyIncome']), 2)
-        df['Post_DTI'] = df['DTIRatio'] + df['EMI/Income_ratio']
-        df['age_post_dti'] = df['Age'] * df['Post_DTI']
-        df['tenure_age_ratio'] = df['MonthsEmployed'] / (df['Age'] + 1e-6)
-        df['debt_stress'] = df['EMI/Income_ratio'] * df['DTIRatio']
-
-        required_cols = RiskConfig.EXPECTED_COLS + RiskConfig.TARGET_COL
-        missing_cols = [col for col in required_cols if col not in df.columns]
-
-        if missing_cols:
-            st.error(f"Missing required columns: {missing_cols}")
-            st.stop()
-        
-        st.header("⚙️ Decision Configuration")
-
-        threshold = st.slider(
-            "Decision Threshold",
-            min_value=0.0,
-            max_value=1.0,
-            value=0.5,
-            step=0.01
-        )
-
-        y_true = df[RiskConfig.TARGET_COL]
-        X_batch = df[RiskConfig.EXPECTED_COLS]
-        
-        model = joblib.load(RiskConfig.MODEL_PATH)
-
-        y_proba = model.predict_proba(X_batch)[:, 1]
-        y_pred = (y_proba >= threshold).astype(int)
-        
-        df["Probability"] = y_proba
-        df["Prediction"] = y_pred
-
-        from sklearn.metrics import confusion_matrix
-
         tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
         
         recall = tp / (tp + fn)
@@ -149,12 +107,8 @@ with tab2:
 
         st.subheader("⬇️ Export Scored Portfolio")
 
-        st.download_button(
-            label="Download Scored Dataset",
-            data=df.to_csv(index=False),
-            file_name="scored_portfolio.csv",
-            mime="text/csv"
-        )
+        st.download_button(label="Download Scored Dataset", data=df.to_csv(index=False), 
+                           file_name="scored_portfolio.csv", mime="text/csv")
 
         st.info(f"""At threshold {threshold}, the model detects {recall*100:.1f}% of defaulters 
         while missing {miss_rate*100:.1f}%. Approximately {flagged_rate*100:.1f}% 
@@ -192,6 +146,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
