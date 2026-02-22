@@ -22,6 +22,21 @@ class RiskAssessment:
         prob = self.model.predict_proba(df)
         risk, action = self.decision_engine.decide(prob)
 
+        fig = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=prob,
+            title={'text': "Probability"},
+            gauge={
+                'axis': {'range': [0.0, 100.0]},
+                'bar': {'color': "black"},
+                'steps': [
+                    {'range': [60.0, 101.0], 'color': "red"},
+                    {'range': [30.0, 60.0], 'color': "yellow"},
+                    {'range': [0.0, 30.0], 'color': "green"}
+                ],
+            }
+        ))
+        st.plotly_chart(fig)
         # Narrative output
         if risk == "HIGH":
             st.error(f"❌ High repayment risk ({prob:.2%})")
@@ -45,8 +60,8 @@ class RiskAssessment:
 
         # Feature importance 
         feature_imp_df = pd.read_csv(self.RiskConfig.FEATURE_IMP_PATH)
-        fig = self.FE.Feature_IMP(feature_imp_df)
-        st.plotly_chart(fig)
+        fig1 = self.FE.Feature_IMP(feature_imp_df)
+        st.plotly_chart(fig1)
         with st.expander('Feature Summary'):
             st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))
                 
