@@ -21,50 +21,52 @@ class RiskAssessment:
         df = self.FE.derived_features(df)[self.RiskConfig.EXPECTED_COLS]
         prob = self.model.predict_proba(df)
         risk, action = self.decision_engine.decide(prob)
-
-        fig = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=prob*100,
-            title={'text': "Probability"},
-            gauge={
-                'axis': {'range': [0.0, 100.0]},
-                'bar': {'color': "black"},
-                'steps': [
-                    {'range': [60.0, 101.0], 'color': "red"},
-                    {'range': [30.0, 60.0], 'color': "yellow"},
-                    {'range': [0.0, 30.0], 'color': "green"}
-                ],
-            }
-        ))
-        st.plotly_chart(fig)
-        # Narrative output
-        if risk == "HIGH":
-            st.error(f"❌ High repayment risk ({prob:.2%})")
-            st.markdown("""This application shows a higher-than-average probability of repayment
-                      difficulty based on financial indicators such as income stability and
-                      debt obligations. The customer has higher chances to stop repayments 
-                      and default the loan.""")
+        col1, col2 = st.columns(2)
+        with col1:
+            # Narrative output
+            if risk == "HIGH":
+                st.error(f"❌ High repayment risk ({prob:.2%})")
+                st.markdown("""This application shows a higher-than-average probability of repayment
+                          difficulty based on financial indicators such as income stability and
+                          debt obligations. The customer has higher chances to stop repayments 
+                          and default the loan.""")
             
-        elif risk == "MEDIUM":
-            st.warning(f"⚠️ Moderate repayment risk ({prob:.2%})")
-            st.markdown("""This assessment indicates a moderate probability (30%-60%) of repayment difficulty
-                     based on the available financial information, suggesting that further review may be 
-                     appropriate.""")
+            elif risk == "MEDIUM":
+                st.warning(f"⚠️ Moderate repayment risk ({prob:.2%})")
+                st.markdown("""This assessment indicates a moderate probability (30%-60%) of repayment difficulty
+                         based on the available financial information, suggesting that further review may be 
+                         appropriate.""")
         
-        else:
-            st.success(f"✅ Low risk of repayment ({prob:.2%})")
-            st.markdown("""This assessment indicates a lower probability of repayment difficulty,
-                     suggesting comparatively lower risk based on the available information.""")
-
-        st.markdown(f"**Suggested Action:** {action}")
-
-        # Feature importance 
-        feature_imp_df = pd.read_csv(self.RiskConfig.FEATURE_IMP_PATH)
-        fig1 = self.FE.Feature_IMP(feature_imp_df)
-        st.plotly_chart(fig1)
-        with st.expander('Feature Summary'):
-            st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))
-                
+            else:
+                st.success(f"✅ Low risk of repayment ({prob:.2%})")
+                st.markdown("""This assessment indicates a lower probability of repayment difficulty,
+                         suggesting comparatively lower risk based on the available information.""")
+    
+            st.markdown(f"**Suggested Action:** {action}")
+            
+        with col2:
+            fig = go.Figure(go.Indicator(
+                mode="gauge+number",
+                value=prob*100,
+                title={'text': "Probability"},
+                gauge={
+                    'axis': {'range': [0.0, 100.0]},
+                    'bar': {'color': "black"},
+                    'steps': [
+                        {'range': [60.0, 101.0], 'color': "red"},
+                        {'range': [30.0, 60.0], 'color': "yellow"},
+                        {'range': [0.0, 30.0], 'color': "green"}
+                    ],
+                }
+            ))
+            st.plotly_chart(fig)
+    
+            # Feature importance 
+            feature_imp_df = pd.read_csv(self.RiskConfig.FEATURE_IMP_PATH)
+            fig1 = self.FE.Feature_IMP(feature_imp_df)
+            st.plotly_chart(fig1)
+            with st.expander('Feature Summary'):
+                st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))       
 
 class Exploration:
     def __init__(self, RiskConfig):
