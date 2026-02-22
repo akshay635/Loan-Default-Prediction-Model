@@ -21,7 +21,7 @@ class RiskAssessment:
         df = self.FE.derived_features(df)[self.RiskConfig.EXPECTED_COLS]
         prob = self.model.predict_proba(df)
         risk, action = self.decision_engine.decide(prob)
-        col1, col2 = st.columns(2)
+        col1, col2 = st.columns([1, 1])
         with col1:
             # Narrative output
             if risk == "HIGH":
