@@ -61,12 +61,12 @@ class RiskAssessment:
             ))
             st.plotly_chart(fig)
     
-            # Feature importance 
-            feature_imp_df = pd.read_csv(self.RiskConfig.FEATURE_IMP_PATH)
-            fig1 = self.FE.Feature_IMP(feature_imp_df)
-            st.plotly_chart(fig1)
-            with st.expander('Feature Summary'):
-                st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))       
+        # Feature importance 
+        feature_imp_df = pd.read_csv(self.RiskConfig.FEATURE_IMP_PATH)
+        fig1 = self.FE.Feature_IMP(feature_imp_df)
+        st.plotly_chart(fig1)
+        with st.expander('Feature Summary'):
+            st.markdown(generate_feature_insight(df, feature_imp_df, top_n = 5))       
 
 class Exploration:
     def __init__(self, RiskConfig):
