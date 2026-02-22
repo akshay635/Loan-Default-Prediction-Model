@@ -26,7 +26,7 @@ def load_data():
         ["Single", "Married", "Divorced"]
     )
     
-    months_employed, income, monthly_income, emi = 0, 0, 0, 0
+    months_employed, income, monthly_income = 0, 0, 0
     
     st.sidebar.header("💰 Financial Information & Credit history")
     
