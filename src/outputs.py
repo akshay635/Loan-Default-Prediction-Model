@@ -24,7 +24,7 @@ class RiskAssessment:
 
         fig = go.Figure(go.Indicator(
             mode="gauge+number",
-            value=prob:.2%,
+            value=round(prob*100, 2),
             title={'text': "Probability"},
             gauge={
                 'axis': {'range': [0.0, 100.0]},
