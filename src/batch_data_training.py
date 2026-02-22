@@ -43,5 +43,5 @@ def batch_data_modeling(df):
   df["Probability"] = y_proba
   df["Prediction"] = y_pred
 
-  return df, y_proba, y_pred, y_true
+  return df, y_proba, y_pred, y_true, threshold
       
