@@ -72,7 +72,7 @@ with tab2:
         st.subheader("Preview of Uploaded Data")
         st.dataframe(df.head(2))
 
-        df, y_proba, y_pred, y_true = batch_data_modeling(df)
+        df, y_proba, y_pred, y_true, threshold = batch_data_modeling(df)
         tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
         
         recall = tp / (tp + fn)
@@ -148,6 +148,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
