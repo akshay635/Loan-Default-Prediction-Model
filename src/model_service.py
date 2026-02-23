@@ -12,8 +12,9 @@ class LoanRiskModel:
         self.model = load_model(model_path)
         
     def predict_proba(self, df):
-        proba = self.model.predict_proba(df)
+        proba = self.model.predict_proba(df)[0, 1]
         return proba
+
 
 
 
