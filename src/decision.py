@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Jan 19 16:01:25 2026
-
-@author: aksha
-"""
 
 class RiskDecisionEngine:
     def __init__(self, low, high):
@@ -17,6 +12,7 @@ class RiskDecisionEngine:
             return "MEDIUM", "Manual review recommended"
         else:
             return "LOW", "Future loan can be approved if applied"
+
 
 
 
