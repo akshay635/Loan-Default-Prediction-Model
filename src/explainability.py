@@ -10,7 +10,7 @@ from collections import defaultdict
 class ShapExplainer:
     def __init__(self, model):
         self.preprocessor = model.named_steps['preprocessing']
-        self.model = model.named_steps['rf_bal']
+        self.model = model.named_steps['ml_model']
         self.explainer = shap.Explainer(
             self.model, feature_perturbation="tree_path_dependent"
         )
@@ -22,6 +22,7 @@ class ShapExplainer:
         fig, ax = plt.subplots()
         shap.plots.waterfall(shap_values[0, :, 1])
         return fig
+
 
 
 
