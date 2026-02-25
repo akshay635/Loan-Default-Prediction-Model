@@ -11,11 +11,10 @@ class RiskConfig:
     EXPECTED_COLS = [ 
        'Age', 'CreditScore', 'MonthsEmployed', 'NumCreditLines', 'DTIRatio',
        'Education', 'EmploymentType', 'MaritalStatus', 'HasMortgage',
-       'HasDependents', 'LoanPurpose', 'HasCoSigner', 'MonthlyIncome', 'EMI',
-       'Post_DTI', 'age_post_dti', 'tenure_age_ratio', 'debt_stress'
-    ]
+       'HasDependents', 'LoanPurpose', 'HasCoSigner']
 
     TARGET_COL = ['Default']
+
 
 
 
