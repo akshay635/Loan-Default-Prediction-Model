@@ -72,13 +72,6 @@ def load_data():
     # Loan Tenure
     loan_term = st.sidebar.selectbox("Loan Term (months)", [12, 24, 36, 48, 60])
     
-    # Equated Monthly Installments(EMI)
-    monthly_rate = interest_rate / (12 * 100)
-    
-    # EMI formula
-    emi = (loan_amount * monthly_rate * (1 + monthly_rate) ** loan_term) / \
-          ((1 + monthly_rate) ** loan_term - 1)
-    
     # Input data which will be passed to the model
     user_data = {
             "Age": age, "LoanAmount": loan_amount,
@@ -88,7 +81,6 @@ def load_data():
             "Education": education, "EmploymentType": employment,
             "MaritalStatus": marital_status, "HasMortgage": has_mortgage,
             "HasDependents": has_dependents, "LoanPurpose": loan_purpose,
-            "HasCoSigner": cosigner, "MonthlyIncome": monthly_income,
-            "EMI": emi
+            "HasCoSigner": cosigner
     }
     return user_data
