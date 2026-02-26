@@ -38,8 +38,6 @@ def load_data():
         income = st.sidebar.text_input("Annual Income", "10,000")
         # type conversion from string to int
         income = int(income.replace(',', ''))
-        # Monthly Income
-        monthly_income = round(income//12, 2)
     
     # Debt-To-Income ratio
     dti = st.sidebar.slider("Debt-to-Income Ratio", 0.0, 1.0, 0.4)
