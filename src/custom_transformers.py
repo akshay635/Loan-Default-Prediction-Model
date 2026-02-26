@@ -20,6 +20,7 @@ class FeatureAdder(BaseEstimator, TransformerMixin):
     X['age_post_dti'] = X['Age'] * X['Post_DTI']
     X['tenure_age_ratio'] = X['MonthsEmployed'] / (X['Age'] + 1e-6)
     X['debt_stress'] = X['EMI/Income_ratio'] * X['DTIRatio']
+    X = X.drop(columns=['Income'])
     return X
 
 class ConditionalLogTransformer(BaseEstimator, TransformerMixin):
