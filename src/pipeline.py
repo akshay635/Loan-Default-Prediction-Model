@@ -22,6 +22,8 @@ def main():
   numeric_cols = X.select_dtypes(include=['int', 'float']).columns.tolist()
   categoric_cols = X.select_dtypes(include=['object', 'category']).columns.tolist()
 
+  numeric_cols.remove('Income')
+
   num_transformer = Pipeline(steps=[
       ('imputer', SimpleImputer(strategy='median')),
       ('scaler', StandardScaler())
