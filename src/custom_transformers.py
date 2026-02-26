@@ -24,13 +24,13 @@ class FeatureAdder(BaseEstimator, TransformerMixin):
     return X
 
 class ConditionalLogTransformer(BaseEstimator, TransformerMixin):
-  def __init__(self, threshold=1.0):
+  def __init__(self, threshold=1.0, numeric_cols):
     self.threshold = threshold
     self.skewed_cols = []
+    self.numeric_cols = numeric_cols
     
   def fit(self, X, y=None):
-    numeric_cols = X.select_dtypes(include=['int', 'float']).columns.tolist()
-    skewness = X[numeric_cols].skew()
+    skewness = X[self.numeric_cols].skew()
     self.skewed_cols = skewness[skewness > self.threshold].index.tolist()
     return self
     
