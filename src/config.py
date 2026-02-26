@@ -9,11 +9,12 @@ class RiskConfig:
     CONFUSION_MATRIX = "data/confusion_matrix.csv"
     
     EXPECTED_COLS = [ 
-       'Age', 'CreditScore', 'MonthsEmployed', 'NumCreditLines', 'DTIRatio',
+       'Age', 'Income', 'CreditScore', 'MonthsEmployed', 'NumCreditLines', 'DTIRatio',
        'Education', 'EmploymentType', 'MaritalStatus', 'HasMortgage',
        'HasDependents', 'LoanPurpose', 'HasCoSigner']
 
     TARGET_COL = ['Default']
+
 
 
 
