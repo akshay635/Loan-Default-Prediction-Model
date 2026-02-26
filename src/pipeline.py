@@ -50,7 +50,7 @@ def main():
   
   lg_pipe = Pipeline(steps = [
     ('FE', FeatureAdder()),
-    ('transformer', ConditionalLogTransformer(threshold=1.0, numeric_cols)),
+    ('transformer', ConditionalLogTransformer(threshold=1.0, numeric_cols=numeric_cols)),
     ('preprocessing', preprocessor),
     ('ml_model', lg)
   ])
