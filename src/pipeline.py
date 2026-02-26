@@ -1,4 +1,4 @@
-from src.custom_transformers import FeatureAdder, ConditionalLogTransformer
+from custom_transformers import FeatureAdder, ConditionalLogTransformer
 import pandas as pd
 import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
