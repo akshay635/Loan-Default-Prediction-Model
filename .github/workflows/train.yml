@@ -24,7 +24,7 @@ jobs:
 
       - name: Run training script
         run: |
-          python src/pipeline.py
+          python Loan-Default-Prediction-Model/src/pipeline.py
 
       - name: Commit trained model
         run: |
