@@ -74,7 +74,7 @@ def load_data():
     
     # Input data which will be passed to the model
     user_data = {
-            "Age": age, "LoanAmount": loan_amount,
+            "Age": age, "Income": income, "LoanAmount": loan_amount,
             "CreditScore": credit_score, "MonthsEmployed": months_employed,
             "NumCreditLines": num_credit_lines, "InterestRate": interest_rate,
             "LoanTerm": loan_term, "DTIRatio": dti,
