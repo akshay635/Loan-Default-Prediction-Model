@@ -24,7 +24,7 @@ jobs:
 
       - name: Run training script
         run: |
-          python pipeline.py
+          python src/pipeline.py
 
       - name: Commit trained model
         run: |
