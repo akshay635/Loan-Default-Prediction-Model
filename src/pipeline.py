@@ -61,6 +61,3 @@ def main():
   lg_pipe.fit(X, y.values.ravel())
   
   joblib.dump(lg_pipe, 'models/loan_pred_model_v3.joblib')
-
-if __name__ == "__main__":
-  main()
