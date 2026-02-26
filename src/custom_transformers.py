@@ -24,7 +24,7 @@ class FeatureAdder(BaseEstimator, TransformerMixin):
     return X
 
 class ConditionalLogTransformer(BaseEstimator, TransformerMixin):
-  def __init__(self, threshold=1.0, numeric_cols):
+  def __init__(self, numeric_cols, threshold=1.0):
     self.threshold = threshold
     self.skewed_cols = []
     self.numeric_cols = numeric_cols
