@@ -12,6 +12,7 @@ from sklearn.linear_model import LogisticRegression, RidgeClassifier, Lasso
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
+import joblib
 
 def main():
   df = pd.read_csv("data/train.csv")
