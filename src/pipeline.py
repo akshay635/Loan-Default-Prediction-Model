@@ -71,7 +71,7 @@ def main():
   
   # 5) Model training and evaluation using cross-validation techniques and folding mechanism
   models = {
-      'Log_Reg': LogisticRegression(penalty='l2', C=0.1, random_state=42,
+      'Log_Reg': LogisticRegression(l1_ratio=0.0, C=0.1, random_state=42,
                                     class_weight={0:1.0, 1:scale_pos_weight},max_iter=2000),
       'Decision Tree': DecisionTreeClassifier(random_state=42, max_depth=8, class_weight={0:1.0, 1:scale_pos_weight},
                                               max_leaf_nodes=31, min_samples_split=2, min_samples_leaf=1),
@@ -128,7 +128,7 @@ def main():
       {
           'ml_model__C': loguniform(1e-4, 1e4),
           'ml_model__solver': ['lbfgs', 'newton-cg', 'sag', 'saga', 'liblinear'],
-          'ml_model__l1_ratio' : [0],
+          'ml_model__l1_ratio' : [0.0],
           'ml_model__max_iter': [100, 200, 500, 1000],
           'ml_model__tol': uniform(1e-5, 1e-2)
       },
@@ -136,7 +136,7 @@ def main():
       {
           'ml_model__C': loguniform(1e-4, 1e4),
           'ml_model__solver': ['liblinear', 'saga'],
-          'ml_model__l1_ratio' : [1],
+          'ml_model__l1_ratio' : [1.0],
           'ml_model__max_iter': [100, 200, 500, 1000],
           'ml_model__tol': uniform(1e-5, 1e-2)
       },
@@ -145,7 +145,7 @@ def main():
           'ml_model__penalty': ['elasticnet'],
           'ml_model__C': loguniform(1e-4, 1e4),
           'ml_model__solver': ['saga'],
-          'ml_model__l1_ratio': uniform(0, 1),
+          'ml_model__l1_ratio': uniform(0.0, 1.0),
           'ml_model__max_iter': [100, 200, 500, 1000],
           'ml_model__tol': uniform(1e-5, 1e-2)
       },
