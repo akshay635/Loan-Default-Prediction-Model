@@ -29,6 +29,8 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
+          git add data/best_params.json
+          git add data/schema.json
           git add models/loan_pred_model_v3.joblib
           git diff --quiet && git diff --staged --quiet || git commit -m "Auto-trained model update"
           git push
