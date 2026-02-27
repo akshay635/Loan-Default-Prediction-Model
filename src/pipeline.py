@@ -241,7 +241,7 @@ def main():
   ax.set_title("Confusion Matrix")
   
   plt.tight_layout()
-  plt.savefig("confusion_matrix.png")
+  plt.savefig("data/confusion_matrix.png")
   plt.close()
   
   # storing the best params in json
@@ -274,6 +274,6 @@ def main():
       mlflow.log_metric("test_pr_auc", round(pr_auc, 2))
   
       # confusion matrix
-      mlflow.log_artifact("confusion_matrix.png")
+      mlflow.log_artifact("data/confusion_matrix.png")
       
   print("Logged to MLflow successfully.")
