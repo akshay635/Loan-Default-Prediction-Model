@@ -3,6 +3,8 @@ import numpy as np
 import joblib
 import json 
 import mlflow
+import matplotlib.pyplot as plt
+import seaborn as sns
 from src.custom_transformers import FeatureAdder, ConditionalLogTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import cross_validate, train_test_split, StratifiedKFold, RandomizedSearchCV
