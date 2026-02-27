@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import joblib
+import json 
+import mlflow
 from src.custom_transformers import FeatureAdder, ConditionalLogTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import cross_validate, train_test_split, StratifiedKFold, RandomizedSearchCV
@@ -13,7 +15,6 @@ from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 from scipy.stats import loguniform, uniform
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, average_precision_score, confusion_matrix
-import json
 
 def main():
   np.random.seed(42)
@@ -120,6 +121,8 @@ def main():
   best_model = cv_scores.iloc[0]
   
   print(best_model)
+
+  cv_scores.to_csv('data/performance_metrics.csv')
   
   # 6) Hyperparameter tuning
   # Define parameter distributions per solver to avoid mismatches
@@ -227,9 +230,48 @@ def main():
       "features" : X_train.columns.tolist(),
       'dtypes' : X_train.dtypes.astype(str).to_dict()
   }
+
+  # confusion matrix plot
+  fig, ax = plt.subplots()
+  sns.heatmap(confusion_matrix(y_test, pred), annot=True, fmt="d", cmap="Blues", ax=ax)
+  ax.set_xlabel("Predicted")
+  ax.set_ylabel("Actual")
+  ax.set_title("Confusion Matrix")
+  
+  plt.tight_layout()
+  plt.savefig("confusion_matrix.png")
+  plt.close()
   
   # storing the best params in json
   with open("data/schema.json", "w") as f:
       json.dump(schema, f, indent=4)
     
-  joblib.dump(final_lg_pipe, 'models/loan_pred_model_v3.joblib')
+  joblib.dump(final_lg_pipe, 'models/loan_pred_model_v1.joblib')
+
+  mlflow.set_experiment("Loan_Risk_Assessment_metrics")
+  
+  mlflow.autolog()
+  
+  with mlflow.start_run(nested=True):
+      
+      # Log trained model artifact
+      mlflow.sklearn.log_model(final_lg_pipe, "Log_Reg_model")
+  
+      # Log hyperparameters
+      mlflow.log_params(best_params)
+  
+      # Log CV performance
+      mlflow.log_metric("cv_mean_recall", round(best_score, 2))
+  
+      # Log final evaluation metrics
+      mlflow.log_metric("test_accuracy", round(accuracy, 2))
+      mlflow.log_metric("test_recall", round(recall, 2))
+      mlflow.log_metric("test_precision", round(precision,2))
+      mlflow.log_metric("test_f1", round(f1, 2))
+      mlflow.log_metric("test_roc_auc", round(roc_auc, 2))
+      mlflow.log_metric("test_pr_auc", round(pr_auc, 2))
+  
+      # confusion matrix
+      mlflow.log_artifact("confusion_matrix.png")
+      
+  print("Logged to MLflow successfully.")
