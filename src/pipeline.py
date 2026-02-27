@@ -142,7 +142,6 @@ def main():
       },
       # Elastic Net only works with saga
       {
-          'ml_model__penalty': ['elasticnet'],
           'ml_model__C': loguniform(1e-4, 1e4),
           'ml_model__solver': ['saga'],
           'ml_model__l1_ratio': uniform(0.0, 1.0),
@@ -151,7 +150,6 @@ def main():
       },
       # No penalty (none) works with most solvers except liblinear
       {
-          'ml_model__penalty': [None],
           'ml_model__solver': ['lbfgs', 'newton-cg', 'sag', 'saga'],
           'ml_model__max_iter': [100, 200, 500, 1000],
           'ml_model__tol': uniform(1e-5, 1e-2)
@@ -216,14 +214,14 @@ def main():
   accuracy = accuracy_score(y_test, pred)
   precision = precision_score(y_test, pred)
   recall = recall_score(y_test, pred)
-  f1_score = f1_score(y_test, pred)
+  f1 = f1_score(y_test, pred)
   
   print('roc_auc score for tuned model', roc_auc)
   print('pr_auc score for tuned model', pr_auc)
   print('accuracy score for tuned model', accuracy)
   print('precision score for tuned model', precision)
   print('recall score for tuned model', recall)
-  print('f1_score for tuned model', f1_score)
+  print('f1_score for tuned model', f1)
   
   schema = {
       "features" : X_train.columns.tolist(),
