@@ -126,17 +126,17 @@ def main():
   param_distributions = [
       # L2 penalty works with most solvers
       {
-          'ml_model__penalty': ['l2'],
           'ml_model__C': loguniform(1e-4, 1e4),
           'ml_model__solver': ['lbfgs', 'newton-cg', 'sag', 'saga', 'liblinear'],
+          'ml_model__l1_ratio' : [0],
           'ml_model__max_iter': [100, 200, 500, 1000],
           'ml_model__tol': uniform(1e-5, 1e-2)
       },
       # L1 penalty only works with liblinear and saga
       {
-          'ml_model__penalty': ['l1'],
           'ml_model__C': loguniform(1e-4, 1e4),
           'ml_model__solver': ['liblinear', 'saga'],
+          'ml_model__l1_ratio' : [1],
           'ml_model__max_iter': [100, 200, 500, 1000],
           'ml_model__tol': uniform(1e-5, 1e-2)
       },
@@ -169,7 +169,7 @@ def main():
   random_search = RandomizedSearchCV(
       estimator=lg_pipe,
       param_distributions=param_distributions,
-      n_iter=50,
+      n_iter=10,
       scoring='recall',
       cv=5,
       random_state=42,
