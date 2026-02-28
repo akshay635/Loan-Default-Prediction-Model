@@ -32,7 +32,6 @@ jobs:
           git add data/best_params.json
           git add data/schema.json
           git add models/loan_pred_model_v3.joblib
-          git add confusion_matrix.png
           git add data/performance_metrics.csv
           git diff --quiet && git diff --staged --quiet || git commit -m "Auto-trained model update"
           git push
