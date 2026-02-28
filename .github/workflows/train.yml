@@ -25,17 +25,6 @@ jobs:
       - name: Run training script
         run: python train.py
 
-      - name: Commit trained model
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "actions@github.com"
-          git add data/best_params.json
-          git add data/schema.json
-          git add models/loan_pred_model_v1.joblib
-          git add data/performance_metrics.csv
-          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-trained model update"
-          git push
-
       - name: Upload MLflow artifacts
         uses: actions/upload-artifact@v4
         with:
