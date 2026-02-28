@@ -46,7 +46,7 @@ class RiskAssessment:
     
             st.markdown(f"**Suggested Action:** {action}")
             st.metric("Expected Loss", f"₹ {expected_loss:.2f}")
-            st.metric(f"Expected Loss %: {el_percent:.2f}%")
+            st.metric("Expected Loss %:", f"{el_percent:.2f}%")
             
         with col2:
             fig = go.Figure(go.Indicator(
