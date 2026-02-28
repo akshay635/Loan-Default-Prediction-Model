@@ -251,12 +251,12 @@ def main():
     
   joblib.dump(final_lg_pipe, 'models/loan_pred_model_v1.joblib')
 
-  mlflow.set_experiment("Loan_Risk_Assessment_metrics")
-  mlflow.autolog(log_models=False)
+  mlflow.set_tracking_uri("file:./mlruns")
+  mlflow.set_experiment("Test_Experiment_Loan_Default_model")
 
   data_hash = hashlib.md5(pd.util.hash_pandas_object(df).values).hexdigest()
   
-  with mlflow.start_run(nested=True):
+  with mlflow.start_run():
       
       # Log trained model artifact
       mlflow.sklearn.log_model(final_lg_pipe, "Log_Reg_model")
