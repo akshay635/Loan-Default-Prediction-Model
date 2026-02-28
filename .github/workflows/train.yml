@@ -35,3 +35,9 @@ jobs:
           git add data/performance_metrics.csv
           git diff --quiet && git diff --staged --quiet || git commit -m "Auto-trained model update"
           git push
+
+      - name: Upload MLflow artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mlruns
+          path: mlruns
