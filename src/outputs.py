@@ -21,6 +21,7 @@ class RiskAssessment:
        #df = self.FE.derived_features(df)[self.RiskConfig.EXPECTED_COLS]
         prob = self.model.predict_proba(df)
         risk, action = self.decision_engine.decide(prob)
+        expected_loss = prob*df['LoanAmount']*0.7
         col1, col2 = st.columns([1, 1])
         with col1:
             # Narrative output
@@ -43,7 +44,7 @@ class RiskAssessment:
                          suggesting comparatively lower risk based on the available information.""")
     
             st.markdown(f"**Suggested Action:** {action}")
-            st.subheader(f"Expected loss: {prob*df['LoanAmount']*0.7}"
+            st.subheader(f"Expected loss: {expected_loss}")
             
         with col2:
             fig = go.Figure(go.Indicator(
