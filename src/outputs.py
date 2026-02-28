@@ -30,15 +30,15 @@ class RiskAssessment:
             expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.4
             el_percent = (prob*0.4)*100
             
-        if df.iloc[0]['LoanPurpose'] == 'Education':
+        if df.iloc[0]['LoanPurpose'] == 'Auto':
             expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.5
             el_percent = (prob*0.5)*100
             
-        if df.iloc[0]['LoanPurpose'] == 'Education':
+        if df.iloc[0]['LoanPurpose'] == 'Business':
             expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.6
             el_percent = (prob*0.6)*100
             
-        if df.iloc[0]['LoanPurpose'] == 'Education':
+        if df.iloc[0]['LoanPurpose'] == 'Personal':
             expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.75
             el_percent = (prob*0.75)*100    
         
