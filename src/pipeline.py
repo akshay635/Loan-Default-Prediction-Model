@@ -5,6 +5,7 @@ import json
 import mlflow
 import matplotlib.pyplot as plt
 import seaborn as sns
+import hashlib
 from src.custom_transformers import FeatureAdder, ConditionalLogTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import cross_validate, train_test_split, StratifiedKFold, RandomizedSearchCV
@@ -251,8 +252,9 @@ def main():
   joblib.dump(final_lg_pipe, 'models/loan_pred_model_v1.joblib')
 
   mlflow.set_experiment("Loan_Risk_Assessment_metrics")
-  
-  mlflow.autolog()
+  mlflow.autolog(log_models=False)
+
+  data_hash = hashlib.md5(pd.util.hash_pandas_object(df).values).hexdigest()
   
   with mlflow.start_run(nested=True):
       
@@ -263,17 +265,21 @@ def main():
       mlflow.log_params(best_params)
   
       # Log CV performance
-      mlflow.log_metric("cv_mean_recall", round(best_score, 2))
+      mlflow.log_metric("cv_mean_recall", best_score)
   
       # Log final evaluation metrics
-      mlflow.log_metric("test_accuracy", round(accuracy, 2))
-      mlflow.log_metric("test_recall", round(recall, 2))
-      mlflow.log_metric("test_precision", round(precision,2))
-      mlflow.log_metric("test_f1", round(f1, 2))
-      mlflow.log_metric("test_roc_auc", round(roc_auc, 2))
-      mlflow.log_metric("test_pr_auc", round(pr_auc, 2))
+      mlflow.log_metric("test_accuracy", accuracy)
+      mlflow.log_metric("test_recall", recall)
+      mlflow.log_metric("test_precision", precision)
+      mlflow.log_metric("test_f1", f1)
+      mlflow.log_metric("test_roc_auc", roc_auc)
+      mlflow.log_metric("test_pr_auc", pr_auc)
   
       # confusion matrix
       mlflow.log_artifact("data/confusion_matrix.png")
-      
+      mlflow.log_param("dataset_hash", data_hash)
+      mlflow.log_param("decision_threshold", 0.45)
+      mlflow.register_model("runs:/{}/Log_Reg_model".format(mlflow.active_run().info.run_id),
+      "Loan_Default_Model")
+    
   print("Logged to MLflow successfully.")
