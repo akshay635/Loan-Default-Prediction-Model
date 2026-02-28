@@ -55,9 +55,9 @@ class RiskAssessment:
                     'axis': {'range': [0.0, 100.0]},
                     'bar': {'color': "black"},
                     'steps': [
-                        {'range': [61.0, 101.0], 'color': "red"},
-                        {'range': [31.0, 61.0], 'color': "yellow"},
-                        {'range': [0.0, 31.0], 'color': "green"}
+                        {'range': [60.0, 100.0], 'color': "red"},
+                        {'range': [30.0, 60.0], 'color': "yellow"},
+                        {'range': [0.0, 30.0], 'color': "green"}
                     ],
                 }
             ))
