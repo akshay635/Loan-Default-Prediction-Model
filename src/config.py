@@ -3,7 +3,7 @@ class RiskConfig:
     LOW_RISK = 0.30
     HIGH_RISK = 0.60
     
-    MODEL_PATH = "models/loan_pred_model_v3.joblib"
+    MODEL_PATH = "models/loan_pred_model_v1.joblib"
     DATA_PATH = "data/Loan_default.csv"
     FEATURE_IMP_PATH = "data/Features_imp.csv"
     CONFUSION_MATRIX = "data/confusion_matrix.csv"
@@ -14,6 +14,7 @@ class RiskConfig:
        'HasDependents', 'LoanPurpose', 'HasCoSigner']
 
     TARGET_COL = ['Default']
+
 
 
 
