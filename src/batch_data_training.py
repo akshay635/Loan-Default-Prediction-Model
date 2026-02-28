@@ -44,6 +44,7 @@ def batch_data_modeling(df):
   df["Prediction"] = y_pred
   df['LGD'] = df['LoanPurpose'].map(lgd_mapping)
   df['Expected_loss'] = (df['Probability']*df['LoanAmount'])*df['LGD']
+  df['Expected_loss(%)'] = (df['Probability']*df['LGD'])*100
 
   return df, y_proba, y_pred, y_true, threshold
       
