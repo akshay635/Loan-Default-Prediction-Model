@@ -75,7 +75,9 @@ with tab2:
         df, y_proba, y_pred, y_true, threshold = batch_data_modeling(df)
         tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
 
-        expected_loss = df['Expected_loss'].sum()
+        expected_loss = df['Expected_loss'].mean()
+        expected_loss_percent = df['Expected_loss(%)'].mean()
+
         
         recall = tp / (tp + fn)
         miss_rate = fn / (tp + fn)
@@ -88,6 +90,7 @@ with tab2:
 
         col1, col2, col3, col4, col5 = st.columns(5)
         col1.metric("Expected Loss", f"₹ {expected_loss:.2f}")
+        col1.metric("Expected Loss(%)", f"{expected_loss_percent:.2f}%")
         col2.metric("Total Records", len(df))
         col3.metric("Flagged High Risk", f"{flagged_rate*100:.2f}%")
         col4.metric("Recall (Catch Rate)", f"{recall*100:.2f}%")
@@ -150,6 +153,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
