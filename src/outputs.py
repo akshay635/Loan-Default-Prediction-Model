@@ -22,6 +22,7 @@ class RiskAssessment:
         prob = self.model.predict_proba(df)
         risk, action = self.decision_engine.decide(prob)
         expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.7
+        el_percent = prob * 0.7
         col1, col2 = st.columns([1, 1])
         with col1:
             # Narrative output
@@ -45,6 +46,7 @@ class RiskAssessment:
     
             st.markdown(f"**Suggested Action:** {action}")
             st.metric("Expected Loss", f"₹ {expected_loss:.2f}")
+            st.metric(f"Expected Loss %: {el_percent * 100:.2f}%")
             
         with col2:
             fig = go.Figure(go.Indicator(
