@@ -31,9 +31,20 @@ def batch_data_modeling(df):
   model = joblib.load(RiskConfig.MODEL_PATH)
   y_proba = model.predict_proba(X_batch)[:, 1]
   y_pred = (y_proba >= threshold).astype(int)
+
+  lgd_mapping = {
+    "Home": 0.30,
+    "Education": 0.40,
+    "Auto": 0.50,
+    "Business": 0.60,
+    "Personal": 0.75
+  }
   
   df["Probability"] = y_proba
   df["Prediction"] = y_pred
+  df['LGD'] = df['LoanPurpose'].map(lgd_mapping)
+  df['Expected_loss'] = (df['Probability']*df['LoanAmount'])*df['LGD']
+  df['EL_percent(%)'] = (df['Probability']*df['LGD'])*100
 
   return df, y_proba, y_pred, y_true, threshold
       
