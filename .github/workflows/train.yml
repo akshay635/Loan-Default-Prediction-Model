@@ -39,5 +39,8 @@ jobs:
       - name: Upload MLflow artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: mlruns
-          path: mlruns
+          name: mlflow-logs
+          path: |
+            mlruns
+            mlflow.db
+            
