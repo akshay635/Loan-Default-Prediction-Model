@@ -43,6 +43,7 @@ class RiskAssessment:
                          suggesting comparatively lower risk based on the available information.""")
     
             st.markdown(f"**Suggested Action:** {action}")
+            st.subheader(f"Expected loss: {prob*df['LoanAmount']*0.7}"
             
         with col2:
             fig = go.Figure(go.Indicator(
