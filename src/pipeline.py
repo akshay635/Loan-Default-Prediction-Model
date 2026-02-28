@@ -251,8 +251,9 @@ def main():
     
   joblib.dump(final_lg_pipe, 'models/loan_pred_model_v1.joblib')
 
-  mlflow.set_tracking_uri("file:./mlruns")
-  mlflow.set_experiment("Test_Experiment_Loan_Default_model")
+  remote_server_uri = "http://127.0.0.1:5000/" # Replace with your actual URI
+  mlflow.set_tracking_uri(remote_server_uri)
+  mlflow.set_experiment("Loan_Risk_Assessment_Log_Reg_Experiments")
 
   data_hash = hashlib.md5(pd.util.hash_pandas_object(df).values).hexdigest()
   
