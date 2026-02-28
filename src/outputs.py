@@ -21,8 +21,27 @@ class RiskAssessment:
        #df = self.FE.derived_features(df)[self.RiskConfig.EXPECTED_COLS]
         prob = self.model.predict_proba(df)
         risk, action = self.decision_engine.decide(prob)
-        expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.7
-        el_percent = (prob*0.7)*100
+        
+        if df.iloc[0]['LoanPurpose'] == 'Home':
+            expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.3
+            el_percent = (prob*0.3)*100
+            
+        if df.iloc[0]['LoanPurpose'] == 'Education':
+            expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.4
+            el_percent = (prob*0.4)*100
+            
+        if df.iloc[0]['LoanPurpose'] == 'Education':
+            expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.5
+            el_percent = (prob*0.5)*100
+            
+        if df.iloc[0]['LoanPurpose'] == 'Education':
+            expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.6
+            el_percent = (prob*0.6)*100
+            
+        if df.iloc[0]['LoanPurpose'] == 'Education':
+            expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.75
+            el_percent = (prob*0.75)*100    
+        
         col1, col2 = st.columns([1, 1])
         with col1:
             # Narrative output
@@ -133,12 +152,7 @@ class CreditScoreCalculator:
     def calculate_score(self):
         """Calculate credit score using weighted formula."""
         PH_norm, CU_norm, LH_norm, NC_norm = self.normalize_features()
-        score = 300 + 550 * (
-            0.40 * PH_norm +
-            0.30 * CU_norm +
-            0.20 * LH_norm +
-            0.10 * NC_norm
-        )
+        score = 300 + 550 * (0.40 * PH_norm + 0.30 * CU_norm + 0.20 * LH_norm + 0.10 * NC_norm)
         return round(score)
 
     def plot_gauge(self):
