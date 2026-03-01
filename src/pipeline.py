@@ -21,6 +21,9 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 
 def main():
   np.random.seed(42)
+
+  mlflow.set_tracking_uri("file:./mlruns")
+  experiment = mlflow.set_experiment("Loan_Risk_Assessment_Log_Reg_Experiments")
   
   pd.set_option('display.max_columns', 500)
   
@@ -250,35 +253,27 @@ def main():
       json.dump(schema, f, indent=4)
     
   joblib.dump(final_lg_pipe, 'models/loan_pred_model_v1.joblib')
-
-  mlflow.set_experiment("Loan_Risk_Assessment_Log_Reg_Experiments")
-
-  data_hash = hashlib.md5(pd.util.hash_pandas_object(df).values).hexdigest()
+  data_hash = hashlib.md5(pd.util.hash_pandas_object('data/Loan_default.csv').values).hexdigest()
   
-  with mlflow.start_run():
-      
-      # Log trained model artifact
-      mlflow.sklearn.log_model(final_lg_pipe, "Log_Reg_model")
+  with mlflow.start_run(experiment_id=experiment.experiment_id):
   
-      # Log hyperparameters
       mlflow.log_params(best_params)
   
-      # Log CV performance
-      mlflow.log_metric("cv_mean_recall", best_score)
+      mlflow.log_metrics({
+          "cv_mean_recall": best_score,
+          "test_accuracy": accuracy,
+          "test_recall": recall,
+          "test_precision": precision,
+          "test_f1": f1,
+          "test_roc_auc": roc_auc,
+          "test_pr_auc": pr_auc
+      })
   
-      # Log final evaluation metrics
-      mlflow.log_metric("test_accuracy", accuracy)
-      mlflow.log_metric("test_recall", recall)
-      mlflow.log_metric("test_precision", precision)
-      mlflow.log_metric("test_f1", f1)
-      mlflow.log_metric("test_roc_auc", roc_auc)
-      mlflow.log_metric("test_pr_auc", pr_auc)
+      mlflow.sklearn.log_model(final_lg_pipe, "Log_Reg_model")
   
-      # confusion matrix
       mlflow.log_artifact("confusion_matrix.png")
+  
       mlflow.log_param("dataset_hash", data_hash)
       mlflow.log_param("decision_threshold", 0.45)
-      mlflow.register_model("runs:/{}/Log_Reg_model".format(mlflow.active_run().info.run_id),
-      "Loan_Default_Model")
     
   print("Logged to MLflow successfully.")
