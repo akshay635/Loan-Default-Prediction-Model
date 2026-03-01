@@ -253,7 +253,7 @@ def main():
       json.dump(schema, f, indent=4)
     
   joblib.dump(final_lg_pipe, 'models/loan_pred_model_v1.joblib')
-  data_hash = hashlib.md5(pd.util.hash_pandas_object('data/Loan_default.csv').values).hexdigest()
+  data_hash = hashlib.md5(open('data/Loan_default.csv','rb').read()).hexdigest()
   
   with mlflow.start_run(experiment_id=experiment.experiment_id):
   
