@@ -275,6 +275,6 @@ def main():
       mlflow.log_artifact("confusion_matrix.png")
   
       mlflow.log_param("dataset_hash", data_hash)
-      mlflow.log_param("decision_threshold", 0.45)
+      mlflow.log_param("decision_threshold", threshold)
     
   print("Logged to MLflow successfully.")
