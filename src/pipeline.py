@@ -218,7 +218,7 @@ def main():
   roc_auc = roc_auc_score(y_test, proba)
   pr_auc = average_precision_score(y_test, proba)
 
-  threshold = 0.60
+  threshold = 0.40
   pred = (proba >= threshold).astype(int)
   
   accuracy = accuracy_score(y_test, pred)
