@@ -3,9 +3,6 @@ name: Train Model
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   train:
     runs-on: ubuntu-latest
@@ -23,13 +20,18 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run training script
-        run: python main.py
+        run: |
+          mkdir -p artifacts/mlflow
+          export MLFLOW_TRACKING_URI=sqlite:///outputs/mlflow/mlflow.db
+          python main.py
+
+      - name: Debug file paths
+        run: ls -R outputs/mlflow
 
       - name: Upload MLflow artifacts
         uses: actions/upload-artifact@v4
         with:
           name: mlflow-logs
           path: |
-            mlruns
-            mlflow.db
-            
+            artifacts/mlflow/mlruns
+            artifacts/mlflow/mlflow.db
