@@ -22,9 +22,6 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 def main():
   np.random.seed(42)
 
-  mlflow.set_tracking_uri("file:./mlruns")
-  experiment = mlflow.set_experiment("Loan_Risk_Assessment_Log_Reg_Experiments")
-  
   pd.set_option('display.max_columns', 500)
   
   # 1) data ingestion
@@ -256,7 +253,7 @@ def main():
   joblib.dump(final_lg_pipe, 'models/loan_pred_model_v1.joblib')
   data_hash = hashlib.md5(open('data/Loan_default.csv','rb').read()).hexdigest()
   
-  with mlflow.start_run(experiment_id=experiment.experiment_id):
+  with mlflow.start_run():
   
       mlflow.log_params(best_params)
   
