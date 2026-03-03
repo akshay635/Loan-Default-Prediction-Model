@@ -191,7 +191,7 @@ def main():
   clean_params = {k.split("__", 1)[-1]: v for k, v in best_params.items()}
   
   # storing the best params in json
-  with open("artiacts/best_params.json", "w") as f:
+  with open("artifacts/best_params.json", "w") as f:
       json.dump(clean_params, f)
   
   # loading the best params from json
