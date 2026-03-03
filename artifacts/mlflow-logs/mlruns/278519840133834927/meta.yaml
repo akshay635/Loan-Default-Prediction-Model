@@ -1,0 +1,6 @@
+artifact_location: file:///home/runner/work/Loan-Default-Prediction-Model/Loan-Default-Prediction-Model/mlruns/278519840133834927
+creation_time: 1772436067617
+experiment_id: '278519840133834927'
+last_update_time: 1772436067617
+lifecycle_stage: active
+name: Loan_Risk_Assessment_Log_Reg_Experiments
