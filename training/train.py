@@ -128,7 +128,7 @@ def main():
   
   print(best_model)
 
-  cv_scores.to_csv('data/performance_metrics.csv')
+  cv_scores.to_csv('artifacts/performance_metrics.csv')
   
   # 6) Hyperparameter tuning
   # Define parameter distributions per solver to avoid mismatches
@@ -194,11 +194,11 @@ def main():
   clean_params = {k.split("__", 1)[-1]: v for k, v in best_params.items()}
   
   # storing the best params in json
-  with open("data/best_params.json", "w") as f:
+  with open("artiacts/best_params.json", "w") as f:
       json.dump(clean_params, f)
   
   # loading the best params from json
-  with open("data/best_params.json", "r") as f:
+  with open("artifacts/best_params.json", "r") as f:
       best_params = json.load(f)
       
   # 7) Final training and evaluation of the log_reg pipeline with best_params
@@ -218,7 +218,7 @@ def main():
   roc_auc = roc_auc_score(y_test, proba)
   pr_auc = average_precision_score(y_test, proba)
 
-  threshold = 0.40
+  threshold = 0.50
   pred = (proba >= threshold).astype(int)
   
   accuracy = accuracy_score(y_test, pred)
@@ -246,11 +246,11 @@ def main():
   ax.set_title("Confusion Matrix")
   
   plt.tight_layout()
-  plt.savefig("confusion_matrix.png")
+  plt.savefig("artifacts/confusion_matrix.png")
   plt.close()
   
   # storing the best params in json
-  with open("data/schema.json", "w") as f:
+  with open("artifacts/schema.json", "w") as f:
       json.dump(schema, f, indent=4)
     
   joblib.dump(final_lg_pipe, 'models/loan_pred_model_v1.joblib')
@@ -272,7 +272,7 @@ def main():
   
       mlflow.sklearn.log_model(final_lg_pipe, "Log_Reg_model")
   
-      mlflow.log_artifact("confusion_matrix.png")
+      mlflow.log_artifact("artifacts/confusion_matrix.png")
   
       mlflow.log_param("dataset_hash", data_hash)
       mlflow.log_param("decision_threshold", threshold)
