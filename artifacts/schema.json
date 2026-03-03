@@ -1,0 +1,38 @@
+{
+    "features": [
+        "Age",
+        "Income",
+        "LoanAmount",
+        "CreditScore",
+        "MonthsEmployed",
+        "NumCreditLines",
+        "InterestRate",
+        "LoanTerm",
+        "DTIRatio",
+        "Education",
+        "EmploymentType",
+        "MaritalStatus",
+        "HasMortgage",
+        "HasDependents",
+        "LoanPurpose",
+        "HasCoSigner"
+    ],
+    "dtypes": {
+        "Age": "int64",
+        "Income": "int64",
+        "LoanAmount": "int64",
+        "CreditScore": "int64",
+        "MonthsEmployed": "int64",
+        "NumCreditLines": "int64",
+        "InterestRate": "float64",
+        "LoanTerm": "int64",
+        "DTIRatio": "float64",
+        "Education": "object",
+        "EmploymentType": "object",
+        "MaritalStatus": "object",
+        "HasMortgage": "object",
+        "HasDependents": "object",
+        "LoanPurpose": "object",
+        "HasCoSigner": "object"
+    }
+}
