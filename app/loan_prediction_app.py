@@ -1,4 +1,7 @@
 # importing required modules, builtins and classes
+import sys
+import os
+sys.path.append(os.path.abspath("."))
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -153,6 +156,7 @@ with tab5:
 
     # To display gauge in Streamlit:
     st.plotly_chart(calc.plot_gauge())
+
 
 
 
