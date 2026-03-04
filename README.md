@@ -117,9 +117,9 @@ streamlit run loan_prediction_app.py
 
 # 📊 Model Performance
 Model	Recall
-Logistic Regression	XX%
-Random Forest	XX%
-Decision Tree	XX%
+Logistic Regression	67.97%
+Random Forest	65.52%
+Decision Tree	67.92%
 
 🔄 CI/CD Pipeline
 
