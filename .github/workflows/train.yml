@@ -1,37 +1,41 @@
-name: Train Model
+name: Train ML Model
 
 on:
   workflow_dispatch:
-
 jobs:
   train:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pip install -r requirements.txt
 
-      - name: Run training script
+      - name: Run Training Pipeline
+        run: python train.py
+
+      - name: Commit Model Updates
         run: |
-          mkdir -p artifacts/mlflow
-          export MLFLOW_TRACKING_URI=sqlite:///artifacts/mlflow/mlflow.db
-          python main.py
-
-      - name: Debug file paths
-        run: ls -R artifacts/mlflow
-
-      - name: Upload MLflow artifacts
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add models/loan_pred_model_v1.joblib
+          git add artifacts/schema.json
+          git add artifacts/best_params.json
+          git commit -m "Automated model retraining update [skip ci]" || echo "No changes"
+          git push
+    
+      - name: Upload MLflow Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: mlflow-logs
-          path: |
-            artifacts/mlflow/mlruns
-            artifacts/mlflow/mlflow.db
+          name: mlflow-results
+          path: mlruns
