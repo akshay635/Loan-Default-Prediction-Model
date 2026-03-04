@@ -1,5 +1,5 @@
 # 🏦 Credit Risk Assessment System – Loan Default Prediction
-📌 Project Overview
+# 📌 Project Overview
 
 This project predicts whether a loan application will be approved or rejected based on applicant information such as income, credit history, employment status, and loan amount.
 
@@ -17,7 +17,7 @@ Model deployment using Streamlit
 
 This project demonstrates how machine learning models can assist financial institutions in automating loan approval decisions.
 
-📊 Dataset Description
+# 📊 Dataset Description
 
 The dataset contains information about loan applicants.
 
@@ -38,7 +38,7 @@ Loan_Status	Target variable (Approved/Rejected)
 
 The project follows a complete ML workflow:
 
-1️⃣ Data Preprocessing
+# 1️⃣ Data Preprocessing
 
 Handling missing values
 
@@ -46,13 +46,13 @@ Encoding categorical variables
 
 Feature scaling
 
-2️⃣ Feature Engineering
+# 2️⃣ Feature Engineering
 
 Transforming categorical features
 
 Preparing dataset for model training
 
-3️⃣ Model Training
+# 3️⃣ Model Training
 
 Multiple models were evaluated:
 
@@ -62,7 +62,7 @@ Random Forest
 
 Decision Tree
 
-4️⃣ Model Evaluation
+# 4️⃣ Model Evaluation
 
 Models were evaluated using:
 
@@ -74,15 +74,15 @@ Recall
 
 Confusion Matrix
 
-5️⃣ Experiment Tracking
+# 5️⃣ Experiment Tracking
 
 Model experiments are tracked using MLflow.
 
-6️⃣ Deployment
+# 6️⃣ Deployment
 
 The final model is deployed using Streamlit for interactive predictions.
 
-🖥️ Streamlit Web Application
+# 🖥️ Streamlit Web Application
 
 The Streamlit application allows users to input applicant information and get real-time loan approval predictions.
 
@@ -94,7 +94,7 @@ Real-time prediction
 
 Simple input form for applicant details
 
-⚙️ Installation and Setup
+# ⚙️ Installation and Setup
 1️⃣ Clone the repository
 git clone <repository-url>
 cd loan-prediction-project
@@ -114,29 +114,13 @@ source venv/bin/activate
 pip install -r requirements.txt
 4️⃣ Run the Streamlit App
 streamlit run loan_prediction_app.py
-📊 Model Performance
-Model	Accuracy
+
+# 📊 Model Performance
+Model	Recall
 Logistic Regression	XX%
 Random Forest	XX%
 Decision Tree	XX%
-📂 Project Structure
-loan-prediction-project
-│
-├── data
-│   └── loan_dataset.csv
-│
-├── notebooks
-│   └── EDA.ipynb
-│
-├── models
-│   └── loan_model.pkl
-│
-├── app
-│   └── loan_prediction_app.py
-│
-├── requirements.txt
-├── README.md
-└── .github/workflows
+
 🔄 CI/CD Pipeline
 
 This project uses GitHub Actions for automation:
