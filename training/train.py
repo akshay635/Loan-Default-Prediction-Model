@@ -243,7 +243,7 @@ def main():
   ax.set_title("Confusion Matrix")
   
   plt.tight_layout()
-  plt.savefig("artifacts/confusion_matrix.png")
+  plt.savefig("confusion_matrix.png")
   plt.close()
   
   # storing the best params in json
@@ -272,7 +272,7 @@ def main():
   
       mlflow.sklearn.log_model(final_lg_pipe, "Log_Reg_model")
   
-      mlflow.log_artifact("artifacts/confusion_matrix.png")
+      mlflow.log_artifact("confusion_matrix.png")
   
       mlflow.log_param("dataset_hash", data_hash)
       mlflow.log_param("decision_threshold", threshold)
