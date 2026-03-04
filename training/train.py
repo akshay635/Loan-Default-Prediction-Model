@@ -252,6 +252,9 @@ def main():
     
   joblib.dump(final_lg_pipe, 'models/loan_pred_model_v1.joblib')
   data_hash = hashlib.md5(open('data/Loan_default.csv','rb').read()).hexdigest()
+
+  mlflow.set_tracking_uri("file:./mlruns")
+  mlflow.set_experiment("Loan_Default_Project")
   
   with mlflow.start_run():
   
