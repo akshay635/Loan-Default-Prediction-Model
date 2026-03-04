@@ -1,5 +1,4 @@
-# Loan-Default-Prediction-Model
-🏦 Credit Risk Assessment System – Loan Default Prediction
+# 🏦 Credit Risk Assessment System – Loan Default Prediction
 📌 Project Overview
 
 This project predicts whether a loan application will be approved or rejected based on applicant information such as income, credit history, employment status, and loan amount.
