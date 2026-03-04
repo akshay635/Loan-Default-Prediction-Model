@@ -5,8 +5,8 @@ class RiskConfig:
     
     MODEL_PATH = "models/loan_pred_model_v1.joblib"
     DATA_PATH = "data/Loan_default.csv"
-    FEATURE_IMP_PATH = "data/Features_imp.csv"
-    CONFUSION_MATRIX = "data/confusion_matrix.csv"
+    FEATURE_IMP_PATH = "artifacts/Features_imp.csv"
+    CONFUSION_MATRIX = "artifacts/confusion_matrix.csv"
     
     EXPECTED_COLS = [ 
        'Age', 'Income', 'CreditScore', 'LoanAmount', 'InterestRate', 'LoanTerm', 'MonthsEmployed', 
@@ -14,6 +14,7 @@ class RiskConfig:
        'HasDependents', 'LoanPurpose', 'HasCoSigner']
 
     TARGET_COL = ['Default']
+
 
 
 
