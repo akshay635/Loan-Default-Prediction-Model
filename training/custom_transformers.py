@@ -31,7 +31,7 @@ class ConditionalLogTransformer(BaseEstimator, TransformerMixin):
     
   def fit(self, X, y=None):
     numeric_cols = X.select_dtypes(exclude='object').columns.tolist()
-    skewness = X[snumeric_cols].skew()
+    skewness = X[numeric_cols].skew()
     self.skewed_cols = skewness[skewness > self.threshold].index.tolist()
     return self
     
