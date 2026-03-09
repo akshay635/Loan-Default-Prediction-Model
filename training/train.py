@@ -32,6 +32,8 @@ def main():
   print(df.info())
   print(df.isna().sum())
   print(df.isnull().sum())
+  df = df.dropna()
+  df = df.drop_duplicates()
   
   # 3) Train-test data split
   X = df.drop(columns=['LoanID', 'Default'])
@@ -47,7 +49,7 @@ def main():
   
   scale_pos_weight = neg_count / pos_count
   
-  scale_pos_weight = round(scale_pos_weight, 2)
+  scale_pos_weight = round(scale_pos_weight)
   
   # 5) Feature Transformation & Engineering
   num_cols = X_train.select_dtypes(include=['int', 'float']).columns.tolist()
@@ -75,11 +77,13 @@ def main():
   
   # 5) Model training and evaluation using cross-validation techniques and folding mechanism
   models = {
-      'Log_Reg': LogisticRegression(l1_ratio=0.0, C=0.1, random_state=42,
+      'Log_Reg_L1': LogisticRegression(l1_ratio=1.0, C=0.1, random_state=42,
+                                    class_weight={0:1.0, 1:scale_pos_weight},max_iter=2000),
+      'Log_Reg_L2': LogisticRegression(l1_ratio=0.0, C=0.1, random_state=42,
                                     class_weight={0:1.0, 1:scale_pos_weight},max_iter=2000),
       'Decision Tree': DecisionTreeClassifier(random_state=42, max_depth=8, class_weight={0:1.0, 1:scale_pos_weight},
-                                              max_leaf_nodes=31, min_samples_split=2, min_samples_leaf=1),
-      'Random Forest': RandomForestClassifier(n_estimators=1000, max_depth=8, min_samples_split=2, min_samples_leaf=1, 
+                                              max_leaf_nodes=31, min_samples_split=16, min_samples_leaf=8),
+      'Random Forest': RandomForestClassifier(n_estimators=1000, max_depth=8, min_samples_split=16, min_samples_leaf=8, 
                                               max_leaf_nodes=31, random_state=42, class_weight={0:1.0, 1:scale_pos_weight}),
       'XGBoost': XGBClassifier(random_state=42, n_estimators=1000, learning_rate=0.1, max_depth=8, 
                                scale_pos_weight=scale_pos_weight)
@@ -99,7 +103,7 @@ def main():
       
       pipe = Pipeline(steps=[
           ('FE', FeatureAdder()),
-          ('log_transfomr', ConditionalLogTransformer(numeric_cols=num_cols, threshold=1.0)),
+          ('log_transfomr', ConditionalLogTransformer(threshold=1.0)),
           ('Preprocess', preprocessor),
           ('ml_model', model)
       ])
@@ -215,8 +219,8 @@ def main():
   roc_auc = roc_auc_score(y_test, proba)
   pr_auc = average_precision_score(y_test, proba)
 
-  threshold = 0.50
-  pred = (proba >= threshold).astype(int)
+  threshold = 0.30
+  pred = (proba > threshold).astype(int)
   
   accuracy = accuracy_score(y_test, pred)
   precision = precision_score(y_test, pred)
