@@ -16,6 +16,7 @@ class FeatureAdder(BaseEstimator, TransformerMixin):
     X['EMI'] = (((X['LoanAmount']*(X['InterestRate']/100))) + X['LoanAmount'])/(X['LoanTerm'])
     X['EMI'] = round(X['EMI'], 2)
     X['EMI/Income_ratio'] = np.where(X['MonthlyIncome']<=0, 0, X['EMI']/X['MonthlyIncome'])
+    X['Loan/Income_ratio'] = np.where(X['Income']<=0, 0, X['LoanAmount']/X['Income'])
     X['Post_DTI'] = X['DTIRatio'] + X['EMI/Income_ratio']
     X['age_post_dti'] = X['Age'] * X['Post_DTI']
     X['tenure_age_ratio'] = X['MonthsEmployed'] / (X['Age'] + 1e-6)
@@ -24,13 +25,13 @@ class FeatureAdder(BaseEstimator, TransformerMixin):
     return X
 
 class ConditionalLogTransformer(BaseEstimator, TransformerMixin):
-  def __init__(self, numeric_cols, threshold=1.0):
+  def __init__(self, threshold=1.0):
     self.threshold = threshold
     self.skewed_cols = []
-    self.numeric_cols = numeric_cols
     
   def fit(self, X, y=None):
-    skewness = X[self.numeric_cols].skew()
+    numeric_cols = X.select_dtypes(exclude='object').columns.tolist()
+    skewness = X[snumeric_cols].skew()
     self.skewed_cols = skewness[skewness > self.threshold].index.tolist()
     return self
     
