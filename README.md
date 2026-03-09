@@ -131,10 +131,8 @@ pip install -r requirements.txt
 streamlit run loan_prediction_app.py
 
 # 📊 Model Performance
-Model	Recall
-Logistic Regression	67.97%
-Random Forest	65.52%
-Decision Tree	67.92%
+
+<img width="1022" height="198" alt="image" src="https://github.com/user-attachments/assets/33d7636f-3012-4b00-a9ff-d617b5015f4e" />
 
 🔄 CI/CD Pipeline
 
