@@ -1,21 +1,29 @@
 # 🏦 Credit Risk Assessment System – Loan Default Prediction
 # 📌 Project Overview
 
-This project predicts whether a loan application will be approved or rejected based on applicant information such as income, credit history, employment status, and loan amount.
+This project is a Loan Default Risk Estimation application built using Python, Machine Learning, and Streamlit. The goal is to help financial institutions estimate the probability that a borrower may default on a loan.
 
-The goal of this project is to build an end-to-end machine learning pipeline, including:
+The dataset was obtained from Kaggle and processed through a complete machine learning workflow including data validation, feature engineering, feature transformation, and model training. Since the dataset contained class imbalance between default and non-default cases, imbalance handling techniques such as class weighting and threshold tuning were applied.
 
-Data preprocessing
+Multiple classification models were evaluated using cross-validation and hyperparameter tuning to select the best-performing pipeline. The final model was deployed as an interactive web application, while experiments, metrics, and artifacts were tracked using MLflow.
 
-Feature engineering
+Application Modules
 
-Model training and evaluation
+1. Single Borrower Prediction
+Predicts the probability of loan default for an individual borrower based on financial and credit attributes.
 
-Experiment tracking using MLflow
+2. Batch Processing
+Processes multiple borrowers simultaneously and generates default risk predictions. Includes threshold tuning to analyze recall, false positives, and false negatives.
 
-Model deployment using Streamlit
+3. Model Exploration
+Displays the top features influencing the model predictions.
 
-This project demonstrates how machine learning models can assist financial institutions in automating loan approval decisions.
+4. EMI Calculator
+Calculates the Equated Monthly Installment based on loan details.
+
+5. Credit Score Calculator
+Estimates a borrower’s credit score using financial and credit information.
+
 
 # 📊 Dataset Description
 
@@ -34,7 +42,8 @@ Loan_Amount_Term	Loan repayment term
 Credit_History	Credit history status
 Property_Area	Urban / Semiurban / Rural
 Loan_Status	Target variable (Approved/Rejected)
-⚙️ Machine Learning Pipeline
+
+# ⚙️ Machine Learning Pipeline
 
 The project follows a complete ML workflow:
 
@@ -61,6 +70,9 @@ Logistic Regression
 Random Forest
 
 Decision Tree
+
+XGboost
+
 
 # 4️⃣ Model Evaluation
 
@@ -132,8 +144,8 @@ Experiment tracking using MLflow
 Artifact logging
 
 📸 Application Screenshot
+<img width="1908" height="853" alt="image" src="https://github.com/user-attachments/assets/9be50bc0-2027-4443-8be8-6c507343f6b0" />
 
-(Add screenshot of your Streamlit app here)
 
 🚀 Future Improvements
 
