@@ -16,6 +16,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
+from lightgbm import LGBMClassifier
 from scipy.stats import loguniform, uniform
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, average_precision_score, confusion_matrix
 
@@ -77,16 +78,11 @@ def main():
   
   # 5) Model training and evaluation using cross-validation techniques and folding mechanism
   models = {
-      'Log_Reg_L1': LogisticRegression(l1_ratio=1.0, C=0.1, random_state=42, solver='saga',
-                                    class_weight={0:1.0, 1:scale_pos_weight},max_iter=2000),
-      'Log_Reg_L2': LogisticRegression(l1_ratio=0.0, C=0.1, random_state=42, solver='lbfgs',
-                                    class_weight={0:1.0, 1:scale_pos_weight},max_iter=2000),
-      'Decision Tree': DecisionTreeClassifier(random_state=42, max_depth=8, class_weight={0:1.0, 1:scale_pos_weight},
-                                              max_leaf_nodes=31, min_samples_split=16, min_samples_leaf=8),
-      'Random Forest': RandomForestClassifier(n_estimators=1000, max_depth=8, min_samples_split=16, min_samples_leaf=8, 
-                                              max_leaf_nodes=31, random_state=42, class_weight={0:1.0, 1:scale_pos_weight}),
-      'XGBoost': XGBClassifier(random_state=42, n_estimators=1000, learning_rate=0.1, max_depth=8, 
-                               scale_pos_weight=scale_pos_weight)
+      'Log_Reg': LogisticRegression(random_state=42, class_weight={0:1.0, 1:scale_pos_weight}, max_iter=2000),
+      'Decision Tree': DecisionTreeClassifier(random_state=42, class_weight={0:1.0, 1:scale_pos_weight}),
+      'Random Forest': RandomForestClassifier(n_estimators=1000, random_state=42, class_weight={0:1.0, 1:scale_pos_weight}),
+      'XGBoost': XGBClassifier(random_state=42, n_estimators=1000, scale_pos_weight=scale_pos_weight),
+      'LightGBM': LGBMClassifier(n_estimators=1000, class_weight={0: 1.0, 1: scale_pos_weight}, num_leaves=31, random_state=42)
   }
   
   scoring = {'Accuracy': 'accuracy',
@@ -126,6 +122,7 @@ def main():
   print(cv_scores.head())
   
   best_model = cv_scores.iloc[0]
+  best_model_name = cv_scores.iloc[0]['Model']
   
   print(best_model)
 
@@ -133,53 +130,43 @@ def main():
   
   # 6) Hyperparameter tuning
   # Define parameter distributions per solver to avoid mismatches
-  param_distributions = [
-      # L2 penalty works with most solvers
-      {
-          'ml_model__C': loguniform(1e-4, 1e4),
-          'ml_model__solver': ['lbfgs', 'newton-cg', 'sag', 'saga', 'liblinear'],
-          'ml_model__l1_ratio' : [0.0],
-          'ml_model__max_iter': [100, 200, 500, 1000],
-          'ml_model__tol': uniform(1e-5, 1e-2)
-      },
-      # L1 penalty only works with liblinear and saga
-      {
-          'ml_model__C': loguniform(1e-4, 1e4),
-          'ml_model__solver': ['liblinear', 'saga'],
-          'ml_model__l1_ratio' : [1.0],
-          'ml_model__max_iter': [100, 200, 500, 1000],
-          'ml_model__tol': uniform(1e-5, 1e-2)
-      },
-      # Elastic Net only works with saga
-      {
-          'ml_model__C': loguniform(1e-4, 1e4),
-          'ml_model__solver': ['saga'],
-          'ml_model__l1_ratio': uniform(0.0, 1.0),
-          'ml_model__max_iter': [100, 200, 500, 1000],
-          'ml_model__tol': uniform(1e-5, 1e-2)
-      },
-      # No penalty (none) works with most solvers except liblinear
-      {
-          'ml_model__solver': ['lbfgs', 'newton-cg', 'sag', 'saga'],
-          'ml_model__max_iter': [100, 200, 500, 1000],
-          'ml_model__tol': uniform(1e-5, 1e-2)
-      }
-  ]
+  param_distributions = {
+    'Log_Reg': {
+      'ml_model__C': [0.0001, 0.001, 0.01, 0.1, 1.0, 10, 100],
+      'ml_model__penalty': ['l1', 'l2'],
+      'ml_model__l1_ratio': [0.0, 1.0]
+    },
+    'Decision Tree': {
+      'ml_model__max_depth': [1, 2, 4, 6, 8, 16, 32, 64]
+    },
+    'Random Forest': {
+      'ml_model__max_depth': [1, 2, 4, 6, 8, 16, 32, 64],
+      'ml_model__max_leaf_nodes': [15, 31, 63]
+    },
+    'XGBoost': {
+      'ml_model__max_depth': [1, 2, 4, 6, 8, 16, 32, 64],
+      'ml_model__learning_rate': np.arange(0, 1)
+    },
+    'LightGBM': {
+      'ml_model__max_depth': [1, 2, 4, 6, 8, 16, 32, 64],
+      'ml_model__learning_rate': np.arange(0, 1)
+    }
+  }
   
-  lg_pipe = Pipeline(steps=[
+  best_pipe = Pipeline(steps=[
       ('FE', FeatureAdder()),
       ('log_transfomr', ConditionalLogTransformer(threshold=1.0)),
       ('Preprocess', preprocessor),
-      ('ml_model', LogisticRegression(random_state=42, class_weight={0:1.0, 1:scale_pos_weight}))
+      ('ml_model', models[best_model_name])
   ])
   
   # Example randomized search
   random_search = RandomizedSearchCV(
-      estimator=lg_pipe,
-      param_distributions=param_distributions,
+      estimator=best_pipe,
+      param_distributions=param_distributions[best_model_name],
       n_iter=10,
       scoring='recall',
-      cv=5,
+      cv=skf,
       random_state=42,
       n_jobs=-1
   )
@@ -188,6 +175,7 @@ def main():
   
   best_params = random_search.best_params_
   best_score = random_search.best_score_
+  best_estimator = random_search.best_estimator_
   
   print(best_params, best_score)
   
@@ -203,24 +191,14 @@ def main():
       best_params = json.load(f)
       
   # 7) Final training and evaluation of the log_reg pipeline with best_params
-  final_lg_pipe = Pipeline(steps=[
-      ('FE', FeatureAdder()),
-      ('log_transfomr', ConditionalLogTransformer(threshold=1.0)),
-      ('Preprocess', preprocessor),
-      ('ml_model', LogisticRegression(random_state=42, 
-                                      class_weight={0:1.0, 1:scale_pos_weight},
-                                      **best_params))
-  ])
   
-  final_lg_pipe.fit(X_train, y_train.values.ravel())
-  
-  proba = final_lg_pipe.predict_proba(X_test)[:, 1]
+  proba = best_estimator.predict_proba(X_test)[:, 1]
   
   roc_auc = roc_auc_score(y_test, proba)
   pr_auc = average_precision_score(y_test, proba)
 
-  threshold = 0.30
-  pred = (proba > threshold).astype(int)
+  threshold = 0.45
+  pred = (proba >= threshold).astype(int)
   
   accuracy = accuracy_score(y_test, pred)
   precision = precision_score(y_test, pred)
