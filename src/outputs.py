@@ -18,7 +18,7 @@ class RiskAssessment:
             st.error(" ".join(issues))
             st.stop()
 
-       #df = self.FE.derived_features(df)[self.RiskConfig.EXPECTED_COLS]
+        #df = self.FE.derived_features(df)[self.RiskConfig.EXPECTED_COLS]
         prob = self.model.predict_proba(df)
         risk, action = self.decision_engine.decide(prob)
         
@@ -40,7 +40,9 @@ class RiskAssessment:
             
         if df.iloc[0]['LoanPurpose'] == 'Personal':
             expected_loss = prob*(df.iloc[0]['LoanAmount'])*0.75
-            el_percent = (prob*0.75)*100    
+            el_percent = (prob*0.75)*100
+
+        credit_score = 900 - (prob*600)
         
         col1, col2 = st.columns([1, 1])
         with col1:
@@ -51,12 +53,16 @@ class RiskAssessment:
                           difficulty based on financial indicators such as income stability and
                           debt obligations. The customer has higher chances to stop repayments 
                           and default the loan.""")
+                st.metric("Expected Loss", f"₹ {expected_loss:.2f}")
+                st.metric("Expected Loss %:", f"{el_percent:.2f}%")
             
             elif risk == "MEDIUM":
                 st.warning(f"⚠️ Moderate repayment risk ({prob:.2%})")
                 st.warning("""This assessment indicates a moderate probability (30%-60%) of repayment difficulty
                          based on the available financial information, suggesting that further review may be 
                          appropriate.""")
+                st.metric("Expected Loss", f"₹ {expected_loss:.2f}")
+                st.metric("Expected Loss %:", f"{el_percent:.2f}%")
         
             else:
                 st.success(f"✅ Low risk of repayment ({prob:.2%})")
@@ -64,8 +70,8 @@ class RiskAssessment:
                          suggesting comparatively lower risk based on the available information.""")
     
             st.markdown(f"**Suggested Action:** {action}")
-            st.metric("Expected Loss", f"₹ {expected_loss:.2f}")
-            st.metric("Expected Loss %:", f"{el_percent:.2f}%")
+            st.metric(f'Credit Score: {credit_score}') 
+            
             
         with col2:
             fig = go.Figure(go.Indicator(
