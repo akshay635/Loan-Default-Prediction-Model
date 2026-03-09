@@ -168,7 +168,7 @@ def main():
   
   lg_pipe = Pipeline(steps=[
       ('FE', FeatureAdder()),
-      ('log_transfomr', ConditionalLogTransformer(numeric_cols=num_cols, threshold=1.0)),
+      ('log_transfomr', ConditionalLogTransformer(threshold=1.0)),
       ('Preprocess', preprocessor),
       ('ml_model', LogisticRegression(random_state=42, class_weight={0:1.0, 1:scale_pos_weight}))
   ])
