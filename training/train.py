@@ -77,9 +77,9 @@ def main():
   
   # 5) Model training and evaluation using cross-validation techniques and folding mechanism
   models = {
-      'Log_Reg_L1': LogisticRegression(l1_ratio=1.0, C=0.1, random_state=42,
+      'Log_Reg_L1': LogisticRegression(l1_ratio=1.0, C=0.1, random_state=42, solver='saga',
                                     class_weight={0:1.0, 1:scale_pos_weight},max_iter=2000),
-      'Log_Reg_L2': LogisticRegression(l1_ratio=0.0, C=0.1, random_state=42,
+      'Log_Reg_L2': LogisticRegression(l1_ratio=0.0, C=0.1, random_state=42, solver='lbfgs',
                                     class_weight={0:1.0, 1:scale_pos_weight},max_iter=2000),
       'Decision Tree': DecisionTreeClassifier(random_state=42, max_depth=8, class_weight={0:1.0, 1:scale_pos_weight},
                                               max_leaf_nodes=31, min_samples_split=16, min_samples_leaf=8),
