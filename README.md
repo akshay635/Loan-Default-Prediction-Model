@@ -107,9 +107,10 @@ Real-time prediction
 Simple input form for applicant details
 
 # ⚙️ Installation and Setup
-1️⃣ Clone the repository
+1️⃣ Clone the repository 
 git clone <repository-url>
-cd loan-prediction-project
+cd loan-prediction-project 
+
 2️⃣ Create Virtual Environment
 python -m venv venv
 
@@ -122,8 +123,10 @@ venv\Scripts\activate
 Mac/Linux
 
 source venv/bin/activate
+
 3️⃣ Install Dependencies
 pip install -r requirements.txt
+
 4️⃣ Run the Streamlit App
 streamlit run loan_prediction_app.py
 
