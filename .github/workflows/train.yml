@@ -29,6 +29,7 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git add models/loan_pred_model_v1.joblib
+          git add artifacts/performance_metrics.csv
           git add artifacts/schema.json
           git add artifacts/best_params.json
           git add artifacts/confusion_matrix.png
