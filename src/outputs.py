@@ -70,7 +70,7 @@ class RiskAssessment:
                 st.success("""This assessment indicates a lower probability of repayment difficulty,
                          suggesting comparatively lower risk based on the available information.""")
     
-            st.markdown(f"**Suggested Action:** {action}")
+            st.markdown(f"**Suggested Action:** {str(action)}")
             st.metric("Credit Score", f"{credit_score}")    
             
         with col2:
