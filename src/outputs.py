@@ -70,7 +70,7 @@ class RiskAssessment:
                          suggesting comparatively lower risk based on the available information.""")
     
             st.markdown(f"**Suggested Action:** {action}")
-            st.metric(f'Credit Score: {credit_score}')     
+            st.metric('Credit Score:', f'{credit_score}')     
             
         with col2:
             fig = go.Figure(go.Indicator(
