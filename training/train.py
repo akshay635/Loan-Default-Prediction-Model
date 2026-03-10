@@ -80,9 +80,9 @@ def main():
   models = {
       'Log_Reg': LogisticRegression(random_state=42, class_weight={0:1.0, 1:scale_pos_weight}, max_iter=2000),
       'Decision Tree': DecisionTreeClassifier(random_state=42, class_weight={0:1.0, 1:scale_pos_weight}),
-      'Random Forest': RandomForestClassifier(n_estimators=2000, random_state=42, class_weight={0:1.0, 1:scale_pos_weight}),
-      'XGBoost': XGBClassifier(random_state=42, n_estimators=2000, scale_pos_weight=scale_pos_weight),
-      'LightGBM': LGBMClassifier(n_estimators=2000, class_weight={0: 1.0, 1: scale_pos_weight}, num_leaves=31, random_state=42)
+      'Random Forest': RandomForestClassifier(n_estimators=1000, random_state=42, class_weight={0:1.0, 1:scale_pos_weight}),
+      'XGBoost': XGBClassifier(random_state=42, n_estimators=1000, scale_pos_weight=scale_pos_weight),
+      'LightGBM': LGBMClassifier(n_estimators=1000, class_weight={0: 1.0, 1: scale_pos_weight}, num_leaves=31, random_state=42)
   }
   
   scoring = {'Accuracy': 'accuracy',
