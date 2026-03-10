@@ -1,0 +1,23 @@
+artifact_path: file:///home/runner/work/Loan-Default-Prediction-Model/Loan-Default-Prediction-Model/mlruns/862911887950428294/models/m-cc4d2bf4ab7e48cd99d7efa268ad5e27/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.14
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+    skops_trusted_types: null
+mlflow_version: 3.9.0
+model_id: m-cc4d2bf4ab7e48cd99d7efa268ad5e27
+model_size_bytes: 4313
+model_uuid: m-cc4d2bf4ab7e48cd99d7efa268ad5e27
+prompts: null
+run_id: b7d1cbecb76a49109daee496eb09d82f
+utc_time_created: '2026-03-10 07:39:45.897329'

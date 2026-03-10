@@ -1,0 +1,14 @@
+artifact_uri: file:///home/runner/work/Loan-Default-Prediction-Model/Loan-Default-Prediction-Model/mlruns/862911887950428294/b7d1cbecb76a49109daee496eb09d82f/artifacts
+end_time: 1773128389748
+entry_point_name: ''
+experiment_id: '862911887950428294'
+lifecycle_stage: active
+run_id: b7d1cbecb76a49109daee496eb09d82f
+run_name: unique-rat-271
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1773128385850
+status: 3
+tags: []
+user_id: runner

@@ -1,0 +1,10 @@
+artifact_location: file:///home/runner/work/Loan-Default-Prediction-Model/Loan-Default-Prediction-Model/mlruns/862911887950428294/models/m-cc4d2bf4ab7e48cd99d7efa268ad5e27/artifacts
+creation_timestamp: 1773128385885
+experiment_id: '862911887950428294'
+last_updated_timestamp: 1773128389742
+model_id: m-cc4d2bf4ab7e48cd99d7efa268ad5e27
+model_type: null
+name: Log_Reg_model
+source_run_id: b7d1cbecb76a49109daee496eb09d82f
+status: 2
+status_message: null
