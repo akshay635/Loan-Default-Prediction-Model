@@ -80,9 +80,9 @@ def main():
   models = {
       'Log_Reg': LogisticRegression(random_state=42, class_weight={0:1.0, 1:scale_pos_weight}, max_iter=2000),
       'Decision Tree': DecisionTreeClassifier(random_state=42, class_weight={0:1.0, 1:scale_pos_weight}),
-      'Random Forest': RandomForestClassifier(n_estimators=1000, random_state=42, class_weight={0:1.0, 1:scale_pos_weight}),
-      'XGBoost': XGBClassifier(random_state=42, n_estimators=1000, scale_pos_weight=scale_pos_weight),
-      'LightGBM': LGBMClassifier(n_estimators=1000, class_weight={0: 1.0, 1: scale_pos_weight}, num_leaves=31, random_state=42)
+      'Random Forest': RandomForestClassifier(n_estimators=2000, random_state=42, class_weight={0:1.0, 1:scale_pos_weight}),
+      'XGBoost': XGBClassifier(random_state=42, n_estimators=2000, scale_pos_weight=scale_pos_weight),
+      'LightGBM': LGBMClassifier(n_estimators=2000, class_weight={0: 1.0, 1: scale_pos_weight}, num_leaves=31, random_state=42)
   }
   
   scoring = {'Accuracy': 'accuracy',
@@ -134,7 +134,7 @@ def main():
     'Log_Reg': {
       'ml_model__C': [0.0001, 0.001, 0.01, 0.1, 1.0, 10, 100],
       'ml_model__penalty': ['l1', 'l2'],
-      'ml_model__l1_ratio': [0.0, 1.0]
+      'ml_model__l1_ratio': [1.0, 0.0]
     },
     'Decision Tree': {
       'ml_model__max_depth': [1, 2, 4, 6, 8, 16, 32, 64]
@@ -232,7 +232,7 @@ def main():
   with open("artifacts/schema.json", "w") as f:
       json.dump(schema, f, indent=4)
     
-  joblib.dump(final_lg_pipe, 'models/loan_pred_model_v1.joblib')
+  joblib.dump(best_estimator, 'models/loan_pred_model_v1.joblib')
   data_hash = hashlib.md5(open('data/Loan_default.csv','rb').read()).hexdigest()
 
   mlflow.set_tracking_uri("file:./mlruns")
