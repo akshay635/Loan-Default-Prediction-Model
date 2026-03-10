@@ -43,6 +43,7 @@ class RiskAssessment:
             el_percent = (prob*0.75)*100
 
         credit_score = 900 - (prob*600)
+        credit_score = round(credit_score)
         
         col1, col2 = st.columns([1, 1])
         with col1:
@@ -70,7 +71,7 @@ class RiskAssessment:
                          suggesting comparatively lower risk based on the available information.""")
     
             st.markdown(f"**Suggested Action:** {action}")
-            st.metric("Credit Score", f"{credit_score[0]:.0f}")    
+            st.metric("Credit Score", f"{credit_score}")    
             
         with col2:
             fig = go.Figure(go.Indicator(
