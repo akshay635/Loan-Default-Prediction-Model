@@ -252,7 +252,7 @@ def main():
           "test_pr_auc": pr_auc
       })
   
-      mlflow.sklearn.log_model(final_lg_pipe, "Log_Reg_model")
+      mlflow.sklearn.log_model(best_estimator, "Log_Reg_model")
   
       mlflow.log_artifact("artifacts/confusion_matrix.png")
   
