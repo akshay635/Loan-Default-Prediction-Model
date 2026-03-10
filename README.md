@@ -132,7 +132,7 @@ streamlit run loan_prediction_app.py
 
 # 📊 Model Performance
 
-<img width="1022" height="198" alt="image" src="https://github.com/user-attachments/assets/33d7636f-3012-4b00-a9ff-d617b5015f4e" />
+<img width="1040" height="238" alt="image" src="https://github.com/user-attachments/assets/9471b471-c051-4ced-95cf-a9fcf3d1bdec" />
 
 🔄 CI/CD Pipeline
 
