@@ -3,6 +3,7 @@ import numpy as np
 import joblib
 import json 
 import mlflow
+import mlflow.sklearn
 import matplotlib.pyplot as plt
 import seaborn as sns
 import hashlib
