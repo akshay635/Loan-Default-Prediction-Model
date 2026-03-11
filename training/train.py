@@ -133,9 +133,10 @@ def main():
   # Define parameter distributions per solver to avoid mismatches
   param_distributions = {
     'Log_Reg': {
-      'ml_model__C': [0.0001, 0.001, 0.01, 0.1, 1.0, 10, 100],
-      'ml_model__penalty': ['l1', 'l2'],
-      'ml_model__l1_ratio': [1.0, 0.0]
+      'ml_model__C': [0.0001, 0.001, 0.01, 0.1, 1.0, 10, 100, 1000],
+      'ml_model__l1_ratio': np.arange(0.0, 1.0),
+      'ml_model__solver': ['liblinear'],
+      'ml_model__penalty': ['l1']
     },
     'Decision Tree': {
       'ml_model__max_depth': [1, 2, 4, 6, 8, 16, 32, 64]
