@@ -24,6 +24,14 @@ jobs:
       - name: Run Training Pipeline
         run: python main.py
 
+      - name: Upload MLflow Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mlflow-results
+          path: |
+            mlruns/
+            mlflow.db
+
       - name: Commit Model Updates
         run: |
           git config --global user.name "github-actions"
@@ -35,11 +43,3 @@ jobs:
           git add artifacts/confusion_matrix.png
           git commit -m "Automated model retraining update [skip ci]" || echo "No changes"
           git push
-    
-      - name: Upload MLflow Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: mlflow-results
-          path: |
-            mlruns/
-            mlflow.db
