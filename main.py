@@ -2,7 +2,7 @@ from training.train import main
 import mlflow
 import os
 
-mlflow.set_tracking_uri("file:./mlruns")
+mlflow.set_tracking_uri(uri="http://127.0.0.1:5000/")
 mlflow.set_experiment("Loan_Default_Project")
 
 if __name__ == "__main__":
