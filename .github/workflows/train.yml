@@ -40,4 +40,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mlflow-results
-          path: mlruns
+          path: |
+            mlruns/
+            mlflow.db
