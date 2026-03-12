@@ -241,7 +241,9 @@ def main():
   mlflow.set_experiment("Loan_Default_Project")
   mlflow.autolog(log_models=False)
   
-  with mlflow.start_run(run_name=models[best_model_name]):
+  with mlflow.start_run(run_name=best_model_name):
+
+      run_id = run.info.run_id
   
       mlflow.log_params(best_params)
   
@@ -263,5 +265,12 @@ def main():
         "dataset_hash", data_hash,
         "decision_threshold", threshold
       })
+
+  model_uri = f"runs:/{run_id}/Log_Reg_model"
+
+  mlflow.register_model(
+      model_uri=model_uri,
+      name="Loan_Default_Model"
+  )
     
   print("Logged to MLflow successfully.")
