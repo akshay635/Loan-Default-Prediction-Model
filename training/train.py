@@ -241,7 +241,7 @@ def main():
   mlflow.set_experiment("Loan_Default_Project")
   mlflow.autolog(log_models=False)
   
-  with mlflow.start_run(run_name=best_model_name):
+  with mlflow.start_run(run_name=best_model_name) as run:
 
       run_id = run.info.run_id
   
