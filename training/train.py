@@ -239,6 +239,7 @@ def main():
 
   mlflow.set_tracking_uri("sqlite:///mlflow.db")
   mlflow.set_experiment("Loan_Default_Project")
+  mlflow.autolog(log_models=False)
   
   with mlflow.start_run():
   
