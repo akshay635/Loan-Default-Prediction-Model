@@ -241,7 +241,7 @@ def main():
   mlflow.set_experiment("Loan_Default_Project")
   mlflow.autolog(log_models=False)
   
-  with mlflow.start_run():
+  with mlflow.start_run(run_name=models[best_model_name]):
   
       mlflow.log_params(best_params)
   
@@ -259,7 +259,9 @@ def main():
   
       mlflow.log_artifact("artifacts/confusion_matrix.png")
   
-      mlflow.log_param("dataset_hash", data_hash)
-      mlflow.log_param("decision_threshold", threshold)
+      mlflow.log_params({
+        "dataset_hash", data_hash,
+        "decision_threshold", threshold
+      })
     
   print("Logged to MLflow successfully.")
